@@ -58,6 +58,10 @@ public class Artifact implements Serializable {
     @JsonIgnoreProperties("possesses")
     private Artifact belongsTo;
 
+    @ManyToOne
+    @JsonIgnoreProperties("finalArtifacts")
+    private Project theProject;
+
     @OneToMany(mappedBy = "derivedFrom")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Artifact> derivedTos = new HashSet<>();
@@ -207,6 +211,19 @@ public class Artifact implements Serializable {
 
     public void setBelongsTo(Artifact artifact) {
         this.belongsTo = artifact;
+    }
+
+    public Project getTheProject() {
+        return theProject;
+    }
+
+    public Artifact theProject(Project project) {
+        this.theProject = project;
+        return this;
+    }
+
+    public void setTheProject(Project project) {
+        this.theProject = project;
     }
 
     public Set<Artifact> getDerivedTos() {

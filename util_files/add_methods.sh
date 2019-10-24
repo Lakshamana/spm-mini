@@ -21,8 +21,8 @@
 #       colocar o método no final da classe nova correspondente
 
 # 1.
-# olddir="$HOME/Documentos/spm_root/SPMServices/ejbModule/org/qrconsult/spm/model"
-olddir='tmp'
+olddir="$HOME/Documentos/spm_root/SPMServices/ejbModule/org/qrconsult/spm/model"
+# olddir='tmp'
 newdir='src/main/java/br/ufpa/labes/spm/domain'
 diffs='util_files/entitydiffs.txt'
 filesuffix='txt'

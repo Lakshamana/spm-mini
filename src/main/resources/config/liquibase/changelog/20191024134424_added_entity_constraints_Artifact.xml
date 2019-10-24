@@ -20,5 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="artifact"/>
 
+        <addForeignKeyConstraint baseColumnNames="the_project_id"
+                                 baseTableName="artifact"
+                                 constraintName="fk_artifact_the_project_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="project"/>
+
     </changeSet>
 </databaseChangeLog>

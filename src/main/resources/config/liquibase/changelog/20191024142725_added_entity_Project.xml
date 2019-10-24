@@ -9,15 +9,15 @@
         <property name="autoIncrement" value="true"/>
 
     <!--
-        Added the entity Artifact.
+        Added the entity Project.
     -->
-    <changeSet id="20191024134424-1" author="jhipster">
-        <createTable tableName="artifact">
+    <changeSet id="20191024142725-1" author="jhipster">
+        <createTable tableName="project">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="ident" type="varchar(255)">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_artifact_ident" />
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_project_ident" />
             </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="true" />
@@ -25,35 +25,23 @@
             <column name="description" type="${clobType}">
                 <constraints nullable="true" />
             </column>
-            <column name="path_name" type="varchar(255)">
+            <column name="begin_date" type="date">
                 <constraints nullable="true" />
             </column>
-            <column name="file_name" type="varchar(255)">
+            <column name="end_date" type="date">
                 <constraints nullable="true" />
             </column>
-            <column name="latest_version" type="varchar(255)">
+            <column name="active" type="boolean">
                 <constraints nullable="true" />
             </column>
-            <column name="is_template" type="boolean">
-                <constraints nullable="true" />
-            </column>
-            <column name="is_active" type="boolean">
-                <constraints nullable="true" />
-            </column>
-            <column name="derived_from_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="belongs_to_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="the_project_id" type="bigint">
+            <column name="process_refered_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
     </changeSet>
 
-    <changeSet id="20191024134424-1-relations" author="jhipster">
+    <changeSet id="20191024142725-1-relations" author="jhipster">
 
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
@@ -66,20 +54,18 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <changeSet id="20191024134424-1-data" author="jhipster" context="faker">
+    <changeSet id="20191024142725-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/fake-data/artifact.csv"
+                  file="config/liquibase/fake-data/project.csv"
                   separator=";"
-                  tableName="artifact">
+                  tableName="project">
             <column name="id" type="numeric"/>
             <column name="ident" type="string"/>
             <column name="name" type="string"/>
             <column name="description" type="clob"/>
-            <column name="path_name" type="string"/>
-            <column name="file_name" type="string"/>
-            <column name="latest_version" type="string"/>
-            <column name="is_template" type="boolean"/>
-            <column name="is_active" type="boolean"/>
+            <column name="begin_date" type="date"/>
+            <column name="end_date" type="date"/>
+            <column name="active" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

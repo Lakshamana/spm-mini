@@ -1,8 +1,4 @@
 package br.ufpa.labes.spm.domain;
-
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -20,7 +16,6 @@ import java.util.Set;
 @Entity
 @Table(name = "process")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Inheritance(strategy=InheritanceType.JOINED)
 public class Process implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,6 +34,10 @@ public class Process implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private ProcessModel theProcessModel;
+
+    @OneToMany(mappedBy = "processRefered")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Project> theProjects = new HashSet<>();
 
     @ManyToMany(mappedBy = "theProcesses")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -91,6 +90,31 @@ public class Process implements Serializable {
 
     public void setTheProcessModel(ProcessModel processModel) {
         this.theProcessModel = processModel;
+    }
+
+    public Set<Project> getTheProjects() {
+        return theProjects;
+    }
+
+    public Process theProjects(Set<Project> projects) {
+        this.theProjects = projects;
+        return this;
+    }
+
+    public Process addTheProject(Project project) {
+        this.theProjects.add(project);
+        project.setProcessRefered(this);
+        return this;
+    }
+
+    public Process removeTheProject(Project project) {
+        this.theProjects.remove(project);
+        project.setProcessRefered(null);
+        return this;
+    }
+
+    public void setTheProjects(Set<Project> projects) {
+        this.theProjects = projects;
     }
 
     public Set<Agent> getTheAgents() {

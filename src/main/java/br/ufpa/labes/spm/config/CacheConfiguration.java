@@ -105,6 +105,9 @@ public class CacheConfiguration {
             createCache(cm, br.ufpa.labes.spm.domain.ProcessModel.class.getName() + ".theConnections");
             createCache(cm, br.ufpa.labes.spm.domain.Template.class.getName());
             createCache(cm, br.ufpa.labes.spm.domain.Template.class.getName() + ".theInstances");
+            createCache(cm, br.ufpa.labes.spm.domain.Project.class.getName());
+            createCache(cm, br.ufpa.labes.spm.domain.Project.class.getName() + ".finalArtifacts");
+            createCache(cm, br.ufpa.labes.spm.domain.Process.class.getName() + ".theProjects");
             // jhipster-needle-ehcache-add-entry
         };
     }

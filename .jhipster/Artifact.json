@@ -54,6 +54,13 @@
             "otherEntityField": "id"
         },
         {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "project",
+            "otherEntityRelationshipName": "finalArtifacts",
+            "relationshipName": "theProject",
+            "otherEntityField": "id"
+        },
+        {
             "relationshipType": "one-to-many",
             "otherEntityName": "artifact",
             "otherEntityRelationshipName": "derivedFrom",

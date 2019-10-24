@@ -23,6 +23,12 @@
             "ownerSide": true
         },
         {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "project",
+            "otherEntityRelationshipName": "processRefered",
+            "relationshipName": "theProject"
+        },
+        {
             "relationshipType": "many-to-many",
             "otherEntityName": "agent",
             "otherEntityRelationshipName": "theProcess",

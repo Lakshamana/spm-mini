@@ -1,0 +1,58 @@
+{
+    "name": "Project",
+    "fields": [
+        {
+            "fieldName": "ident",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "unique"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "beginDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "endDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "active",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "artifact",
+            "otherEntityRelationshipName": "theProject",
+            "relationshipName": "finalArtifacts"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "process",
+            "otherEntityRelationshipName": "theProject",
+            "relationshipName": "processRefered",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191024142725",
+    "entityTableName": "project",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

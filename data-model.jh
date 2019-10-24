@@ -572,14 +572,14 @@ relationship ManyToMany {
 //     serviceFileId String unique
 // }
 
-// entity Project {
-//     ident String unique
-//     name String
-//     description TextBlob
-//     beginDate LocalDate
-//     endDate LocalDate
-//     active Boolean
-// }
+entity Project {
+    ident String unique
+    name String
+    description TextBlob
+    beginDate LocalDate
+    endDate LocalDate
+    active Boolean
+}
 
 // entity VCSRepository {
 //     ident String unique
@@ -601,26 +601,26 @@ relationship ManyToMany {
 //     description TextBlob
 // }
 
-// relationship ManyToOne {
+relationship ManyToOne {
 //     CompanyUnit{theOrganization} to Company{theOrganizationalUnits},
 //     CompanyUnit{theCommand} to CompanyUnit{theSubordinates},
 
-//     Project{processRefered} to Process{theProject},
+    Project{processRefered} to Process{theProject}
 //     Project{theSystem} to DevelopingSystem{theProject},
 
 //     VCSRepository{theStructure} to Structure{theRepository},
 
 //     DevelopingSystem{theOrganization} to Company{theSystem}
-// }
+}
 
-// relationship OneToMany {
+relationship OneToMany {
 //     Company{organizationMetric} to OrganizationMetric{company},
 //     Company{theCompanyEstimation} to OrganizationEstimation{company},
 
 //     Node{children} to Node{parentNode},
 
-//     Project{finalArtifacts} to Artifact{theProject}
-// }
+    Project{finalArtifacts} to Artifact{theProject}
+}
 
 // relationship OneToOne {
 //   Structure{rootElement} to Node{theStructure}
