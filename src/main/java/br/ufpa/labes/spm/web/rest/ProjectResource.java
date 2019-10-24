@@ -2,6 +2,7 @@ package br.ufpa.labes.spm.web.rest;
 
 import br.ufpa.labes.spm.domain.Project;
 import br.ufpa.labes.spm.repository.ProjectRepository;
+import br.ufpa.labes.spm.service.interfaces.ProjectServices;
 import br.ufpa.labes.spm.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
