@@ -1,0 +1,1293 @@
+// 22.09.2019 - OK
+//package activities ------------------------------------------- OK
+entity Activity {
+    ident String unique
+    name String
+    isVersion Boolean
+}
+
+// //Plain state enum
+// enum PlainStatus {
+//     WAITING, READY, FAILED, CANCELED, ACTIVE, PAUSED, FINISHED
+// }
+
+entity Decomposed {}
+
+entity Plain {
+    requirements TextBlob
+    // automatic Boolean
+}
+
+// relationship ManyToOne {
+//     Activity{theActivityType} to ActivityType{theActivity}
+// }
+
+relationship OneToMany {
+    // Activity{theModelingActivityEvent} to ModelingActivityEvent{theActivity},
+    Activity{hasVersions} to Activity{isVersionOf},
+    Activity{fromSimpleCon} to SimpleCon{toActivity},
+    Activity{toSimpleCon} to SimpleCon{fromActivity},
+    Activity{fromJoinCon} to JoinCon{toActivity},
+    Activity{toBranchCon} to BranchCon{fromActivity}
+    // Activity{activityEstimation} to ActivityEstimation{activity},
+
+    // Plain{theGlobalActivityEvent} to GlobalActivityEvent{thePlain}
+}
+
+relationship ManyToMany {
+    Activity{toJoinCon} to JoinCon{fromActivity},
+    Activity{fromBranchANDCon} to BranchANDCon{toActivity},
+    Activity{fromArtifactCon} to ArtifactCon{toActivity},
+    Activity{toArtifactCon} to ArtifactCon{fromActivity}
+}
+
+relationship OneToOne {
+    // Plain{theEnactionDescription} to EnactionDescription{thePlain},
+
+    Decomposed{theReferedProcessModel} to ProcessModel{theDecomposed}
+}
+
+//package agent ------------------------------------------- OK
+
+// entity Ability {
+//     ident String unique
+//     name String
+//     description TextBlob
+// }
+
+entity Agent {
+    ident String unique
+    name String
+    email String
+    costHour Float
+    passwordHash String
+    tipoUser Integer
+    isActive Boolean
+    online Boolean
+    photoURL String
+    upload String
+    description TextBlob
+}
+
+// entity AgentAffinityAgent {
+//     degree Integer
+// }
+
+// entity AgentHasAbility {
+//     degree Integer
+// }
+
+// entity AgentPlaysRole {
+//     sinceDate LocalDate
+// }
+
+// //EmailConfiguration enums
+// enum EmailSecurityLevels {
+//     WITHOUT_SECURITY,
+//     TLS_IF_AVAILABLE,
+//     TLS,
+//     SSL
+// }
+
+// enum EmailNotificationConfig {
+//     NOTIFY_ALL_MANAGERS,
+//     NOTIFY_SPECIFIC_MANAGERS,
+//     NOT_NOTIFY
+// }
+
+// enum EmailProcessStatusNotifications {
+//     PROCESS_HAS_FINISHED,
+//     FIRST_ACTIVITY_HAS_STARTED,
+//     CONSUMABLE_RESOURCE_5_AMOUNT,
+//     ACTIVITY_IS_READY_INSTANTIATED,
+//     TASK_DELEGATED,
+//     DECISION_BRANCH_COND
+// }
+
+// entity EmailConfiguration {
+//     processFinished Boolean
+//     firstActStarted Boolean
+//     consumableResourceAmount Boolean
+//     activityInstantied Boolean
+//     taskDelegated Boolean
+//     decisionBranchCond Boolean
+
+//     //enums
+//     // securityLevels EmailSecurityLevels,
+//     // notificationConfig EmailNotificationConfig,
+//     // processNotifications EmailProcessStatusNotifications
+// }
+
+entity WorkGroup {
+    ident String unique
+    name String
+    description TextBlob
+    isActive Boolean
+}
+
+// entity OutOfWorkPeriod {
+//     why TextBlob
+//     fromDate String
+//     toDate String
+// }
+
+// entity Role {
+//     ident String unique
+//     name String
+//     description TextBlob
+// }
+
+// entity RoleNeedsAbility {
+//     degree Integer
+// }
+
+relationship ManyToOne {
+    // Ability{theAbilityType} to AbilityType{theAbility}
+
+    // Agent{theResourceEvent} to ResourceEvent{theRequestorAgent},
+
+    // AgentAffinityAgent{toAffinity} to Agent{fromAgentAffinity},
+    // AgentAffinityAgent{fromAffinity} to Agent{toAgentAffinity},
+
+    // AgentHasAbility{theAgent} to Agent{theAgentHasAbility},
+
+    // AgentPlaysRole{theAgent} to Agent{theAgentPlaysRole},
+    // AgentPlaysRole{theRole} to Role{theAgentPlaysRole},
+
+    // WorkGroup{theGroupType} to WorkGroupType{theWorkGroup}
+    WorkGroup{superGroup} to WorkGroup{subGroups}
+
+    // OutOfWorkPeriod{theAgent} to Agent{theOutOfWorkPeriod},
+
+    // Role{subordinate} to Role{commands},
+    // Role{theRoleType} to RoleType{theRole}
+
+    // RoleNeedsAbility{theRole} to Role{theRoleNeedsAbility},
+    // RoleNeedsAbility{theAbility} to Ability{theRoleNeedsAbility}
+}
+
+relationship OneToMany {
+    // Ability{theReqAgentRequiresAbility} to ReqAgentRequiresAbility{theAbility},
+    // Ability{theAgentHasAbility} to AgentHasAbility{theAbility},
+
+    // Agent{delegates} to Task{delegatedFrom},
+    // Agent{isDelegatedFor} to Task{delegatedTo},
+    // Agent{theModelingActivityEvent} to ModelingActivityEvent{theAgent},
+    Agent{theReqAgent} to ReqAgent{theAgent},
+    // Agent{theAgentMetric} to AgentMetric{agent},
+    // Agent{theAgentEstimation} to AgentEstimation{agent},
+    // Agent{theManagedOrgUnits} to CompanyUnit{theAgent},
+
+    // EmailConfiguration{theProcesses} to Process{theEmailConfiguration},
+    // EmailConfiguration{theManagers} to Agent{theEmailConfiguration},
+
+    WorkGroup{theReqGroup} to ReqWorkGroup{theWorkGroup}
+    // WorkGroup{theWorkGroupMetric} to WorkGroupMetric{workGroup},
+    // WorkGroup{theWorkGroupEstimation} to WorkGroupEstimation{workGroup},
+
+    // Role{theReqAgent} to ReqAgent{theRole}
+}
+
+relationship ManyToMany {
+    Agent{theProcess} to Process{theAgent},
+    Agent{theWorkGroup} to WorkGroup{theAgent}
+    // Agent{theOrgUnits} to CompanyUnit{theUnitAgents}
+}
+
+// relationship OneToOne {
+//     Agent{theTaskAgenda} to TaskAgenda{theAgent},
+//     Agent{configuration} to SpmConfiguration{agent}
+// }
+
+//package artifacts ------------------------------------------- OK
+
+entity Artifact {
+    ident String unique
+    name String
+    description TextBlob
+    pathName String
+    fileName String
+    latestVersion String
+    isTemplate Boolean
+    isActive Boolean
+}
+
+// entity ArtifactTask {
+//     inWorkspaceVersion String
+//     outWorkspaceVersion String
+// }
+
+relationship ManyToOne {
+    // Artifact{theArtifactType} to ArtifactType{theArtifact}
+    Artifact{derivedFrom} to Artifact{derivedTo},
+    Artifact{belongsTo} to Artifact{possess}
+    // Artifact{theRepository} to VCSRepository{theArtifacts},
+
+    // ArtifactTask{theArtifact} to Artifact{theArtifactTasks},
+    // ArtifactTask{theTask} to Task{theArtifactTask}
+}
+
+// relationship OneToMany {
+//     Artifact{theInvolvedArtifacts} to InvolvedArtifact{theArtifact},
+//     Artifact{theArtifactParam} to ArtifactParam{theArtifact},
+//     Artifact{theAutomatic} to Automatic{theArtifact},
+//     Artifact{theArtifactMetric} to ArtifactMetric{artifact},
+//     Artifact{theArtifactEstimation} to ArtifactEstimation{artifact}
+// }
+
+//package assets ------------------------------------------- OK
+
+//AssetVisibility enum
+// enum AssetVisibility {
+//     VISIBILITY_PUBLIC,
+//     VISIBILITY_PRIVATE
+// }
+
+// entity Asset {
+//     uid String unique
+//     creationDate LocalDate
+//     publishDate LocalDate
+//     name String
+//     description String
+//     applicability String
+//     tags String
+//     path String
+//     latestVersion String
+//     readOnly Boolean
+//     // assetVisibility AssetVisibility
+// }
+
+// entity AssetRelationship {
+//     description String
+// }
+
+// entity AssetStat {
+//     // voteCount Long
+//     // visitCount Long
+//     // downloadCount Long
+//     // tVotes Double
+//     // rate Double
+// }
+
+// entity AuthorStat {
+//     // rate Double,
+//     // visitCount Long,
+//     // downloadCount Long
+// }
+
+// entity LessonLearned {
+//     name String,
+//     description TextBlob
+//     creationDate LocalDate
+// }
+
+// entity Message {
+//     content TextBlob,
+//     time LocalDate
+// }
+
+// entity RelationshipKind {
+//     typeident String, unique
+//     description String
+// }
+
+// entity Tag {
+//     ident String unique
+// }
+
+// entity TagStats {
+//     count Long
+// }
+
+// relationship ManyToOne {
+//     Asset{owner} to Author{assets},
+
+//     AssetRelationship{kind} to RelationshipKind{theAssetRelationship},
+
+//     LessonLearned{author} to Author{theLessonLearned},
+
+//     Message{sender} to Author{sentMessages},
+//     Message{recipient} to Author{receivedMessages},
+
+//     TagStats{tag} to Tag{theTagStat}
+// }
+
+// relationship OneToMany {
+//     Asset{authorStats} to AuthorStat{asset},
+//     Asset{tagStats} to TagStats{asset},
+//     Asset{lessonsLearned} to LessonLearned{asset},
+//     Asset{relatedAssets} to AssetRelationship{asset},
+//     Asset{relatedByAssets} to AssetRelationship{relatedAsset},
+//     Asset{comments} to Message{theAsset},
+
+//     Author{stats} to AuthorStat{author}
+// }
+
+// relationship ManyToMany {
+//     Asset{favoritedBy} to Author{favorites},
+//     Asset{followers} to Author{assetsFollowed},
+//     Asset{collaborators} to Author{collaborateOnAssets}
+// }
+
+// relationship OneToOne {
+//     Asset{stats} to AssetStat{theAsset}
+// }
+
+//package calendar ------------------------------------------- OK
+// entity Calendar {
+//     name String
+// }
+
+// entity NotWorkingDay {
+//   name String unique
+// }
+
+// relationship OneToMany {
+//     Project{theCalendar} to Calendar{project},
+
+//     Calendar{notWorkingDays} to NotWorkingDay{calendar}
+// }
+
+//package chat ------------------------------------------- OK
+
+// entity ChatMessage {
+//     ident String, unique
+//     text TextBlob,
+//     timestamp Instant required
+// }
+
+// relationship OneToOne {
+//     ChatMessage{de} to Agent{theChatMessage}
+// }
+
+//package SpmConfiguration ------------------------------------------- OK
+
+// entity SpmConfiguration {
+//     filtro String,
+//     idioma String,
+//     graficoDeEsforco Boolean,
+//     graficoDeCustos Boolean,
+//     graficoDeDesempenho Boolean,
+//     graficoDeTarefas Boolean,
+//     senhaEmRecuperacao Boolean
+// }
+
+//package connections ------------------------------------------- OK
+
+entity Connection {
+    ident String unique
+}
+
+entity ArtifactCon {} //extends Connection
+
+entity SimpleCon {} //extends Connection
+
+// entity Feedback {} //extends SimpleCon
+
+// entity Sequence {} //extends SimpleCon
+
+// entity Dependency {
+//     kindDep String
+// }
+
+entity JoinCon {  //extends MultipleCon
+    kindJoin String
+}
+
+entity MultipleCon {
+    fired Boolean
+}
+
+entity BranchCon {} //extends MultipleCon
+
+entity BranchANDCon {} //extends BranchCon
+
+entity BranchConCond {
+  kindBranch String
+}
+
+entity BranchConCondToActivity {}
+
+entity BranchConCondToMultipleCon {}
+
+relationship OneToMany {
+  BranchConCond{theBranchConCondToActivity} to BranchConCondToActivity{theBranchConCond},
+  BranchConCond{theBranchConCondToMultipleCon} to BranchConCondToMultipleCon{theBranchConCond}
+}
+
+relationship ManyToOne {
+    ArtifactCon{theArtifact} to Artifact{theArtifactCon},
+    // ArtifactCon{theArtifactType} to ArtifactType{theArtifactCon}
+
+    Connection{theProcessModel} to ProcessModel{theConnection},
+    // Connection{theConnectionType} to ConnectionType{theConnection}
+
+    // MultipleCon{theDependencyToMultipleCons} to Dependency{theMultipleConsToDependency},
+
+    BranchCon{fromMultipleConnection} to MultipleCon{toBranchCon},
+
+    BranchConCondToActivity{theActivity} to Activity{theBranchConCondToActivity},
+
+    BranchConCondToMultipleCon{theMultipleCon} to MultipleCon{theBranchConCondToMultipleCon},
+
+    // Sequence{theDependencyToMultipleSequences} to Dependency{theMultipleSequences},
+
+    JoinCon{toMultipleCon} to MultipleCon{theJoinCon}
+}
+
+relationship ManyToMany {
+    ArtifactCon{toMultipleCon} to MultipleCon{fromArtifactCon},
+
+    BranchANDCon{toMultipleCon} to MultipleCon{theBranchANDCon},
+
+    JoinCon{fromMultipleCon} to MultipleCon{theJoinConToMultipleCon}
+}
+
+// relationship OneToOne {
+//   MultipleCon{theDependency} to Dependency{theMultipleCon},
+
+//   Dependency{theSequence} to Sequence{theDependency}
+// }
+
+//package driver ------------------------------------------- OK
+
+// entity Driver {
+//     tipo String
+//     appKey String
+//     appSecret String
+//     appKeyGoogle String
+//     appSecretGoogle String
+//     requestUrl String
+// }
+
+// relationship OneToOne {
+//     Driver{thePlugin} to Plugin{theDriver}
+//     Driver{company} to Company{theDriver}
+// }
+
+//package email ------------------------------------------- OK
+
+// entity Email {
+//     emailServerHost String,
+//     emailServerPort String,
+//     userName String,
+//     password String
+//     servicoTls Boolean,
+//     servicoSsl Boolean,
+//     teste Boolean
+// }
+
+
+//package log ------------------------------------------- OK
+
+// entity CatalogEvent {
+//     description TextBlob
+// }
+
+// entity ChatLog {
+//     log String,
+//     date LocalDate
+// }
+
+// entity Event {
+//     why TextBlob,
+//     when LocalDate,
+//     isCreatedByApsee Boolean
+// }
+
+// entity AgendaEvent {} //extends Event
+
+// entity ConnectionEvent {} //extends Event
+
+// entity GlobalActivityEvent {} //extends Event
+
+// entity ModelingActivityEvent {} //extends Event
+
+// entity ProcessEvent {} //extends Event
+
+// entity ProcessModelEvent {} //extends Event
+
+// entity ResourceEvent {} //extends Event
+
+// entity SpmLog {}
+
+// relationship ManyToOne {
+//     // Event{theCatalogEvent} to CatalogEvent{theEvent},
+//     ResourceEvent{theCatalogEvent} to CatalogEvent{theResourceEvent},
+//     ProcessModelEvent{theCatalogEvent} to CatalogEvent{theProcessModelEvent},
+//     AgendaEvent{theCatalogEvent} to CatalogEvent{theAgendaEvent},
+//     ConnectionEvent{theCatalogEvent} to CatalogEvent{theConnectionEvent},
+//     GlobalActivityEvent{theCatalogEvent} to CatalogEvent{theGlobalActivityEvent},
+//     ModelingActivityEvent{theCatalogEvent} to CatalogEvent{theModelingActivityEvent},
+//     ProcessEvent{theCatalogEvent} to CatalogEvent{theProcessEvent},
+
+//     AgendaEvent{theTask} to Task{theAgendaEvent},
+//     AgendaEvent{theNormal} to Normal{theAgendaEvent}
+
+//     Event{theLog} to SpmLog{theEvent},
+//     Event{theEventType} to EventType{theEvent},
+
+//     CatalogEvent{thePlain} to Plain{theCatalogEvent},
+
+//     ProcessEvent{theProcess} to Process{theProcessEvent},
+//     ProcessModelEvent{theProcessModel} to ProcessModel{theProcessModelEvent},
+//     ResourceEvent{theResource} to Resource{theResourceEvent}
+// }
+
+// relationship ManyToMany {
+//     ChatLog{involvedAgentsInChat} to Agent{theChatLog}
+// }
+
+// relationship OneToOne {
+//     SpmLog{theProcess} to Process{theLog},
+
+//     ResourceEvent{theNormal} to Normal{theResourceEvent}
+// }
+
+//package organizationPolicies ------------------------------------------- OK
+
+// entity Company {
+//     ident String unique
+//     cnpj String
+//     fantasyName String
+//     socialReason String
+//     acronym String
+//     address String
+//     phone String
+//     description TextBlob
+//     image Blob
+//     url String
+//     automaticInstantiation Boolean
+// }
+
+// entity CompanyUnit {
+//     ident String unique
+//     name String
+//     description TextBlob
+// }
+
+// entity Node {
+//     ident String unique
+//     data String
+//     serviceFileId String unique
+// }
+
+// entity Project {
+//     ident String unique
+//     name String
+//     description TextBlob
+//     beginDate LocalDate
+//     endDate LocalDate
+//     active Boolean
+// }
+
+// entity VCSRepository {
+//     ident String unique
+//     controlVersionSystem String
+//     server String
+//     port String
+//     connectionMethod String
+//     repository String
+//     username String
+//     password String
+//     defaultUser Boolean
+// }
+
+// entity Structure {}
+
+// entity DevelopingSystem {
+//     ident String unique
+//     name String
+//     description TextBlob
+// }
+
+// relationship ManyToOne {
+//     CompanyUnit{theOrganization} to Company{theOrganizationalUnits},
+//     CompanyUnit{theCommand} to CompanyUnit{theSubordinates},
+
+//     Project{processRefered} to Process{theProject},
+//     Project{theSystem} to DevelopingSystem{theProject},
+
+//     VCSRepository{theStructure} to Structure{theRepository},
+
+//     DevelopingSystem{theOrganization} to Company{theSystem}
+// }
+
+// relationship OneToMany {
+//     Company{organizationMetric} to OrganizationMetric{company},
+//     Company{theCompanyEstimation} to OrganizationEstimation{company},
+
+//     Node{children} to Node{parentNode},
+
+//     Project{finalArtifacts} to Artifact{theProject}
+// }
+
+// relationship OneToOne {
+//   Structure{rootElement} to Node{theStructure}
+// }
+
+//package people ------------------------------------------- OK
+
+// entity Author {
+//     uid String unique
+//     version Integer //Annotate as @Version
+//     name String
+//     email String
+//     interests String
+//     city String
+//     country String
+//     photo Blob
+// }
+
+// entity Organization {
+//     domain String
+// }
+
+// entity Person {
+//     gender String
+// }
+
+// relationship ManyToMany {
+//     Author{authorsFollowed} to Author{followers}
+// }
+
+// relationship OneToOne {
+//     Author{user} to User{theAuthor}
+// }
+
+//package plainActivities ------------------------------------------- OK
+
+// entity Automatic {} //extends Plain
+
+// entity EnactionDescription {
+//     actualBegin LocalDate
+//     actualEnd LocalDate
+//     state String
+// }
+
+// entity InvolvedArtifact {}
+
+entity Normal {
+    howLong Float
+    howLongUnit String
+    plannedBegin LocalDate
+    plannedEnd LocalDate
+    script TextBlob
+    delegable Boolean
+    autoAllocable Boolean
+}
+
+// entity Parameter {
+//     description TextBlob
+// }
+
+// entity ArtifactParam {} //extends Parameter
+
+// entity PrimitiveParam {} //extends Parameter
+
+
+// entity ReqAgentRequiresAbility {
+//     degree Integer
+// }
+
+entity RequiredPeople {}
+
+entity ReqAgent {} //extends RequiredPeople
+
+entity ReqWorkGroup {} //extends RequiredPeople
+
+// entity RequiredResource {
+//     amountNeeded Float
+// }
+
+// relationship ManyToOne {
+    // InvolvedArtifact{inInvolvedArtifacts} to Normal{involvedArtifactToNormal},
+    // InvolvedArtifact{outInvolvedArtifacts} to Normal{involvedArtifactFromNormal},
+    // InvolvedArtifact{theArtifactType} to ArtifactType{theInvolvedArtifacts},
+
+    // ReqAgentRequiresAbility{theReqAgent} to ReqAgent{theReqAgentRequiresAbility},
+
+    // ReqWorkGroup{theWorkGroupType} to WorkGroupType{theReqGroup},
+
+    // RequiredResource{theResourceType} to ResourceType{theRequiredResource},
+    // RequiredResource{theResource} to Resource{theRequiredResource}
+// }
+
+// relationship OneToMany {
+//     Normal{theTasks} to Task{theNormal},
+//     Normal{theReservation} to Reservation{theNormal},
+//     Normal{theRequiredResource} to RequiredResource{theNormal},
+//     Normal{theRequiredPeople} to RequiredPeople{theNormal},
+
+//     Automatic{theParameters} to Parameter{theAutomatic}
+// }
+
+// relationship OneToOne {
+//     Automatic{theSubroutine} to Subroutine{theAutomatic}
+// }
+
+//package plannerInfo ------------------------------------------- OK
+
+// entity ActivityInstantiated {}
+
+// entity AgentInstSuggestionToAgent {
+//     orderCriteriaResult Float
+// }
+
+// entity AgentWorkingLoad {
+//     begin LocalDate
+//     end LocalDate
+// }
+
+// entity InstantiationSuggestion {}
+
+// entity InstantiationPolicyLog {}
+
+// entity ResourceInstSug {} //extends InstantiationSuggestion
+
+// entity PeopleInstSug {} //extends InstantiationSuggestion
+
+// entity AgentInstSug {} //extends PeopleInstSug
+
+// entity WorkGroupInstSug {} //extends PeopleInstSug
+
+// entity ResourcePossibleUse {
+//     begin LocalDate,
+//     end LocalDate,
+//     amountNeeded Float
+// }
+
+// relationship ManyToOne {
+//     ActivityInstantiated{theInstantiationPolicyLog} to InstantiationPolicyLog{theActivityInstantiated},
+//     ActivityInstantiated{theActivity} to Activity{theActivityInstantiated},
+
+//     AgentInstSug{theRole} to Role{theAgentInstSug},
+//     AgentInstSug{chosenAgent} to Agent{theAgentInstSug},
+
+//     AgentInstSuggestionToAgent{theInstAgSugg} to AgentInstSug{agentSuggested},
+//     AgentInstSuggestionToAgent{theAgent} to Agent{theAgentInstSugToAgent},
+
+//     AgentWorkingLoad{theAgent} to Agent{theAgentWorkingLoad},
+
+//     WorkGroupInstSug{groupChosen} to WorkGroup{theWorkGroupInstSug},
+//     WorkGroupInstSug{groupTypeRequired} to WorkGroupType{theWorkGroupInstSug},
+
+//     InstantiationSuggestion{theActivityInstantiated} to ActivityInstantiated{theInstantiationSuggestion},
+
+//     ResourceInstSug{resourceChosen} to Resource{theResourceChosenSuggestions},
+//     ResourceInstSug{resourceTypeRequired} to ResourceType{theResourceInstSug},
+
+//     ResourcePossibleUse{theResource} to Resource{theResourcePossibleUse}
+// }
+
+// relationship ManyToMany {
+//     ResourceInstSug{resourceSuggested} to Resource{theResourceSuggestions},
+
+//     WorkGroupInstSug{groupSuggested} to WorkGroup{theSuggestedGroups}
+// }
+
+//package processKnowledge ------------------------------------------- OK
+
+// entity Estimation {
+//     value Float
+//     unit String
+// }
+
+// entity ActivityEstimation {} //extends Estimation
+
+// entity AgentEstimation {} //extends Estimation
+
+// entity ArtifactEstimation {} //extends Estimation
+
+// entity WorkGroupEstimation {} //extends Estimation
+
+// entity OrganizationEstimation {} //extends Estimation
+
+// entity ProcessEstimation {} //extends Estimation
+
+// entity ResourceEstimation {} //extends Estimation
+
+// entity Metric {
+//     value Float
+//     unit String
+//     periodBegin LocalDate
+//     periodEnd LocalDate
+// }
+
+// entity ActivityMetric {} //extends Metric
+
+// entity AgentMetric {} //extends Metric
+
+// entity ArtifactMetric {} //extends Metric
+
+// entity WorkGroupMetric {} //extends Metric
+
+// entity OrganizationMetric {} //extends Metric
+
+// entity ProcessMetric {} //extends Metric
+
+// entity ResourceMetric {} //extends Metric
+
+// /**
+// * MetricDefinition String Values List Wrapper
+// */
+// entity MetricDefinitionUnit {
+//     unit String
+// }
+
+// entity MetricDefinition {
+//     name String
+//     description TextBlob
+//     kind String
+//     rangeFrom Float
+//     rangeTo Float
+//     howToMeasure TextBlob
+// }
+
+// relationship ManyToOne {
+//     MetricDefinition{metricType} to MetricType{theMetricDefinition}
+
+//     Estimation{metricDefinition} to MetricDefinition{estimation},
+
+//     Metric{metricDefinition} to MetricDefinition{metric},
+
+//     ActivityMetric{activity} to Activity{activityMetric},
+
+//     OrganizationMetric{organization} to Organization{organizationMetric},
+
+//     ProcessEstimation{theProcess} to Process{theProcessEstimation},
+
+//     ProcessMetric{process} to Process{theProcessMetric},
+
+//     ResourceMetric{resource} to Resource{theResourceMetric},
+
+//     ResourceEstimation{resource} to Resource{theResourceEstimation},
+
+//     OrganizationEstimation{theOrganization} to Organization{organizationEstimation}
+// }
+
+// relationship OneToMany {
+//     MetricDefinition{units} to MetricDefinitionUnit{theMetricDefinition}
+// }
+
+//package processModelGraphical ------------------------------------------- OK
+
+entity GraphicCoordinate {
+    x Integer
+    y Integer
+    visible Boolean
+    theProcess String
+}
+
+// //WebAPSEEObject enum
+// enum WebAPSEEObjectType {
+//     ACTIVITY,
+//     REQ_AGENT,
+//     REQ_RESOURCE,
+//     REQ_WORKGROUP,
+//     CONNECTION
+// }
+
+entity WebAPSEEObject {
+    theReferredOid Long required
+    className String required
+    // webAPSEEObjectType WebAPSEEObjectType
+}
+
+relationship OneToOne {
+    WebAPSEEObject{theGraphicCoordinate} to GraphicCoordinate{theObjectReference}
+}
+
+//package processModels ------------------------------------------- OK
+
+// entity Description {
+//     date LocalDate
+//     why TextBlob
+// }
+
+//Process enum
+// enum ProcessStatus {
+//     NOT_STARTED,
+//     ENACTING,
+//     FINISHED
+// }
+
+entity Process {
+    ident String unique
+    pState String
+}
+
+// //ProcessModel enum
+// enum ProcessModelStatus {
+//     REQUIREMENTS,
+//     ABSTRACT,
+//     INSTANTIATED,
+//     ENACTING,
+//     FAILED,
+//     CANCELED,
+//     MIXED,
+//     FINISHED
+// }
+
+entity ProcessModel {
+    requirements String
+    pmState String
+}
+
+// //Template enum
+// enum TemplateStatus{
+//     DRAFT,
+//     DEFINED,
+//     PENDING,
+//     OUTDATED
+// }
+
+entity Template {
+  templateState String
+}
+
+// relationship ManyToOne {
+//     Description{theOldVersion} to Template{theDerivedVersionDescriptions},
+//     Description{theNewVersion} to Template{theTemplateNewDescriptions},
+
+//     Template{theOriginalVersionDescription} to Description{descTemplateOriginalVersion},
+
+//     Process{theActivityType} to ActivityType{theProcess}
+// }
+
+relationship OneToMany {
+    // Process{theProcessAgenda} to ProcessAgenda{theProcess},
+
+    ProcessModel{theActivity} to Activity{theProcessModel},
+
+    Template{theInstances} to ProcessModel{theOrigin}
+}
+
+relationship OneToOne {
+    Process{theProcessModel} to ProcessModel{theProcess}
+}
+
+//package resources ------------------------------------------- OK
+
+// //Consumable enum
+// enum ConsumableStatus {
+//     AVAILABLE,
+//     NOT_AUTHORIZED,
+//     FINISHED
+// }
+
+// entity Consumable {
+//     state String
+//     unit String
+//     totalQuantity Float
+//     amountUsed Float
+// }
+
+// //Exclusive enum
+// enum ExclusiveStatus {
+//     AVAILABLE,
+//     LOCKED,
+//     DEFECT
+// }
+
+// entity Exclusive {
+//     state String
+//     unitOfCost String
+// }
+
+// entity Reservation {
+//     fromDate LocalDate
+//     toDate LocalDate
+// }
+
+// //Shareable enum
+// enum ShareableStatus {
+//     AVAILABLE,
+//     NOT_AVAILABLE
+// }
+
+// entity Shareable {
+//     state String
+//     unitOfCost String
+// }
+
+// entity Resource {
+//     ident String unique
+//     name String
+//     description TextBlob
+//     mtbfTime Float
+//     mtbfUnitTime String
+//     currency String
+//     cost Float
+//     isActive Boolean
+// }
+
+// relationship ManyToOne {
+//     Reservation{theExclusive} to Exclusive{theReservation},
+
+//     Resource{belongsTo} to Resource{possess},
+//     Resource{theResourceType} to ResourceType{theResource}
+// }
+
+// relationship ManyToMany {
+//   Resource{requires} to Resource{isRequired}
+// }
+
+//package security ------------------------------------------- OK
+
+//Credential enum
+// enum OperationEnum {
+//     CREATE,
+//     DELETE,
+//     UPDATE,
+//     VIEW,
+//     VOTE,
+//     FAVORITE,
+//     UNFAVORITE,
+//     FOLLOW,
+//     UNFOLLOW,
+//     COMMENT
+// }
+
+// entity Credential {
+//     className String
+//     uid String
+//     // operationEnum OperationEnum
+// }
+
+// entity LogEntry {
+//     date LocalDate
+//     operation String
+//     className String
+//     uid String
+// }
+
+// relationship ManyToOne {
+//     Credential{user} to User{theCredential},
+
+//     LogEntry{user} to User{theLogEntry}
+// }
+
+//package taskagenda ------------------------------------------- OK
+
+// entity Ocurrence {
+//     date LocalDate
+//     time Instant
+//     event String
+// }
+
+// entity ProcessAgenda {}
+
+// entity Task {
+//     localState String
+//     beginDate LocalDate
+//     endDate LocalDate
+//     workingHours Float
+//     dateDelegatedTo LocalDate
+//     dateDelegatedFrom LocalDate
+// }
+
+// entity TaskAgenda {}
+
+// relationship ManyToOne {
+//     Ocurrence{theTask} to Task{ocurrence},
+
+//     ProcessAgenda{theTaskAgenda} to TaskAgenda{theProcessAgenda}
+// }
+
+// relationship OneToMany {
+//   ProcessAgenda{theTask} to Task{theProcessAgenda}
+// }
+
+//package tools ------------------------------------------- OK
+
+// entity ClassMethodCall {
+//     ident String unique
+//     className String
+//     methodName String
+//     description TextBlob
+// }
+
+// entity PrimitiveType {
+//     ident String unique
+// }
+
+// entity Script {
+//     ident String unique
+//     fileName String
+//     description TextBlob
+// }
+
+// entity Subroutine {}
+
+// entity ToolDefinition {
+//     ident String unique
+//     name String
+//     description TextBlob
+// }
+
+// entity ToolParameter {
+//     label String
+//     separatorSymbol String
+// }
+
+// relationship ManyToOne {
+//     Subroutine{theArtifactType} to ArtifactType{theSubroutine}
+
+//     ToolDefinition{theToolType} to ToolType{theToolDefinition}
+
+//     ToolParameter{theArtifactType} to ArtifactType{theToolParameters}
+//     ToolParameter{theSubroutine} to Subroutine{theToolParameters},
+//     ToolParameter{thePrimitiveType} to PrimitiveType{theToolParameters}
+// }
+
+// relationship ManyToMany {
+//     ToolDefinition{theArtifactTypes} to ArtifactType{theToolDefinition}
+// }
+
+//package types -------------------------------------------
+
+// entity Type {
+//     ident String unique
+//     description TextBlob
+//     userDefined Boolean
+// }
+
+// entity AbilityType {} //extends Type
+
+// entity ActivityType {} //extends Type
+
+// entity ArtifactType {} //extends Type
+
+// entity ConnectionType {} //extends Type
+
+// entity EventType {} //extends Type
+
+// entity WorkGroupType {} //extends Type
+
+// entity MetricType {} //extends Type
+
+// entity ResourceType {} //extends Type
+
+// entity RoleType {} //extends Type
+
+// entity ToolType {} //extends Type
+
+// relationship ManyToOne {
+//     Type{superType} to Type{subType}
+// }
+
+//package plugins -------------------------------------------
+
+// entity Plugin {
+//     name String unique
+//     developerName String required
+//     configFilePath String required
+// }
+
+// relationship ManyToOne {
+//     Plugin{theCompany} to User{thePlugins}
+// }
+
+// Services
+// service SpmConfiguration with serviceImpl
+// service MetricDefinition with serviceImpl
+// service Ability with serviceImpl
+// service Company with serviceImpl
+// service Metric with serviceImpl
+// service Template with serviceImpl
+// service WorkGroup with serviceImpl
+// service VCSRepository with serviceImpl
+// service ChatMessage with serviceImpl
+// service Driver with serviceImpl
+// service Agent with serviceImpl
+// service Artifact with serviceImpl
+// service Email with serviceImpl
+// service Calendar with serviceImpl
+// service Project with serviceImpl
+// service Resource with serviceImpl
+// service ToolDefinition with serviceImpl
+// service Role with serviceImpl
+// service Process with serviceImpl
+// service Estimation with serviceImpl
+// service Task with serviceImpl
+// service Type with serviceImpl
+// service DevelopingSystem with serviceImpl
+
+// service Notification with serviceImpl
+// service EasyModeling with serviceImpl
+// service Help with serviceImpl
+// EnactmentEngine
+// service Report with serviceImpl
+// service WebAPSEEVO with serviceImpl
+// service Account with serviceImpl
+// service Editor with serviceImpl
+// EnactmentEngineLocal
+// Logging
+// DynamicModeling
+// service Gantt with serviceImpl
+
+// DTOs
+// dto * with mapstruct
+// dto AgentAffinityAgent with mapstruct
+// dto Agent with mapstruct
+// dto AgentHasAbility with mapstruct
+// dto SpmConfiguration with mapstruct
+// dto WorkGroup with mapstruct
+// dto Email with mapstruct
+// dto Metric with mapstruct
+// dto Estimation with mapstruct
+// dto MetricDefinition with mapstruct
+// dto Driver with mapstruct
+// dto Artifact with mapstruct
+// dto VCSRepository with mapstruct
+// dto Structure with mapstruct
+// dto Node with mapstruct
+// dto DevelopingSystem with mapstruct
+// dto WebAPSEEObject with mapstruct
+// dto Activity with mapstruct
+// dto Decomposed with mapstruct
+// dto Role with mapstruct
+// dto RoleNeedsAbility with mapstruct
+// dto ToolDefinition with mapstruct
+// dto Calendar with mapstruct
+// dto Type with mapstruct
+// dto Template with mapstruct
+// dto Ability with mapstruct
+// dto Process with mapstruct
+// dto ProcessModel with mapstruct
+// dto Resource with mapstruct
+// dto Project with mapstruct
+// dto Task with mapstruct
+// dto AgendaEvent with mapstruct
+// dto Company with mapstruct
+// dto CompanyUnit with mapstruct
+
+// dto Agents with mapstruct
+// dto Groups with mapstruct
+// dto MetricDefinitions with mapstruct
+// dto Artifacts with mapstruct
+// dto ProjectCopy with mapstruct
+// dto Repositories with mapstruct
+// dto Repository with mapstruct
+// dto Systems with mapstruct
+// dto System with mapstruct
+// dto Activitys with mapstruct
+// dto Decomposed with mapstruct
+// dto Roles with mapstruct
+// dto Tools with mapstruct
+// dto GanttActivitys with mapstruct
+// dto GanttActivity with mapstruct
+// dto Calendars with mapstruct
+// dto Types with mapstruct
+// dto Abilitys with mapstruct
+// dto Processes with mapstruct
+// dto Resources with mapstruct
+// dto HelpTopic with mapstruct
+// dto Projects with mapstruct
+// dto SimpleUpdate with mapstruct
+// dto AgendaEvents with mapstruct
+// dto SimpleArtifactDescriptor with mapstruct
+// dto CompanyUnits with mapstruct
+// dto Companies with mapstruct
+// SessionAttributesCurrent
