@@ -1,0 +1,32 @@
+{
+    "name": "BranchANDCon",
+    "fields": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "multipleCon",
+            "otherEntityRelationshipName": "theBranchANDCon",
+            "relationshipName": "toMultipleCon",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "activity",
+            "otherEntityRelationshipName": "fromBranchANDCon",
+            "relationshipName": "toActivity",
+            "otherEntityField": "id",
+            "ownerSide": false
+        }
+    ],
+    "changelogDate": "20191024134431",
+    "entityTableName": "branch_and_con",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

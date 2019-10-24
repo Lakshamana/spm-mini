@@ -1,0 +1,45 @@
+{
+    "name": "Normal",
+    "fields": [
+        {
+            "fieldName": "howLong",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "howLongUnit",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "plannedBegin",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "plannedEnd",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "script",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "delegable",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "autoAllocable",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20191024134435",
+    "entityTableName": "normal",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

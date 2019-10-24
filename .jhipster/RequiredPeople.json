@@ -1,0 +1,15 @@
+{
+    "name": "RequiredPeople",
+    "fields": [],
+    "relationships": [],
+    "changelogDate": "20191024134436",
+    "entityTableName": "required_people",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

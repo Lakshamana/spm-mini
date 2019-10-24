@@ -1,0 +1,30 @@
+{
+    "name": "BranchConCondToActivity",
+    "fields": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "activity",
+            "otherEntityRelationshipName": "theBranchConCondToActivity",
+            "relationshipName": "theActivity",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "branchConCond",
+            "otherEntityRelationshipName": "theBranchConCondToActivity",
+            "relationshipName": "theBranchConCond",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191024134433",
+    "entityTableName": "branch_con_cond_to_activity",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,23 @@
+{
+    "name": "ReqAgent",
+    "fields": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "agent",
+            "otherEntityRelationshipName": "theReqAgent",
+            "relationshipName": "theAgent",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191024134437",
+    "entityTableName": "req_agent",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

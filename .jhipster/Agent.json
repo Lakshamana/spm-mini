@@ -1,0 +1,87 @@
+{
+    "name": "Agent",
+    "fields": [
+        {
+            "fieldName": "ident",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "unique"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "costHour",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "passwordHash",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "tipoUser",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "isActive",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "online",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "photoURL",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "upload",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "reqAgent",
+            "otherEntityRelationshipName": "theAgent",
+            "relationshipName": "theReqAgent"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "process",
+            "otherEntityRelationshipName": "theAgent",
+            "relationshipName": "theProcess",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "workGroup",
+            "otherEntityRelationshipName": "theAgent",
+            "relationshipName": "theWorkGroup",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "changelogDate": "20191024134422",
+    "entityTableName": "agent",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

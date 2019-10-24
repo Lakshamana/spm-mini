@@ -1,0 +1,21 @@
+{
+    "name": "Plain",
+    "fields": [
+        {
+            "fieldName": "requirements",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20191024134421",
+    "entityTableName": "plain",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity Activity.
+    -->
+    <changeSet id="20191024134419-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="activity_id"
+                                 baseTableName="activity_to_join_con"
+                                 constraintName="fk_activity_to_join_con_activity_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="activity"/>
+
+        <addForeignKeyConstraint baseColumnNames="to_join_con_id"
+                                 baseTableName="activity_to_join_con"
+                                 constraintName="fk_activity_to_join_con_to_join_con_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="join_con"/>
+        
+        <addForeignKeyConstraint baseColumnNames="activity_id"
+                                 baseTableName="activity_from_branchandcon"
+                                 constraintName="fk_activity_from_branchandcon_activity_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="activity"/>
+
+        <addForeignKeyConstraint baseColumnNames="from_branchandcon_id"
+                                 baseTableName="activity_from_branchandcon"
+                                 constraintName="fk_activity_from_branchandcon_from_branchandcon_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="branch_and_con"/>
+        
+        <addForeignKeyConstraint baseColumnNames="activity_id"
+                                 baseTableName="activity_from_artifact_con"
+                                 constraintName="fk_activity_from_artifact_con_activity_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="activity"/>
+
+        <addForeignKeyConstraint baseColumnNames="from_artifact_con_id"
+                                 baseTableName="activity_from_artifact_con"
+                                 constraintName="fk_activity_from_artifact_con_from_artifact_con_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="artifact_con"/>
+        
+        <addForeignKeyConstraint baseColumnNames="activity_id"
+                                 baseTableName="activity_to_artifact_con"
+                                 constraintName="fk_activity_to_artifact_con_activity_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="activity"/>
+
+        <addForeignKeyConstraint baseColumnNames="to_artifact_con_id"
+                                 baseTableName="activity_to_artifact_con"
+                                 constraintName="fk_activity_to_artifact_con_to_artifact_con_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="artifact_con"/>
+        
+        <addForeignKeyConstraint baseColumnNames="is_version_of_id"
+                                 baseTableName="activity"
+                                 constraintName="fk_activity_is_version_of_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="activity"/>
+
+        <addForeignKeyConstraint baseColumnNames="the_process_model_id"
+                                 baseTableName="activity"
+                                 constraintName="fk_activity_the_process_model_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="process_model"/>
+
+    </changeSet>
+</databaseChangeLog>

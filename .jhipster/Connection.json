@@ -1,0 +1,31 @@
+{
+    "name": "Connection",
+    "fields": [
+        {
+            "fieldName": "ident",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "unique"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "processModel",
+            "otherEntityRelationshipName": "theConnection",
+            "relationshipName": "theProcessModel",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191024134425",
+    "entityTableName": "connection",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,85 @@
+{
+    "name": "Artifact",
+    "fields": [
+        {
+            "fieldName": "ident",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "unique"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "pathName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fileName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "latestVersion",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "isTemplate",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "isActive",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "artifact",
+            "otherEntityRelationshipName": "derivedTo",
+            "relationshipName": "derivedFrom",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "artifact",
+            "otherEntityRelationshipName": "possess",
+            "relationshipName": "belongsTo",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "artifact",
+            "otherEntityRelationshipName": "derivedFrom",
+            "relationshipName": "derivedTo"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "artifact",
+            "otherEntityRelationshipName": "belongsTo",
+            "relationshipName": "possess"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "artifactCon",
+            "otherEntityRelationshipName": "theArtifact",
+            "relationshipName": "theArtifactCon"
+        }
+    ],
+    "changelogDate": "20191024134424",
+    "entityTableName": "artifact",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

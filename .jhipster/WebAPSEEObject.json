@@ -1,0 +1,39 @@
+{
+    "name": "WebAPSEEObject",
+    "fields": [
+        {
+            "fieldName": "theReferredOid",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "className",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "graphicCoordinate",
+            "otherEntityRelationshipName": "theObjectReference",
+            "relationshipName": "theGraphicCoordinate",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "changelogDate": "20191024134440",
+    "entityTableName": "web_apsee_object",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

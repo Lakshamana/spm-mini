@@ -1,0 +1,64 @@
+{
+    "name": "WorkGroup",
+    "fields": [
+        {
+            "fieldName": "ident",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "unique"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "isActive",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "reqWorkGroup",
+            "otherEntityRelationshipName": "theWorkGroup",
+            "relationshipName": "theReqGroup"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "workGroup",
+            "otherEntityRelationshipName": "subGroups",
+            "relationshipName": "superGroup",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "workGroup",
+            "otherEntityRelationshipName": "superGroup",
+            "relationshipName": "subGroups"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "agent",
+            "otherEntityRelationshipName": "theWorkGroup",
+            "relationshipName": "theAgent",
+            "otherEntityField": "id",
+            "ownerSide": false
+        }
+    ],
+    "changelogDate": "20191024134423",
+    "entityTableName": "work_group",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

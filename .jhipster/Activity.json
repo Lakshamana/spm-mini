@@ -1,0 +1,114 @@
+{
+    "name": "Activity",
+    "fields": [
+        {
+            "fieldName": "ident",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "unique"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "isVersion",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "activity",
+            "otherEntityRelationshipName": "isVersionOf",
+            "relationshipName": "hasVersions"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "simpleCon",
+            "otherEntityRelationshipName": "toActivity",
+            "relationshipName": "fromSimpleCon"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "simpleCon",
+            "otherEntityRelationshipName": "fromActivity",
+            "relationshipName": "toSimpleCon"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "joinCon",
+            "otherEntityRelationshipName": "toActivity",
+            "relationshipName": "fromJoinCon"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "branchCon",
+            "otherEntityRelationshipName": "fromActivity",
+            "relationshipName": "toBranchCon"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "joinCon",
+            "otherEntityRelationshipName": "fromActivity",
+            "relationshipName": "toJoinCon",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "branchANDCon",
+            "otherEntityRelationshipName": "toActivity",
+            "relationshipName": "fromBranchANDCon",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "artifactCon",
+            "otherEntityRelationshipName": "toActivity",
+            "relationshipName": "fromArtifactCon",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "artifactCon",
+            "otherEntityRelationshipName": "fromActivity",
+            "relationshipName": "toArtifactCon",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "activity",
+            "otherEntityRelationshipName": "hasVersions",
+            "relationshipName": "isVersionOf",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "processModel",
+            "otherEntityRelationshipName": "theActivity",
+            "relationshipName": "theProcessModel",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "branchConCondToActivity",
+            "otherEntityRelationshipName": "theActivity",
+            "relationshipName": "theBranchConCondToActivity"
+        }
+    ],
+    "changelogDate": "20191024134419",
+    "entityTableName": "activity",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

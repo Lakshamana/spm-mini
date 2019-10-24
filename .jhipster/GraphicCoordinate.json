@@ -1,0 +1,40 @@
+{
+    "name": "GraphicCoordinate",
+    "fields": [
+        {
+            "fieldName": "x",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "y",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "visible",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "theProcess",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "webAPSEEObject",
+            "otherEntityRelationshipName": "theGraphicCoordinate",
+            "relationshipName": "theObjectReference",
+            "ownerSide": false
+        }
+    ],
+    "changelogDate": "20191024134439",
+    "entityTableName": "graphic_coordinate",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

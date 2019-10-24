@@ -1,0 +1,58 @@
+{
+    "name": "ProcessModel",
+    "fields": [
+        {
+            "fieldName": "requirements",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "pmState",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "activity",
+            "otherEntityRelationshipName": "theProcessModel",
+            "relationshipName": "theActivity"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "decomposed",
+            "otherEntityRelationshipName": "theReferedProcessModel",
+            "relationshipName": "theDecomposed",
+            "ownerSide": false
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "process",
+            "otherEntityRelationshipName": "theProcessModel",
+            "relationshipName": "theProcess",
+            "ownerSide": false
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "template",
+            "otherEntityRelationshipName": "theInstances",
+            "relationshipName": "theOrigin",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "connection",
+            "otherEntityRelationshipName": "theProcessModel",
+            "relationshipName": "theConnection"
+        }
+    ],
+    "changelogDate": "20191024134442",
+    "entityTableName": "process_model",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

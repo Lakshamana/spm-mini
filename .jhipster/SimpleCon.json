@@ -1,0 +1,30 @@
+{
+    "name": "SimpleCon",
+    "fields": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "activity",
+            "otherEntityRelationshipName": "fromSimpleCon",
+            "relationshipName": "toActivity",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "activity",
+            "otherEntityRelationshipName": "toSimpleCon",
+            "relationshipName": "fromActivity",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191024134427",
+    "entityTableName": "simple_con",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

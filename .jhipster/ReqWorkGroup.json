@@ -1,0 +1,23 @@
+{
+    "name": "ReqWorkGroup",
+    "fields": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "workGroup",
+            "otherEntityRelationshipName": "theReqGroup",
+            "relationshipName": "theWorkGroup",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191024134438",
+    "entityTableName": "req_work_group",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

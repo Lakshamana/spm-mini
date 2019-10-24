@@ -1,0 +1,27 @@
+{
+    "name": "Template",
+    "fields": [
+        {
+            "fieldName": "templateState",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "processModel",
+            "otherEntityRelationshipName": "theOrigin",
+            "relationshipName": "theInstances"
+        }
+    ],
+    "changelogDate": "20191024134443",
+    "entityTableName": "template",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

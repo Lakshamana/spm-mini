@@ -1,0 +1,63 @@
+{
+    "name": "MultipleCon",
+    "fields": [
+        {
+            "fieldName": "fired",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "branchCon",
+            "otherEntityRelationshipName": "fromMultipleConnection",
+            "relationshipName": "toBranchCon"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "branchConCondToMultipleCon",
+            "otherEntityRelationshipName": "theMultipleCon",
+            "relationshipName": "theBranchConCondToMultipleCon"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "joinCon",
+            "otherEntityRelationshipName": "toMultipleCon",
+            "relationshipName": "theJoinCon"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "artifactCon",
+            "otherEntityRelationshipName": "toMultipleCon",
+            "relationshipName": "fromArtifactCon",
+            "otherEntityField": "id",
+            "ownerSide": false
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "branchANDCon",
+            "otherEntityRelationshipName": "toMultipleCon",
+            "relationshipName": "theBranchANDCon",
+            "otherEntityField": "id",
+            "ownerSide": false
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "joinCon",
+            "otherEntityRelationshipName": "fromMultipleCon",
+            "relationshipName": "theJoinConToMultipleCon",
+            "otherEntityField": "id",
+            "ownerSide": false
+        }
+    ],
+    "changelogDate": "20191024134429",
+    "entityTableName": "multiple_con",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,30 @@
+{
+    "name": "BranchCon",
+    "fields": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "multipleCon",
+            "otherEntityRelationshipName": "toBranchCon",
+            "relationshipName": "fromMultipleConnection",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "activity",
+            "otherEntityRelationshipName": "toBranchCon",
+            "relationshipName": "fromActivity",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191024134430",
+    "entityTableName": "branch_con",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}
