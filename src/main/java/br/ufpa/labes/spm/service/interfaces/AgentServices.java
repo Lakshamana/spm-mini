@@ -14,7 +14,7 @@ public interface AgentServices {
 
 	public Boolean removeAgent(String nameAgent);
 
-	public AgentsDTO getRoles(String termoBusca, String domainFilter);
+	// public AgentsDTO getRoles(String termoBusca, String domainFilter);
 
 	//public String[] getRoleTypes();
 
@@ -22,13 +22,13 @@ public interface AgentServices {
 
 	// public List<RoleDTO>  getRolesToAgent();
 
-	public List<AgentDTO> getAfinityToAgent();
+	// public List<AgentDTO> getAfinityToAgent();
 
 	public List<WorkGroupDTO> getWorkGroupToAgent();
 
-	public AgentDTO saveCargoToAgent(AgentDTO agentDTO);
+	// public AgentDTO saveCargoToAgent(AgentDTO agentDTO);
 
-	public AgentDTO saveRoleToAgent(AgentDTO agentDTO);
+	// public AgentDTO saveRoleToAgent(AgentDTO agentDTO);
 
 	// public AgentHasAbilityDTO saveAbilityToAgent(AgentHasAbilityDTO agentHasAbilityDTO);
 
@@ -42,17 +42,17 @@ public interface AgentServices {
 
 	public AgentsDTO getAgents();
 
-	public AgentsDTO getAgents(String agentName, String roleName, Boolean isActive);
+	// public AgentsDTO getAgents(String agentName, String roleName, Boolean isActive);
 
 	//public List<AgentDTO> getAgentToRole();
 
-	public Boolean removeAbilityAgent(AgentDTO agentDTO, String abilityName);
+	// public Boolean removeAbilityAgent(AgentDTO agentDTO, String abilityName);
 
-	public Boolean removeCargoAgent(AgentDTO roleDTO);
+	// public Boolean removeCargoAgent(AgentDTO roleDTO);
 
-	public Boolean removeRoleAgent(AgentDTO agentDTO, String roleName);
+	// public Boolean removeRoleAgent(AgentDTO agentDTO, String roleName);
 
-	public Boolean removeAfinityAgent(AgentDTO agentDTO, String affinityName);
+	// public Boolean removeAfinityAgent(AgentDTO agentDTO, String affinityName);
 
 	public Boolean removeWorkGroupAgent(AgentDTO agentDTO, String WorkGroupName);
 

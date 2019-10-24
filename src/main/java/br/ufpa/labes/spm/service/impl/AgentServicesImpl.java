@@ -315,10 +315,10 @@ public class AgentServicesImpl implements AgentServices {
 		// agent = null;
 	// }
 
-	// @Override
-	// public Boolean removeAgent(String agentIdent) {
-//		Agent agent = this.getAgentForName(nameAgent);
-//  		Agent agent = agentRepository.retrieveBySecondaryKey(agentIdent);
+	@Override
+	public Boolean removeAgent(String agentIdent) {
+		// Agent agent = this.getAgentForName(nameAgent);
+ 		Agent agent = agentRepository.retrieveBySecondaryKey(agentIdent);
 // 		String hql = "SELECT c FROM " + SpmConfiguration.class.getSimpleName() + " AS c WHERE c.agent.ident = :ident";
 // // 		TypedQuery<SpmConfiguration> query = confiRepository.getPersistenceContext().createQuery(hql, SpmConfiguration.class);
 // 		query.setParameter("ident", agentIdent);
@@ -327,7 +327,7 @@ public class AgentServicesImpl implements AgentServices {
 // // 		TypedQuery<TaskAgenda> query2 = taskAgendaRepository.getPersistenceContext().createQuery(hql, TaskAgenda.class);
 // 		query2.setParameter("ident", agentIdent);
 
-// 		if (agent != null) {
+		if (agent != null) {
 // 			if(!query.getResultList().isEmpty()) {
 // 				SpmConfiguration config = query.getResultList().get(0);
 // 				config.setAgent(null);
@@ -346,46 +346,46 @@ public class AgentServicesImpl implements AgentServices {
 // // 				agentHasAbilityRepository.delete(agentHasAbility);
 // 			}
 
-// 			for (AgentPlaysRole agentPlaysRole : agent.getTheAgentPlaysRoles()) {
-// 				agentPlaysRole.removeFromTheRole();
-// 				agentPlaysRole.setTheAgent(null);
-// 			}
+			// for (AgentPlaysRole agentPlaysRole : agent.getTheAgentPlaysRoles()) {
+			// 	agentPlaysRole.removeFromTheRole();
+			// 	agentPlaysRole.setTheAgent(null);
+			// }
 
-// 			for (WorkGroup WorkGroup : agent.getTheWorkGroups()) {
-// 				WorkGroup.getTheAgents().remove(agent);
-// 			}
+			for (WorkGroup WorkGroup : agent.getTheWorkGroups()) {
+				WorkGroup.getTheAgents().remove(agent);
+			}
 
-// 			for (AgentAffinityAgent agentAffinityAgent : agent
-// 					.getFromAgentAffinities()) {
-// 				agentAffinityAgent.removeFromFromAffinity();
-// 				agentAffinityAgent.setToAffinity(null);
-//  				// agentAffinityAgentRepository.delete(agentAffinityAgent);
-// 			}
+			// for (AgentAffinityAgent agentAffinityAgent : agent
+			// 		.getFromAgentAffinities()) {
+			// 	agentAffinityAgent.removeFromFromAffinity();
+			// 	agentAffinityAgent.setToAffinity(null);
+ 			// 	// agentAffinityAgentRepository.delete(agentAffinityAgent);
+			// }
 
-// 			for (AgentAffinityAgent agentAffinityAgent : agent
-// 					.getToAgentAffinities()) {
-// 				agentAffinityAgent.removeFromToAffinity();
-// 				agentAffinityAgent.setFromAffinity(null);
-//  				// agentAffinityAgentRepository.delete(agentAffinityAgent);
-// 			}
+			// for (AgentAffinityAgent agentAffinityAgent : agent
+			// 		.getToAgentAffinities()) {
+			// 	agentAffinityAgent.removeFromToAffinity();
+			// 	agentAffinityAgent.setFromAffinity(null);
+ 			// 	// agentAffinityAgentRepository.delete(agentAffinityAgent);
+			// }
 
-// 			agent.setTheWorkGroups(new HashSet<WorkGroup>());
-// 			agent.setFromAgentAffinities(new HashSet<AgentAffinityAgent>());
-// 			agent.setToAgentAffinities(new HashSet<AgentAffinityAgent>());
-// 			agent.setTheAgentPlaysRoles(new HashSet<AgentPlaysRole>());
-// 			agent.setTheAgentHasAbilities(new HashSet<AgentHasAbility>());
+			agent.setTheWorkGroups(new HashSet<WorkGroup>());
+			// agent.setFromAgentAffinities(new HashSet<AgentAffinityAgent>());
+			// agent.setToAgentAffinities(new HashSet<AgentAffinityAgent>());
+			// agent.setTheAgentPlaysRoles(new HashSet<AgentPlaysRole>());
+			// agent.setTheAgentHasAbilities(new HashSet<AgentHasAbility>());
 
-//  			agentRepository.delete(agent);
-// 			return true;
-// 		}
+ 			agentRepository.delete(agent);
+			return true;
+		}
 
-	// 	return false;
-	// }
-
-	@Override
-	public AgentsDTO getRoles(String termoBusca, String domainFilter) {
-		return null;
+		return false;
 	}
+
+	// @Override
+	// public AgentsDTO getRoles(String termoBusca, String domainFilter) {
+	// 	return null;
+	// }
 
 	// @Override
 	// @SuppressWarnings("unchecked")
@@ -449,36 +449,36 @@ public class AgentServicesImpl implements AgentServices {
 // 		}
 	// }
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<AgentDTO> getAfinityToAgent() {
-		String hql;
-		Query query;
-		List<Agent> result = null;
-		List<AgentDTO> resultDTO = new ArrayList<AgentDTO>();
+	// @Override
+	// @SuppressWarnings("unchecked")
+	// public List<AgentDTO> getAfinityToAgent() {
+	// 	String hql;
+	// 	Query query;
+	// 	List<Agent> result = null;
+	// 	List<AgentDTO> resultDTO = new ArrayList<AgentDTO>();
 
-		hql = "select agente from " + AGENT_CLASSNAME + " as agente";
- 		query = agentRepository.getPersistenceContext().createQuery(hql);
-		result = query.getResultList();
-		Converter converter = new ConverterImpl();
+	// 	hql = "select agente from " + AGENT_CLASSNAME + " as agente";
+ 	// 	query = agentRepository.getPersistenceContext().createQuery(hql);
+	// 	result = query.getResultList();
+	// 	Converter converter = new ConverterImpl();
 
-		if (!result.isEmpty()) {
-			AgentDTO abi = null;
-			for (int i = 0; i < result.size(); i++) {
-				try {
-					abi = (AgentDTO) converter.getDTO(result.get(i),
-							AgentDTO.class);
-					resultDTO.add(abi);
-				} catch (ImplementationException e) {
-					e.printStackTrace();
-				}
-			}
-			return resultDTO;
-		} else {
-			return null;
-		}
+	// 	if (!result.isEmpty()) {
+	// 		AgentDTO abi = null;
+	// 		for (int i = 0; i < result.size(); i++) {
+	// 			try {
+	// 				abi = (AgentDTO) converter.getDTO(result.get(i),
+	// 						AgentDTO.class);
+	// 				resultDTO.add(abi);
+	// 			} catch (ImplementationException e) {
+	// 				e.printStackTrace();
+	// 			}
+	// 		}
+	// 		return resultDTO;
+	// 	} else {
+	// 		return null;
+	// 	}
 
-	}
+	// }
 
 	// @SuppressWarnings("unchecked")
 	// public AgentAffinityAgentDTO getAffinityAgent(String affinityAgentName) {
@@ -551,11 +551,11 @@ public class AgentServicesImpl implements AgentServices {
 		}
 	}
 
-	@Override
-	public AgentDTO saveCargoToAgent(AgentDTO agentDTO) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	// @Override
+	// public AgentDTO saveCargoToAgent(AgentDTO agentDTO) {
+	// 	// TODO Auto-generated method stub
+	// 	return null;
+	// }
 
 	// @Override
 	// public AgentDTO saveRoleToAgent(AgentDTO agentDTO) {
@@ -719,31 +719,31 @@ public class AgentServicesImpl implements AgentServices {
 	// 	return null;
 	// }
 
-// 	@Override
-// 	public AgentDTO saveWorkGroupToAgent(AgentDTO agentDTO) {
-// 		agent = this.getAgentForName(agentDTO.getName());
+	@Override
+	public AgentDTO saveWorkGroupToAgent(AgentDTO agentDTO) {
+		agent = this.getAgentForName(agentDTO.getName());
 
-// 		if (!agentDTO.getGroupToAgent().isEmpty()) {
-// 			for (String WorkGroupName : agentDTO.getGroupToAgent()) {
-// 				WorkGroup WorkGroup = this.getWorkGroupFromName(WorkGroupName);
-// 				if (WorkGroup != null) {
+		if (!agentDTO.getGroupToAgent().isEmpty()) {
+			for (String WorkGroupName : agentDTO.getGroupToAgent()) {
+				WorkGroup WorkGroup = this.getWorkGroupFromName(WorkGroupName);
+				if (WorkGroup != null) {
 
-// 					if (!agent.getTheWorkGroups().contains(WorkGroup)
-// 							&& !WorkGroup.getTheAgents().contains(agent)) {
-// 						agent.getTheWorkGroups().add(WorkGroup);
-// 						WorkGroup.getTheAgents().add(agent);
-// // 						workGroupRepository.update(WorkGroup);
-//  						agentRepository.update(agent);
-// 					}
-// 				}
-// 			}
-// 		}
+					if (!agent.getTheWorkGroups().contains(WorkGroup)
+							&& !WorkGroup.getTheAgents().contains(agent)) {
+						agent.getTheWorkGroups().add(WorkGroup);
+						WorkGroup.getTheAgents().add(agent);
+// 						workGroupRepository.update(WorkGroup);
+ 						agentRepository.update(agent);
+					}
+				}
+			}
+		}
 
-//  		agentRepository.update(agent);
-// 		agent = null;
+ 		agentRepository.update(agent);
+		agent = null;
 
-// 		return agentDTO;
-// 	}
+		return agentDTO;
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -977,23 +977,31 @@ public class AgentServicesImpl implements AgentServices {
 		return list;
 	}
 
-	// @SuppressWarnings("unchecked")
-	// private List<Agent> getAgentsForProject(Integer theProjectOid) {
-	// 	String hql_project = "SELECT DISTINCT agent FROM " + AGENT_CLASSNAME + " as agent, " +
-	// 					" "+ TASKAGENDA_CLASSNAME +" as taskagenda," + PROCESS_AGENDA_CLASSNAME + " as processagenda, "
-	// 					+ PROJECT_CLASSNAME + " as project, " + Process.class.getSimpleName() + " as process " +
-	// 	                     " WHERE taskagenda.oid = processagenda.theTaskAgenda.oid " +
-	// 	                     "AND processagenda.theProcess.oid = process.oid " +
-	// 	                     "AND process.oid = project.processRefered.oid " +
-	// 	                     "AND taskagenda.theAgent.oid = agent.oid " +
-	// 	                     "AND project.oid = :theProject";
+	@SuppressWarnings("unchecked")
+	private List<Agent> getAgentsForProject(Integer theProjectOid) {
+		// String hql_project = "SELECT DISTINCT agent FROM " + AGENT_CLASSNAME + " as agent, " +
+		// 				" "+ TASKAGENDA_CLASSNAME +" as taskagenda," + PROCESS_AGENDA_CLASSNAME + " as processagenda, "
+		// 				+ PROJECT_CLASSNAME + " as project, " + Process.class.getSimpleName() + " as process " +
+		//                      " WHERE taskagenda.oid = processagenda.theTaskAgenda.oid " +
+		//                      "AND processagenda.theProcess.oid = process.oid " +
+		//                      "AND process.oid = project.processRefered.oid " +
+		//                      "AND taskagenda.theAgent.oid = agent.oid " +
+    //                      "AND project.oid = :theProject";
 
- 	// 	query = agentRepository.getPersistenceContext().createQuery(hql_project);
-	// 	query.setParameter("theProject", theProjectOid);
-	// 	List<Agent> agentList = new ArrayList<Agent>();
-	// 	agentList.addAll(query.getResultList());
-	// 	return agentList;
-	// }
+    String hql_project = "SELECT DISTINCT agent FROM " + AGENT_CLASSNAME + " as agent, " +
+    " " + PROJECT_CLASSNAME + " as project, " + Process.class.getSimpleName() + " as process " +
+      "WHERE taskagenda.oid = processagenda.theTaskAgenda.oid " +
+      "AND processagenda.theProcess.oid = process.oid " +
+      "AND process.oid = project.processRefered.oid " +
+      "AND taskagenda.theAgent.oid = agent.oid " +
+      "AND project.oid = :theProject";
+
+ 		query = agentRepository.getPersistenceContext().createQuery(hql_project);
+		query.setParameter("theProject", theProjectOid);
+		List<Agent> agentList = new ArrayList<Agent>();
+		agentList.addAll(query.getResultList());
+		return agentList;
+	}
 
 // 	@Override
 // 	public List<TaskDTO> getAgentTasks(String agentIdent, String processIdent) {

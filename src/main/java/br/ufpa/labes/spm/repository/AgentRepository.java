@@ -1,5 +1,7 @@
 package br.ufpa.labes.spm.repository;
 import br.ufpa.labes.spm.domain.Agent;
+import br.ufpa.labes.spm.repository.interfaces.GenericRepository;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -13,7 +15,7 @@ import java.util.Optional;
  * Spring Data  repository for the Agent entity.
  */
 @Repository
-public interface AgentRepository extends JpaRepository<Agent, Long> {
+public interface AgentRepository extends JpaRepository<Agent, Long>, GenericRepository<Agent, Long> {
 
     @Query(value = "select distinct agent from Agent agent left join fetch agent.theProcesses left join fetch agent.theWorkGroups",
         countQuery = "select count(distinct agent) from Agent agent")
