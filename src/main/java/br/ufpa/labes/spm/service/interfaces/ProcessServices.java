@@ -10,9 +10,9 @@ import br.ufpa.labes.spm.service.dto.ProcessesDTO;
 
 public interface ProcessServices {
 
-	public ProjectsDTO getProjectsForAgent(String agentIdent);
+	// public ProjectsDTO getProjectsForAgent(String agentIdent);
 
-	public List<ProcessDTO> getProcess(String agentIdent);
+	// public List<ProcessDTO> getProcess(String agentIdent);
 
 	public ActivitysDTO getActivitiesFromProcess(String processIdent);
 

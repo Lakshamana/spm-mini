@@ -49,26 +49,26 @@ public class ProcessServicesImpl implements ProcessServices {
 
   private Converter converter = new ConverterImpl();
 
-	@Override
-	public ProjectsDTO getProjectsForAgent(String agentIdent) {
-		String hql_project = "SELECT pr FROM " + PROJECT_CLASSNAME + " as pr " +
-		                     "WHERE pr.processRefered in (SELECT procAg.theProcess FROM "+
-		                     PROCESSAGENDA_CLASSNAME +" as procAg WHERE procAg.theTaskAgenda.theAgent.ident =:agentId )";
+// 	@Override
+// 	public ProjectsDTO getProjectsForAgent(String agentIdent) {
+// 		String hql_project = "SELECT pr FROM " + PROJECT_CLASSNAME + " as pr " +
+// 		                     "WHERE pr.processRefered in (SELECT procAg.theProcess FROM "+
+// 		                     PROCESSAGENDA_CLASSNAME +" as procAg WHERE procAg.theTaskAgenda.theAgent.ident =:agentId )";
 
-		query = processRepository.getPersistenceContext().createQuery(hql_project);
-		query.setParameter( "agentId", agentIdent );
-		List<Project> projectList = query.getResultList();
+// 		query = processRepository.getPersistenceContext().createQuery(hql_project);
+// 		query.setParameter( "agentId", agentIdent );
+// 		List<Project> projectList = query.getResultList();
 
-//		System.out.println("Agent: " + agentIdent);
-//		System.out.println("------------- Projetos ------------");
-//		for (Project project : projectList) {
-//			System.out.println("Name: " + project.getName());
-//		}
-//		System.out.println("-----------------------------------");
+// //		System.out.println("Agent: " + agentIdent);
+// //		System.out.println("------------- Projetos ------------");
+// //		for (Project project : projectList) {
+// //			System.out.println("Name: " + project.getName());
+// //		}
+// //		System.out.println("-----------------------------------");
 
-		ProjectsDTO projects = this.convertProjectsToProjectsDTO(projectList);
-		return projects;
-	}
+// 		ProjectsDTO projects = this.convertProjectsToProjectsDTO(projectList);
+// 		return projects;
+// 	}
 
 	@Override
 	public ProcessesDTO getProjectsManagedBy(String agentIdent) {
@@ -91,33 +91,33 @@ public class ProcessServicesImpl implements ProcessServices {
 
 
 
-	@Override
-	public List<ProcessDTO> getProcess(String agentIdent) {
-		String hql = "SELECT distinct proc FROM " + PROCESSAGENDA_CLASSNAME + " AS proc WHERE proc.theTaskAgenda.theAgent.ident <> :ident";
-		query = agentRepository.getPersistenceContext().createQuery(hql);
-		query.setParameter("ident", agentIdent);
-		List<ProcessAgenda> procs = query.getResultList();
-		List<ProcessDTO> processes = new ArrayList<ProcessDTO>();
+	// @Override
+	// public List<ProcessDTO> getProcess(String agentIdent) {
+	// 	String hql = "SELECT distinct proc FROM " + PROCESSAGENDA_CLASSNAME + " AS proc WHERE proc.theTaskAgenda.theAgent.ident <> :ident";
+	// 	query = agentRepository.getPersistenceContext().createQuery(hql);
+	// 	query.setParameter("ident", agentIdent);
+	// 	List<ProcessAgenda> procs = query.getResultList();
+	// 	List<ProcessDTO> processes = new ArrayList<ProcessDTO>();
 
-		// for (ProcessAgenda processAgenda : procs) {
-		// 	ProcessDTO processDTO = new ProcessDTO(processAgenda.getTheProcess().getIdent(), processAgenda.getTheProcess().getpState(), this.getTasksFromProcess(processAgenda));
-		// 	processDTO.setTasksIdents(this.getTasksIdentsFromProcess(processAgenda));
-		// 	if(processes.contains(processDTO)) {
-		// 		int index = processes.indexOf(processDTO);
-		// 		processes.get(index).getTasks().addAll(processDTO.getTasks());
-		// 		processes.get(index).getTasksIdents().addAll(processDTO.getTasksIdents());
-		// 	} else {
-		// 		Process process = processAgenda.getTheProcess();
-		// 		if(!isProcessFinished(process)) processes.add(processDTO);
-		// 	}
-		// }
-		System.out.println("acabou o método");
-		return processes;
-	}
+	// 	// for (ProcessAgenda processAgenda : procs) {
+	// 	// 	ProcessDTO processDTO = new ProcessDTO(processAgenda.getTheProcess().getIdent(), processAgenda.getTheProcess().getpState(), this.getTasksFromProcess(processAgenda));
+	// 	// 	processDTO.setTasksIdents(this.getTasksIdentsFromProcess(processAgenda));
+	// 	// 	if(processes.contains(processDTO)) {
+	// 	// 		int index = processes.indexOf(processDTO);
+	// 	// 		processes.get(index).getTasks().addAll(processDTO.getTasks());
+	// 	// 		processes.get(index).getTasksIdents().addAll(processDTO.getTasksIdents());
+	// 	// 	} else {
+	// 	// 		Process process = processAgenda.getTheProcess();
+	// 	// 		if(!isProcessFinished(process)) processes.add(processDTO);
+	// 	// 	}
+	// 	// }
+	// 	System.out.println("acabou o método");
+	// 	return processes;
+	// }
 
-	private boolean isProcessFinished(Process process) {
-		return process.getpState().equals(Process.FINISHED);
-	}
+	// private boolean isProcessFinished(Process process) {
+	// 	return process.getpState().equals(Process.FINISHED);
+	// }
 
 	@Override
 	public ActivitysDTO getActivitiesFromProcess(String processIdent) {
@@ -184,23 +184,23 @@ public class ProcessServicesImpl implements ProcessServices {
 		return decomposed;
 	}
 
-	private List<String> getTasksFromProcess(ProcessAgenda processAgenda) {
-		List<String> tasks = new ArrayList<String>();
-		for (Task task : processAgenda.getTheTasks()) {
-//			if(task.getLocalState() == Plain.WAITING)
-				tasks.add(task.getTheNormal().getName());
-		}
+// 	private List<String> getTasksFromProcess(ProcessAgenda processAgenda) {
+// 		List<String> tasks = new ArrayList<String>();
+// 		for (Task task : processAgenda.getTheTasks()) {
+// //			if(task.getLocalState() == Plain.WAITING)
+// 				tasks.add(task.getTheNormal().getName());
+// 		}
 
-		return tasks;
-	}
+// 		return tasks;
+// 	}
 
-	private List<String> getTasksIdentsFromProcess(ProcessAgenda processAgenda) {
-		List<String> tasks = new ArrayList<String>();
-		for (Task task : processAgenda.getTheTasks()) {
-				tasks.add(task.getTheNormal().getIdent());
-		}
-		return tasks;
-	}
+	// private List<String> getTasksIdentsFromProcess(ProcessAgenda processAgenda) {
+	// 	List<String> tasks = new ArrayList<String>();
+	// 	for (Task task : processAgenda.getTheTasks()) {
+	// 			tasks.add(task.getTheNormal().getIdent());
+	// 	}
+	// 	return tasks;
+	// }
 
 	private ProjectsDTO convertProjectsToProjectsDTO(List<Project> projects) {
 		ProjectsDTO projectsDTO = new ProjectsDTO(new ArrayList<ProjectDTO>());
