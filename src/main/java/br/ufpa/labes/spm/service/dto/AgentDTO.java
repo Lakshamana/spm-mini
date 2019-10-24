@@ -50,8 +50,8 @@ public class AgentDTO implements Serializable {
 	private List<String> roleToAgent;
 	@IgnoreMapping
 	private List<String> roleIdentsToAgent;
-	@IgnoreMapping
-	private List<TaskDTO> tasks;
+	// @IgnoreMapping
+	// private List<TaskDTO> tasks;
 	@IgnoreMapping
 	private float workingCost;
 	@IgnoreMapping
@@ -61,8 +61,8 @@ public class AgentDTO implements Serializable {
 		this.afinityToAgent = new ArrayList<String>();
 		this.abilityToAgent = new ArrayList<String>();
 		this.groupToAgent = new ArrayList<String>();
-		this.roleToAgent = new ArrayList<String>();
-		this.tasks = new ArrayList<TaskDTO>();
+		// this.roleToAgent = new ArrayList<String>();
+		// this.tasks = new ArrayList<TaskDTO>();
 	}
 
 
@@ -219,13 +219,13 @@ public class AgentDTO implements Serializable {
 		this.upload = upload;
 	}
 
-	public List<TaskDTO> getTasks() {
-		return tasks;
-	}
+	// public List<TaskDTO> getTasks() {
+	// 	return tasks;
+	// }
 
-	public void setTasks(List<TaskDTO> tasks) {
-		this.tasks = tasks;
-	}
+	// public void setTasks(List<TaskDTO> tasks) {
+	// 	this.tasks = tasks;
+	// }
 
 	public float getWorkingCost() {
 		return workingCost;

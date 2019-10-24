@@ -34,7 +34,7 @@ import br.ufpa.labes.spm.service.dto.dashboard.Time;
 import br.ufpa.labes.spm.service.dto.AgentDTO;
 import br.ufpa.labes.spm.service.dto.AgentsDTO;
 import br.ufpa.labes.spm.service.dto.WorkGroupDTO;
-import br.ufpa.labes.spm.domain.Ability;
+// import br.ufpa.labes.spm.domain.Ability;
 import br.ufpa.labes.spm.domain.Agent;
 import br.ufpa.labes.spm.domain.WorkGroup;
 import br.ufpa.labes.spm.domain.Project;
@@ -173,7 +173,7 @@ public class AgentServicesImpl implements AgentServices {
 	}
 
 	@Override
-	public AgentDTO saveAgent(AgentDTO agentDTO,SpmConfigurationDTO config) {
+	public AgentDTO saveAgent(AgentDTO agentDTO) {
 		agent = new Agent();
 
 //		agent = this.getAgentForName(agentDTO.getName());
@@ -190,9 +190,9 @@ public class AgentServicesImpl implements AgentServices {
 			agent = this.convertAgentDTOToAgent(agentDTO);
  			agentRepository.save(agent);
 
-			TaskAgenda theTaskAgenda = new TaskAgenda();
-			agent.setTheTaskAgenda(theTaskAgenda);
-			theTaskAgenda.setTheAgent(agent);
+			// TaskAgenda theTaskAgenda = new TaskAgenda();
+			// agent.setTheTaskAgenda(theTaskAgenda);
+			// theTaskAgenda.setTheAgent(agent);
 // 			taskAgendaRepository.save(theTaskAgenda);
 
  			String newIdent = agentRepository.generateIdent(agent.getName(), agent);
@@ -315,8 +315,8 @@ public class AgentServicesImpl implements AgentServices {
 		// agent = null;
 	// }
 
-	@Override
-	public Boolean removeAgent(String agentIdent) {
+	// @Override
+	// public Boolean removeAgent(String agentIdent) {
 //		Agent agent = this.getAgentForName(nameAgent);
 //  		Agent agent = agentRepository.retrieveBySecondaryKey(agentIdent);
 // 		String hql = "SELECT c FROM " + SpmConfiguration.class.getSimpleName() + " AS c WHERE c.agent.ident = :ident";
@@ -379,8 +379,8 @@ public class AgentServicesImpl implements AgentServices {
 // 			return true;
 // 		}
 
-		return false;
-	}
+	// 	return false;
+	// }
 
 	@Override
 	public AgentsDTO getRoles(String termoBusca, String domainFilter) {

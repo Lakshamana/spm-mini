@@ -2,22 +2,15 @@ package br.ufpa.labes.spm.service.interfaces;
 
 import java.util.List;
 
-
-import br.ufpa.labes.spm.service.dto.TaskDTO;
-import br.ufpa.labes.spm.service.dto.AbilityDTO;
-import br.ufpa.labes.spm.service.dto.AgentAffinityAgentDTO;
-import br.ufpa.labes.spm.service.dto.AgentDTO;
-import br.ufpa.labes.spm.service.dto.AgentHasAbilityDTO;
-import br.ufpa.labes.spm.service.dto.AgentsDTO;
-import br.ufpa.labes.spm.service.dto.SpmConfigurationDTO;
-import br.ufpa.labes.spm.service.dto.WorkGroupDTO;
-import br.ufpa.labes.spm.service.dto.RoleDTO;
 import br.ufpa.labes.spm.domain.Agent;
+import br.ufpa.labes.spm.service.dto.AgentDTO;
+import br.ufpa.labes.spm.service.dto.AgentsDTO;
+import br.ufpa.labes.spm.service.dto.WorkGroupDTO;
 
 public interface AgentServices {
 	public AgentDTO getAgent(String nameAgent);
 
-	public AgentDTO saveAgent(AgentDTO agentDTO,SpmConfigurationDTO config);
+	public AgentDTO saveAgent(AgentDTO agentDTO);
 
 	public Boolean removeAgent(String nameAgent);
 
@@ -25,9 +18,9 @@ public interface AgentServices {
 
 	//public String[] getRoleTypes();
 
-	public List<AbilityDTO> getAbilitysToAgent();
+	// public List<AbilityDTO> getAbilitysToAgent();
 
-	public List<RoleDTO>  getRolesToAgent();
+	// public List<RoleDTO>  getRolesToAgent();
 
 	public List<AgentDTO> getAfinityToAgent();
 
@@ -37,13 +30,13 @@ public interface AgentServices {
 
 	public AgentDTO saveRoleToAgent(AgentDTO agentDTO);
 
-	public AgentHasAbilityDTO saveAbilityToAgent(AgentHasAbilityDTO agentHasAbilityDTO);
+	// public AgentHasAbilityDTO saveAbilityToAgent(AgentHasAbilityDTO agentHasAbilityDTO);
 
-	public AgentHasAbilityDTO getAbilityToAgent(String abilityName);
+	// public AgentHasAbilityDTO getAbilityToAgent(String abilityName);
 
-	public AgentAffinityAgentDTO saveAfinityToAgent(AgentAffinityAgentDTO agentAffinityAgentDTO);
+	// public AgentAffinityAgentDTO saveAfinityToAgent(AgentAffinityAgentDTO agentAffinityAgentDTO);
 
-	public AgentAffinityAgentDTO getAffinityAgent(String toAffinity, String fromAffinity);
+	// public AgentAffinityAgentDTO getAffinityAgent(String toAffinity, String fromAffinity);
 
 	public AgentDTO saveWorkGroupToAgent(AgentDTO agentDTO);
 
@@ -63,7 +56,7 @@ public interface AgentServices {
 
 	public Boolean removeWorkGroupAgent(AgentDTO agentDTO, String WorkGroupName);
 
-	public List<TaskDTO> getAgentTasks(String agentIdent, String processIdent);
+	// public List<TaskDTO> getAgentTasks(String agentIdent, String processIdent);
 
 	public AgentDTO login(String login,String senha);
 
