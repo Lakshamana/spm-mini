@@ -29,15 +29,13 @@ import br.ufpa.labes.spm.domain.Agent;
 import br.ufpa.labes.spm.domain.Project;
 import br.ufpa.labes.spm.domain.Process;
 import br.ufpa.labes.spm.domain.ProcessModel;
-import br.ufpa.labes.spm.domain.ProcessAgenda;
-import br.ufpa.labes.spm.domain.Task;
 import br.ufpa.labes.spm.service.interfaces.ProcessServices;
 
 @Service
 @Transactional
 public class ProcessServicesImpl implements ProcessServices {
 
-	private static final String PROCESSAGENDA_CLASSNAME = ProcessAgenda.class.getName();
+	// private static final String PROCESSAGENDA_CLASSNAME = ProcessAgenda.class.getName();
 	private static final String PROJECT_CLASSNAME = Project.class.getName();
   private static final String PROCESS_CLASSNAME = Process.class.getSimpleName();
 
@@ -101,18 +99,18 @@ public class ProcessServicesImpl implements ProcessServices {
 		List<ProcessAgenda> procs = query.getResultList();
 		List<ProcessDTO> processes = new ArrayList<ProcessDTO>();
 
-		for (ProcessAgenda processAgenda : procs) {
-			ProcessDTO processDTO = new ProcessDTO(processAgenda.getTheProcess().getIdent(), processAgenda.getTheProcess().getpState(), this.getTasksFromProcess(processAgenda));
-			processDTO.setTasksIdents(this.getTasksIdentsFromProcess(processAgenda));
-			if(processes.contains(processDTO)) {
-				int index = processes.indexOf(processDTO);
-				processes.get(index).getTasks().addAll(processDTO.getTasks());
-				processes.get(index).getTasksIdents().addAll(processDTO.getTasksIdents());
-			} else {
-				Process process = processAgenda.getTheProcess();
-				if(!isProcessFinished(process)) processes.add(processDTO);
-			}
-		}
+		// for (ProcessAgenda processAgenda : procs) {
+		// 	ProcessDTO processDTO = new ProcessDTO(processAgenda.getTheProcess().getIdent(), processAgenda.getTheProcess().getpState(), this.getTasksFromProcess(processAgenda));
+		// 	processDTO.setTasksIdents(this.getTasksIdentsFromProcess(processAgenda));
+		// 	if(processes.contains(processDTO)) {
+		// 		int index = processes.indexOf(processDTO);
+		// 		processes.get(index).getTasks().addAll(processDTO.getTasks());
+		// 		processes.get(index).getTasksIdents().addAll(processDTO.getTasksIdents());
+		// 	} else {
+		// 		Process process = processAgenda.getTheProcess();
+		// 		if(!isProcessFinished(process)) processes.add(processDTO);
+		// 	}
+		// }
 		System.out.println("acabou o método");
 		return processes;
 	}

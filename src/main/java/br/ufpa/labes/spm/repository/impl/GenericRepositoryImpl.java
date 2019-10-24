@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import br.ufpa.labes.spm.annotations.Criteria;
 import br.ufpa.labes.spm.annotations.EnumCriteriaType;
@@ -22,12 +23,16 @@ import br.ufpa.labes.spm.util.ident.ConversorDeIdent;
 import br.ufpa.labes.spm.util.ident.SemCaracteresEspeciais;
 import br.ufpa.labes.spm.util.ident.TrocaEspacoPorPonto;
 
-public class GenericRepositoryImpl<T, PK> implements GenericRepository<T, PK> {
+public class GenericRepositoryImpl<T, PK> extends SimpleJpaRepository<T, PK> implements GenericRepository<T, PK> {
 
   @PersistenceContext
   private EntityManager em;
 
-  private Class<T> businessClass;
+  private Class<T> clazz;
+
+  public GenericRepositoryImpl(Class<T> clazz, EntityManager em) {
+    super(clazz, em);
+  }
 
   @Override
   public T update(T object) {
@@ -149,7 +154,7 @@ public class GenericRepositoryImpl<T, PK> implements GenericRepository<T, PK> {
 
   @Override
   public Class<T> getBusinessClass() {
-    return this.businessClass;
+    return this.clazz;
   }
 
   @Override
@@ -161,7 +166,7 @@ public class GenericRepositoryImpl<T, PK> implements GenericRepository<T, PK> {
   public T retrieveBySecondaryKey(String ident) {
     Query query =
         this.getPersistenceContext()
-            .createQuery("FROM " + businessClass.getName() + " as obj WHERE obj.ident = :ident");
+            .createQuery("FROM " + clazz.getName() + " as obj WHERE obj.ident = :ident");
     query.setParameter("ident", ident);
     List retorno = (List) query.getResultList();
     if (retorno != null) {

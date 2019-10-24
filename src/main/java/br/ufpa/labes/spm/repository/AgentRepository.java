@@ -15,7 +15,7 @@ import java.util.Optional;
  * Spring Data  repository for the Agent entity.
  */
 @Repository
-public interface AgentRepository extends JpaRepository<Agent, Long>, GenericRepository<Agent, Long> {
+public interface AgentRepository extends GenericRepository<Agent, Long> {
 
     @Query(value = "select distinct agent from Agent agent left join fetch agent.theProcesses left join fetch agent.theWorkGroups",
         countQuery = "select count(distinct agent) from Agent agent")
