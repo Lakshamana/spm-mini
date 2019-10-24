@@ -1,0 +1,76 @@
+** Regexes úteis para facilitar a migração do SPM para Spring **
+
+* Substituir, usando o VS Code, as ocorrências de trechos de códigos na implementação antiga do SPM que casam com as regexes indicadas pela tag 'search' pelas substituições descritas pelas tags 'replaceby', nas seguintes ocorrências:
+
+* A cada novo padrão encontrado, adicioná-lo ao final do arquivo:
+
+let SPMROOT = pasta raiz do projeto SPM
+
+- Remover ponteiros one-to-one de data-model.jh:
+  search: `(.*)\{the(.*)Sub\} to (.*)\{the(.*)Super\}([,])*`
+  replaceby: ``
+
+- De Decomposed subtipo de Activity para objeto de Activity:
+  search: `(\().*\([ ]*(Decomposed)[ ]*\) ([\w]*).*(\))\.`
+  replaceby: `$3.getThe$2Sub().`
+
+- De Normal subtipo de Activity para objeto transitivo de Activity:
+  search: `(\().*\([ ]*(Normal)[ ]*\) ([\w]*).*(\))\.`
+  replaceby: `$3.getThePlainSub().getThe$2Sub().`
+
+- De teste Decomposed instanceof Activity:
+  search: `([ ])*\([ ]*(.*) instanceof Decomposed[ ]*\)[ ]*\{`
+  replaceby: `$1 ($2.getTheDecomposedSub()) {`
+
+- De casting de Activity para Normal:
+  search: `(.*=[ ]*)\([ ]*(Normal)[ ]*\) ([\w]*).*;`
+  replaceby: ``
+
+- De pacotes de modelos SPM por objetos domain JHipster (modelos):
+  search: `(package|import) org\.qrconsult\.spm\.model\.(.*)\.(.*);`
+  replaceby: `$1 br.ufpa.labes.spm.domain.$2;`
+
+- De pacotes e importações de exceções SPM pela versão mais atual:
+  search: `(package|import) org\.qrconsult\.spm\.exceptions(.*);`
+  replaceby: `$1 br.ufpa.labes.spm.exceptions$2;`
+
+- De pacotes DAO por pacotes DAO JHipster SPM:
+  search: `(package|import) org\.qrconsult\.spm\.dataAccess\.(.*)\.(.*);`
+  replaceby: `$1 br.ufpa.labes.spm.repository.$2.$3;`
+
+- De pacotes globais DAO SPM por globais DAO JHipster SPM:
+  search: `package org\.qrconsult\.spm\.dataAccess\.(.*);`
+  replaceby: `package br.ufpa.labes.spm.repository.$1;`
+
+- Remover anotações EJB e Stateless no mesmo arquivo:
+  search: `.*(Stateless|EJB).*\n`
+  replaceby: ``
+
+- Renomear entidade PlainActivity para Plain:
+  search: `([Pp]lain)([_])*([Aa]ctivity)`
+  replaceby: `$1`
+
+- Renomear Join ou Branch para (Join ou Branch)Con para DAO:
+  search: `(Join|Branch)(AND)*([^Con]*)`
+  replaceby: `$1$2Con$3`
+  in: $SPMROOT/src/main/java/br/ufpa/labes/spm/repository/**/*.java
+
+- Renomear Join ou Branch para (Join ou Branch)Con para services:
+  search: `(.*)(Join|Branch)(AND)*([^Con]*)(.*)`
+  replaceby: `$1$2$3Con$4$5`
+  in: $SPMROOT/src/main/java/br/ufpa/labes/spm/service/**/*.java
+  ignore: $SPMROOT(src/main/java/br/ufpa/labes/spm/service/dto/**,
+    src/main/java/br/ufpa/labes/spm/service/mapper/**)
+
+- Renomear ocorrências de Group para WorkGroup:
+  search: `(.*)([I]*)([^Work]*)(Group)(.*)`
+  replaceby: `\1\2Work\3\4`
+
+*** Comandos BASH úteis:
+* Obter de maneira rápida as entidades de serviços:
+  - Com o terminal aberto em SPMServices/.../services/[interfaces|impl]
+    `find . -maxdepth 1 -type f | tr './' ' ' | awk '{print $1}' | sed -r 's/(.*)Services/service \1 with serviceImpl/g'`
+
+* Obter de maneira rápida as entidades de DTO:
+  - Com o terminal aberto em SPMDTO/.../dtos
+    `find . | grep DTO.java | sed -r 's/.\/(.*)\/(.*)DTO.java/dto \2 with mapstruct/g'`
