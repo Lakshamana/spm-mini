@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Map;
 
-import br.ufpa.labes.spm.service.dto.CalendarDTO;
+// import br.ufpa.labes.spm.service.dto.CalendarDTO;
 import br.ufpa.labes.spm.domain.ProcessModel;
 
 public interface EasyModelingServices {
@@ -34,8 +34,8 @@ public interface EasyModelingServices {
 
 	public void applyAllocationToProcessModel(String pm_id, String role_id, String agent_id);
 
-	void replanningDates(String act_id, long new_begin_date, long new_end_date,
-			CalendarDTO replanningDates);
+	// void replanningDates(String act_id, long new_begin_date, long new_end_date,
+	// 		CalendarDTO replanningDates);
 
 //	public void saveCoordinates(Map<String, String> coordinates);
 

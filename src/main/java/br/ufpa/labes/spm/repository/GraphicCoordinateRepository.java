@@ -1,5 +1,7 @@
 package br.ufpa.labes.spm.repository;
 import br.ufpa.labes.spm.domain.GraphicCoordinate;
+import br.ufpa.labes.spm.repository.interfaces.GenericRepository;
+
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +11,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface GraphicCoordinateRepository extends JpaRepository<GraphicCoordinate, Long> {
+public interface GraphicCoordinateRepository extends GenericRepository<GraphicCoordinate, Long> {
 
 }

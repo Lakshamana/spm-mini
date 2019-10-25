@@ -17,11 +17,9 @@ public class GenericRepositoryFactoryBean<R extends JpaRepository<T, PK>, T, PK>
 
   public GenericRepositoryFactoryBean(Class<? extends R> repositoryInterface) {
     super(repositoryInterface);
-    // TODO Auto-generated constructor stub
   }
 
   protected RepositoryFactorySupport createRepositoryFactory(EntityManager entityManager) {
-
     return new GenericRepositoryFactory(entityManager);
   }
 

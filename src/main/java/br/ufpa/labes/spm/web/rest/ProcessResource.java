@@ -2,6 +2,10 @@ package br.ufpa.labes.spm.web.rest;
 
 import br.ufpa.labes.spm.domain.Process;
 import br.ufpa.labes.spm.repository.ProcessRepository;
+import br.ufpa.labes.spm.service.dto.ActivitysDTO;
+import br.ufpa.labes.spm.service.dto.ProcessDTO;
+import br.ufpa.labes.spm.service.dto.ProcessesDTO;
+import br.ufpa.labes.spm.service.dto.ProjectsDTO;
 import br.ufpa.labes.spm.service.interfaces.ProcessServices;
 import br.ufpa.labes.spm.web.rest.errors.BadRequestAlertException;
 
@@ -109,15 +113,15 @@ public class ProcessResource {
         return ResponseUtil.wrapOrNotFound(process);
     }
 
-    @GetMapping("/processes/projectsForAgent/{agentIdent}")
-    public ResponseEntity<ProjectsDTO> getProjectsForAgent(@PathVariable String agentIdent) {
-      return ResponseEntity.ok().body(processServices.getProjectsForAgent(agentIdent));
-    }
+    // @GetMapping("/processes/projectsForAgent/{agentIdent}")
+    // public ResponseEntity<ProjectsDTO> getProjectsForAgent(@PathVariable String agentIdent) {
+    //   return ResponseEntity.ok().body(processServices.getProjectsForAgent(agentIdent));
+    // }
 
-    @GetMapping("/processes/agent/{agentIdent}")
-    public ResponseEntity<List<ProcessDTO>> getProcessesByAgentId(@PathVariable String agentIdent) {
-      return ResponseEntity.ok().body(processServices.getProcess(agentIdent));
-    }
+    // @GetMapping("/processes/agent/{agentIdent}")
+    // public ResponseEntity<List<ProcessDTO>> getProcessesByAgentId(@PathVariable String agentIdent) {
+    //   return ResponseEntity.ok().body(processServices.getProcess(agentIdent));
+    // }
 
     @GetMapping("/processes/activitiesFromProcess/{processIdent}")
     public ResponseEntity<ActivitysDTO> getActivitiesFromProcess(@PathVariable String processIdent) {
