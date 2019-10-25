@@ -14,8 +14,7 @@ import br.ufpa.labes.spm.domain.WebAPSEEObject;
 
 public class WebAPSEEObjectRepositoryQueryImpl<T> implements WebAPSEEObjectRepositoryQuery {
 
-  @PersistenceContext
-  private EntityManager em;
+  @PersistenceContext private EntityManager em;
 
   public Class<WebAPSEEObject> clazz = WebAPSEEObject.class;
 
@@ -23,11 +22,10 @@ public class WebAPSEEObjectRepositoryQueryImpl<T> implements WebAPSEEObjectRepos
       throws RepositoryQueryException {
 
     Query query =
-        this.em
-            .createQuery(
-                "FROM "
-                    + clazz.getName()
-                    + " as obj WHERE obj.theReferredOid = :oid AND obj.className like :className");
+        this.em.createQuery(
+            "FROM "
+                + clazz.getName()
+                + " as obj WHERE obj.theReferredOid = :oid AND obj.className like :className");
 
     query.setParameter("oid", theReferredOid);
     query.setParameter("className", className);
@@ -50,11 +48,10 @@ public class WebAPSEEObjectRepositoryQueryImpl<T> implements WebAPSEEObjectRepos
     // We use desc to be sure that aways the older coordinate has been
     // removed with iter.remove()
     Query query =
-        this.em
-            .createQuery(
-                "SELECT obj.theGraphicCoordinate FROM "
-                    + clazz.getName()
-                    + " as obj WHERE obj.theGraphicCoordinate.theProcess=:process ORDER BY obj.theReferredOid desc, obj.className, obj.oid");
+        this.em.createQuery(
+            "SELECT obj.theGraphicCoordinate FROM "
+                + clazz.getName()
+                + " as obj WHERE obj.theGraphicCoordinate.theProcess=:process ORDER BY obj.theReferredOid desc, obj.className, obj.oid");
     query.setParameter("process", processId);
 
     List objs = query.getResultList();

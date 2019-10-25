@@ -9,23 +9,23 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "kafka")
 public class KafkaProperties {
 
-    private Map<String, String> consumer;
+  private Map<String, String> consumer;
 
-    private Map<String, String> producer;
+  private Map<String, String> producer;
 
-    public Map<String, Object> getConsumerProps() {
-        return (Map) consumer;
-    }
+  public Map<String, Object> getConsumerProps() {
+    return (Map) consumer;
+  }
 
-    public void setConsumer(Map<String, String> consumer) {
-        this.consumer = consumer;
-    }
+  public void setConsumer(Map<String, String> consumer) {
+    this.consumer = consumer;
+  }
 
-    public Map<String, Object> getProducerProps() {
-        return (Map) producer;
-    }
+  public Map<String, Object> getProducerProps() {
+    return (Map) producer;
+  }
 
-    public void setProducer(Map<String, String> producer) {
-        this.producer = producer;
-    }
+  public void setProducer(Map<String, String> producer) {
+    this.producer = producer;
+  }
 }

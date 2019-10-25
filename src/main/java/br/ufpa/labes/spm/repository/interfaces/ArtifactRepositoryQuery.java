@@ -1,6 +1,5 @@
 package br.ufpa.labes.spm.repository.interfaces;
 
-import br.ufpa.labes.spm.repository.interfaces.BaseRepositoryQuery;
 import br.ufpa.labes.spm.service.dto.SimpleArtifactDescriptorDTO;
 import br.ufpa.labes.spm.domain.Artifact;
 

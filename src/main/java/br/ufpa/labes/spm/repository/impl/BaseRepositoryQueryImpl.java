@@ -12,11 +12,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.springframework.data.repository.NoRepositoryBean;
-
 import br.ufpa.labes.spm.annotations.Criteria;
 import br.ufpa.labes.spm.annotations.EnumCriteriaType;
-import br.ufpa.labes.spm.domain.Agent;
 import br.ufpa.labes.spm.repository.interfaces.BaseRepositoryQuery;
 import br.ufpa.labes.spm.util.PagingContext;
 import br.ufpa.labes.spm.util.SortCriteria;
@@ -26,8 +23,7 @@ import br.ufpa.labes.spm.util.ident.TrocaEspacoPorPonto;
 
 public class BaseRepositoryQueryImpl<T, PK> implements BaseRepositoryQuery<T, PK> {
 
-  @PersistenceContext
-  private EntityManager em;
+  @PersistenceContext private EntityManager em;
 
   private Class<T> businessClass;
 

@@ -14,14 +14,18 @@ import br.ufpa.labes.spm.service.interfaces.EasyModelingServices;
 @RequestMapping("/easyModeling")
 public class EasyModelingResource {
 
-  @Autowired
-  private EasyModelingServices easyModelingServices;
+  @Autowired private EasyModelingServices easyModelingServices;
 
   @PostMapping
   public ResponseEntity<?> getCoordinatesResponse(@RequestBody CoordinateRequestBean bean) {
-    easyModelingServices.getCoordinatesResponse(bean.getProcessId(), bean.getIdents(), bean.getXs(),
-      bean.getYs(), bean.getTypes(), bean.getNodeTypes(), bean.getReferredObjs()
-    );
+    easyModelingServices.getCoordinatesResponse(
+        bean.getProcessId(),
+        bean.getIdents(),
+        bean.getXs(),
+        bean.getYs(),
+        bean.getTypes(),
+        bean.getNodeTypes(),
+        bean.getReferredObjs());
     return ResponseEntity.ok().build();
   }
 }

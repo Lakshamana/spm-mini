@@ -11,8 +11,7 @@ import br.ufpa.labes.spm.domain.ReqAgent;
 
 public class ReqAgentRepositoryQueryImpl implements ReqAgentRepositoryQuery {
 
-  @PersistenceContext
-  private EntityManager em;
+  @PersistenceContext private EntityManager em;
 
   public ReqAgent findReqAgentFromProcessModel(
       String agentIdent, String roleIdent, String normalIdent) {

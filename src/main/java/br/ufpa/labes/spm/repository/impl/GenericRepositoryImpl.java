@@ -23,10 +23,10 @@ import br.ufpa.labes.spm.util.ident.ConversorDeIdent;
 import br.ufpa.labes.spm.util.ident.SemCaracteresEspeciais;
 import br.ufpa.labes.spm.util.ident.TrocaEspacoPorPonto;
 
-public class GenericRepositoryImpl<T, PK> extends SimpleJpaRepository<T, PK> implements GenericRepository<T, PK> {
+public class GenericRepositoryImpl<T, PK> extends SimpleJpaRepository<T, PK>
+    implements GenericRepository<T, PK> {
 
-  @PersistenceContext
-  private EntityManager em;
+  @PersistenceContext private EntityManager em;
 
   private Class<T> clazz;
 

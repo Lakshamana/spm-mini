@@ -87,7 +87,7 @@ public class ConverterImpl implements Converter {
           this.getElementOfClass(
               entities,
               eClass); // TODO: COLOCAR TESTE PRA ANNOTATION, PARA VERIFICAR SE MESMO SENDO NULO VAI
-                       // IGNORAR OU VAI SER OBRIGATORIO
+      // IGNORAR OU VAI SER OBRIGATORIO
       if (entity == null) {
         if (isRequired) {
           // excecao pq um campo required nao tem classe que possa preenche-lo

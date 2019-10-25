@@ -2,8 +2,7 @@ package br.ufpa.labes.spm.service;
 
 public class UsernameAlreadyUsedException extends RuntimeException {
 
-    public UsernameAlreadyUsedException() {
-        super("Login name already used!");
-    }
-
+  public UsernameAlreadyUsedException() {
+    super("Login name already used!");
+  }
 }

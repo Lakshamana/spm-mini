@@ -16,7 +16,6 @@ public class CoordinateRequestBean {
 
   private String[] referredObjs;
 
-
   public String getProcessId() {
     return processId;
   }

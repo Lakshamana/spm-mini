@@ -14,8 +14,7 @@ import br.ufpa.labes.spm.service.util.SimpleActivityQueryResult;
 
 public class ProcessRepositoryQueryImpl implements ProcessRepositoryQuery {
 
-  @PersistenceContext
-  private EntityManager em;
+  @PersistenceContext private EntityManager em;
 
   @Override
   public SimpleActivityQueryResult[] getAllNormalActivitiesFromProcess(String processIdent) {

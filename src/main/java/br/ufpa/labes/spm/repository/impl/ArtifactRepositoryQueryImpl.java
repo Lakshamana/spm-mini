@@ -8,9 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import br.ufpa.labes.spm.repository.impl.BaseRepositoryQueryImpl;
 import br.ufpa.labes.spm.repository.interfaces.ArtifactRepositoryQuery;
-import br.ufpa.labes.spm.repository.interfaces.BaseRepositoryQuery;
 import br.ufpa.labes.spm.service.dto.SimpleArtifactDescriptorDTO;
 import br.ufpa.labes.spm.domain.Artifact;
 import br.ufpa.labes.spm.domain.ArtifactCon;
@@ -18,8 +16,7 @@ import br.ufpa.labes.spm.domain.InvolvedArtifact;
 
 public class ArtifactRepositoryQueryImpl implements ArtifactRepositoryQuery {
 
-  @PersistenceContext
-  private EntityManager em;
+  @PersistenceContext private EntityManager em;
 
   @Override
   public Object[] getArtifactsIdentsFromProcessModelWithoutTemplates(String ident) {

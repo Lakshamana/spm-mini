@@ -16,55 +16,58 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Service
 public class SpmKafkaConsumer {
 
-    private final Logger log = LoggerFactory.getLogger(SpmKafkaConsumer.class);
+  private final Logger log = LoggerFactory.getLogger(SpmKafkaConsumer.class);
 
-    private final AtomicBoolean closed = new AtomicBoolean(false);
+  private final AtomicBoolean closed = new AtomicBoolean(false);
 
-    public static final String TOPIC = "topic_spm";
+  public static final String TOPIC = "topic_spm";
 
-    private final KafkaProperties kafkaProperties;
+  private final KafkaProperties kafkaProperties;
 
-    private KafkaConsumer<String, String> kafkaConsumer;
+  private KafkaConsumer<String, String> kafkaConsumer;
 
-    public SpmKafkaConsumer(KafkaProperties kafkaProperties) {
-        this.kafkaProperties = kafkaProperties;
-    }
+  public SpmKafkaConsumer(KafkaProperties kafkaProperties) {
+    this.kafkaProperties = kafkaProperties;
+  }
 
-    public void start() {
-        log.info("Kafka consumer starting...");
-        this.kafkaConsumer = new KafkaConsumer<>(kafkaProperties.getConsumerProps());
-        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
+  public void start() {
+    log.info("Kafka consumer starting...");
+    this.kafkaConsumer = new KafkaConsumer<>(kafkaProperties.getConsumerProps());
+    Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
-        Thread consumerThread = new Thread(() -> {
-            try {
+    Thread consumerThread =
+        new Thread(
+            () -> {
+              try {
                 kafkaConsumer.subscribe(Collections.singletonList(TOPIC));
                 log.info("Kafka consumer started");
                 while (!closed.get()) {
-                    ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofSeconds(3));
-                    for (ConsumerRecord<String, String> record : records) {
-                        log.info("Consumed message in {} : {}", TOPIC, record.value());
-                    }
+                  ConsumerRecords<String, String> records =
+                      kafkaConsumer.poll(Duration.ofSeconds(3));
+                  for (ConsumerRecord<String, String> record : records) {
+                    log.info("Consumed message in {} : {}", TOPIC, record.value());
+                  }
                 }
                 kafkaConsumer.commitSync();
-            } catch (WakeupException e) {
+              } catch (WakeupException e) {
                 // Ignore exception if closing
                 if (!closed.get()) throw e;
-            } catch (Exception e) {
+              } catch (Exception e) {
                 log.error(e.getMessage(), e);
-            } finally {
+              } finally {
                 kafkaConsumer.close();
-            }
-        });
-        consumerThread.start();
-    }
+              }
+            });
+    consumerThread.start();
+  }
 
-    public KafkaConsumer<String, String> getKafkaConsumer() {
-        return kafkaConsumer;
-    }
+  public KafkaConsumer<String, String> getKafkaConsumer() {
+    return kafkaConsumer;
+  }
 
-    public void shutdown() {
-        log.info("Shutdown Kafka consumer");
-        closed.set(true);
-        kafkaConsumer.wakeup();
-    }
+  public void shutdown() {
+    log.info("Shutdown Kafka consumer");
+    closed.set(true);
+    kafkaConsumer.wakeup();
+  }
 }

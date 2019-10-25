@@ -25,69 +25,64 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class SpmKafkaResourceIT {
 
-    private MockMvc restMockMvc;
+  private MockMvc restMockMvc;
 
-    private static boolean started = false;
+  private static boolean started = false;
 
-    private static KafkaContainer kafkaContainer;
+  private static KafkaContainer kafkaContainer;
 
-    @Autowired
-    private SpmKafkaProducer producer;
+  @Autowired private SpmKafkaProducer producer;
 
-    @Autowired
-    private SpmKafkaConsumer consumer;
+  @Autowired private SpmKafkaConsumer consumer;
 
-    private static final int MAX_ATTEMPT = 5;
+  private static final int MAX_ATTEMPT = 5;
 
-    @BeforeAll
-    public static void startServer() {
-        if (!started) {
-            startTestcontainer();
-            started = true;
-        }
+  @BeforeAll
+  public static void startServer() {
+    if (!started) {
+      startTestcontainer();
+      started = true;
     }
+  }
 
-    private static void startTestcontainer() {
-        kafkaContainer = new KafkaContainer("5.3.1");
-        kafkaContainer.start();
-        System.setProperty("kafkaBootstrapServers", kafkaContainer.getBootstrapServers());
-    }
+  private static void startTestcontainer() {
+    kafkaContainer = new KafkaContainer("5.3.1");
+    kafkaContainer.start();
+    System.setProperty("kafkaBootstrapServers", kafkaContainer.getBootstrapServers());
+  }
 
-    @BeforeEach
-    public void setup() {
-        SpmKafkaResource kafkaResource = new SpmKafkaResource(producer);
+  @BeforeEach
+  public void setup() {
+    SpmKafkaResource kafkaResource = new SpmKafkaResource(producer);
 
-        this.restMockMvc = MockMvcBuilders.standaloneSetup(kafkaResource)
-            .build();
+    this.restMockMvc = MockMvcBuilders.standaloneSetup(kafkaResource).build();
 
-        producer.init();
-        consumer.start();
-    }
+    producer.init();
+    consumer.start();
+  }
 
-    @Test
-    public void producedMessageHasBeenConsumed() throws Exception {
-        restMockMvc.perform(post("/api/spm-kafka/publish?message=test"))
-            .andExpect(status().isOk());
+  @Test
+  public void producedMessageHasBeenConsumed() throws Exception {
+    restMockMvc.perform(post("/api/spm-kafka/publish?message=test")).andExpect(status().isOk());
 
-        Map<MetricName, ? extends Metric> metrics = consumer.getKafkaConsumer().metrics();
+    Map<MetricName, ? extends Metric> metrics = consumer.getKafkaConsumer().metrics();
 
-        Metric recordsConsumedTotalMetric = metrics.entrySet().stream()
+    Metric recordsConsumedTotalMetric =
+        metrics.entrySet().stream()
             .filter(entry -> "records-consumed-total".equals(entry.getKey().name()))
             .findFirst()
             .get()
             .getValue();
 
-        Double expectedTotalConsumedMessage = 1.0;
-        Double totalConsumedMessage;
-        int attempt = 0;
-        do {
-            totalConsumedMessage = (Double) recordsConsumedTotalMetric.metricValue();
-            Thread.sleep(200);
-        } while (!totalConsumedMessage.equals(expectedTotalConsumedMessage) && attempt++ < MAX_ATTEMPT);
+    Double expectedTotalConsumedMessage = 1.0;
+    Double totalConsumedMessage;
+    int attempt = 0;
+    do {
+      totalConsumedMessage = (Double) recordsConsumedTotalMetric.metricValue();
+      Thread.sleep(200);
+    } while (!totalConsumedMessage.equals(expectedTotalConsumedMessage) && attempt++ < MAX_ATTEMPT);
 
-        Assertions.assertThat(attempt).isLessThan(MAX_ATTEMPT);
-        Assertions.assertThat(totalConsumedMessage).isEqualTo(expectedTotalConsumedMessage);
-    }
-
+    Assertions.assertThat(attempt).isLessThan(MAX_ATTEMPT);
+    Assertions.assertThat(totalConsumedMessage).isEqualTo(expectedTotalConsumedMessage);
+  }
 }
-

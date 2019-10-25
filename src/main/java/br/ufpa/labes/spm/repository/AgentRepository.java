@@ -1,4 +1,5 @@
 package br.ufpa.labes.spm.repository;
+
 import br.ufpa.labes.spm.domain.Agent;
 import br.ufpa.labes.spm.repository.interfaces.GenericRepository;
 
@@ -11,20 +12,21 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Spring Data  repository for the Agent entity.
- */
+/** Spring Data repository for the Agent entity. */
 @Repository
 public interface AgentRepository extends GenericRepository<Agent, Long> {
 
-    @Query(value = "select distinct agent from Agent agent left join fetch agent.theProcesses left join fetch agent.theWorkGroups",
-        countQuery = "select count(distinct agent) from Agent agent")
-    Page<Agent> findAllWithEagerRelationships(Pageable pageable);
+  @Query(
+      value =
+          "select distinct agent from Agent agent left join fetch agent.theProcesses left join fetch agent.theWorkGroups",
+      countQuery = "select count(distinct agent) from Agent agent")
+  Page<Agent> findAllWithEagerRelationships(Pageable pageable);
 
-    @Query("select distinct agent from Agent agent left join fetch agent.theProcesses left join fetch agent.theWorkGroups")
-    List<Agent> findAllWithEagerRelationships();
+  @Query(
+      "select distinct agent from Agent agent left join fetch agent.theProcesses left join fetch agent.theWorkGroups")
+  List<Agent> findAllWithEagerRelationships();
 
-    @Query("select agent from Agent agent left join fetch agent.theProcesses left join fetch agent.theWorkGroups where agent.id =:id")
-    Optional<Agent> findOneWithEagerRelationships(@Param("id") Long id);
-
+  @Query(
+      "select agent from Agent agent left join fetch agent.theProcesses left join fetch agent.theWorkGroups where agent.id =:id")
+  Optional<Agent> findOneWithEagerRelationships(@Param("id") Long id);
 }

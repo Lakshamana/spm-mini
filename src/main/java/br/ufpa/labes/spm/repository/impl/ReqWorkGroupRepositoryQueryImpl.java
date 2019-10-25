@@ -6,15 +6,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import br.ufpa.labes.spm.repository.impl.BaseRepositoryQueryImpl;
 import br.ufpa.labes.spm.repository.interfaces.ReqWorkGroupRepositoryQuery;
-import br.ufpa.labes.spm.repository.interfaces.BaseRepositoryQuery;
 import br.ufpa.labes.spm.domain.ReqWorkGroup;
 
 public class ReqWorkGroupRepositoryQueryImpl implements ReqWorkGroupRepositoryQuery {
 
-  @PersistenceContext
-  private EntityManager em;
+  @PersistenceContext private EntityManager em;
 
   public ReqWorkGroup findReqWorkGroupFromProcessModel(
       String groupIdent, String WorkgroupTypeIdent, String normalIdent) {
