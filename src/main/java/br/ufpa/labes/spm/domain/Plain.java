@@ -3,10 +3,6 @@ package br.ufpa.labes.spm.domain;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
-
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 

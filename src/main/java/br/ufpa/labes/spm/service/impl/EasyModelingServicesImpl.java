@@ -1172,17 +1172,18 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 				this.addCoordinate(activity.getId(), activity.getClass().getSimpleName(), WebAPSEEObject.ACTIVITY + "+" + newIdent, coordinates);
 				this.activitiesTable.put(decomposed.getIdent(), clone);
 				this.copyDecomposedProperties((Decomposed) clone, decomposed, coordinates);
-			} else if (activity instanceof Automatic) {
-				Automatic automatic = (Automatic) activity;
-				clone = new Automatic();
-				String newIdent = this.generateNewIdent(activity.getIdent(), level_to, this.allActs);
-				clone.setIdent(newIdent);
-				this.addCoordinate(activity.getId(), activity.getClass().getSimpleName(), WebAPSEEObject.ACTIVITY + "+" + newIdent, coordinates);
-				this.activitiesTable.put(automatic.getIdent(), clone);
-				this.copyAutomaticProperties((Automatic) clone, automatic);
-			}
+      }
+        // else if (activity instanceof Automatic) {
+				// Automatic automatic = (Automatic) activity;
+				// clone = new Automatic();
+				// String newIdent = this.generateNewIdent(activity.getIdent(), level_to, this.allActs);
+				// clone.setIdent(newIdent);
+				// this.addCoordinate(activity.getId(), activity.getClass().getSimpleName(), WebAPSEEObject.ACTIVITY + "+" + newIdent, coordinates);
+				// this.activitiesTable.put(automatic.getIdent(), clone);
+				// this.copyAutomaticProperties((Automatic) clone, automatic);
+			// }
 
-			clone.setTheActivityType(activity.getTheActivityType());
+			// clone.setTheActivityType(activity.getTheActivityType());
 		}
 		return clone;
 	}
@@ -1241,27 +1242,27 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 	 * @return the new collection of reservations ... to be inserted into the
 	 *         new Normal activity
 	 */
-	private Collection<Reservation> copyReservations(Collection theReservation, Normal destinationNormal) {
-		Collection<Reservation> newInvolvedReservations = new HashSet<Reservation>();
-		for (Iterator<Reservation> reservationsIterator = theReservation.iterator(); reservationsIterator.hasNext();) {
-			Reservation currentReservation = reservationsIterator.next();
-			if (currentReservation != null) {
-				Reservation newReservation = new Reservation();
-				newReservation.insertIntoTheNormal(destinationNormal);
-				if (currentReservation.getTheExclusive() != null) {
-					newReservation.insertIntoTheExclusive(currentReservation.getTheExclusive());
-				}
-				// dates
-				newReservation.setFromDate(currentReservation.getFromDate());
-				newReservation.setToDate(currentReservation.getToDate());
-				// add to Main Collection
-				newInvolvedReservations.add(newReservation);
-			}// END IF
+	// private Collection<Reservation> copyReservations(Collection theReservation, Normal destinationNormal) {
+	// 	Collection<Reservation> newInvolvedReservations = new HashSet<Reservation>();
+	// 	for (Iterator<Reservation> reservationsIterator = theReservation.iterator(); reservationsIterator.hasNext();) {
+	// 		Reservation currentReservation = reservationsIterator.next();
+	// 		if (currentReservation != null) {
+	// 			Reservation newReservation = new Reservation();
+	// 			newReservation.insertIntoTheNormal(destinationNormal);
+	// 			if (currentReservation.getTheExclusive() != null) {
+	// 				newReservation.insertIntoTheExclusive(currentReservation.getTheExclusive());
+	// 			}
+	// 			// dates
+	// 			newReservation.setFromDate(currentReservation.getFromDate());
+	// 			newReservation.setToDate(currentReservation.getToDate());
+	// 			// add to Main Collection
+	// 			newInvolvedReservations.add(newReservation);
+	// 		}// END IF
 
-		}// END FOR
-			// after all, retrieve correct collection
-		return newInvolvedReservations;
-	}// end method
+	// 	}// END FOR
+	// 		// after all, retrieve correct collection
+	// 	return newInvolvedReservations;
+	// }// end method
 
 	// private constants, to reuse the method to copy involved artifacts
 	private static int TO_INVOLVED = 0, FROM_INVOLVED = 1;
@@ -1277,9 +1278,9 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 			InvolvedArtifact currentInvolved = involvedIterator.next();
 			if (currentInvolved != null) {
 				InvolvedArtifact newInvolved = new InvolvedArtifact();
-				if (currentInvolved.getTheArtifactType() != null) {
-					newInvolved.setTheArtifactType(currentInvolved.getTheArtifactType());
-				}
+				// if (currentInvolved.getTheArtifactType() != null) {
+				// 	newInvolved.setTheArtifactType(currentInvolved.getTheArtifactType());
+				// }
 				Artifact theArtifact = currentInvolved.getTheArtifact();
 				if (theArtifact != null) {
 					newInvolved.setTheArtifact(theArtifact);
@@ -1299,44 +1300,44 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 	}// end method
 
 
-	private Collection<RequiredResource> copyRequiredResources(Collection<RequiredResource> theRequiredResource, Normal destinationNormal,
-			Hashtable<String, String> coordinates) throws RepositoryQueryException {
-		Collection<RequiredResource> newRequiredResources = new HashSet<RequiredResource>();
+	// private Collection<RequiredResource> copyRequiredResources(Collection<RequiredResource> theRequiredResource, Normal destinationNormal,
+	// 		Hashtable<String, String> coordinates) throws RepositoryQueryException {
+	// 	Collection<RequiredResource> newRequiredResources = new HashSet<RequiredResource>();
 
-		String coordinateKey = null;
+	// 	String coordinateKey = null;
 
-		for (Iterator<RequiredResource> requiredIterator = theRequiredResource.iterator(); requiredIterator.hasNext();) {
+	// 	for (Iterator<RequiredResource> requiredIterator = theRequiredResource.iterator(); requiredIterator.hasNext();) {
 
-			RequiredResource currentReqResource = requiredIterator.next();
-			if (currentReqResource != null) {
-				RequiredResource newRequiredResource = new RequiredResource();
+	// 		RequiredResource currentReqResource = requiredIterator.next();
+	// 		if (currentReqResource != null) {
+	// 			RequiredResource newRequiredResource = new RequiredResource();
 
-				if (currentReqResource.getTheResourceType() != null) {
-					newRequiredResource.insertIntoTheResourceType(currentReqResource.getTheResourceType());
-					coordinateKey = currentReqResource.getTheResourceType().getIdent();
-				}
+	// 			if (currentReqResource.getTheResourceType() != null) {
+	// 				newRequiredResource.insertIntoTheResourceType(currentReqResource.getTheResourceType());
+	// 				coordinateKey = currentReqResource.getTheResourceType().getIdent();
+	// 			}
 
-				if (currentReqResource.getTheResource() != null) {
-					newRequiredResource.setTheResource(currentReqResource.getTheResource());
-					newRequiredResource.setAmountNeeded(currentReqResource.getAmountNeeded());
-					coordinateKey = coordinateKey + ":" + currentReqResource.getTheResource().getIdent();
-				}
+	// 			if (currentReqResource.getTheResource() != null) {
+	// 				newRequiredResource.setTheResource(currentReqResource.getTheResource());
+	// 				newRequiredResource.setAmountNeeded(currentReqResource.getAmountNeeded());
+	// 				coordinateKey = coordinateKey + ":" + currentReqResource.getTheResource().getIdent();
+	// 			}
 
-				newRequiredResource.insertIntoTheNormal(destinationNormal);
+	// 			newRequiredResource.insertIntoTheNormal(destinationNormal);
 
-				coordinateKey = coordinateKey + ":" + destinationNormal.getIdent();
-				this.addCoordinate(currentReqResource.getId(), currentReqResource.getClass().getSimpleName(), WebAPSEEObject.REQ_RESOURCE + "+"
-						+ coordinateKey, coordinates);
-				coordinateKey = null;
+	// 			coordinateKey = coordinateKey + ":" + destinationNormal.getIdent();
+	// 			this.addCoordinate(currentReqResource.getId(), currentReqResource.getClass().getSimpleName(), WebAPSEEObject.REQ_RESOURCE + "+"
+	// 					+ coordinateKey, coordinates);
+	// 			coordinateKey = null;
 
-				// add to Main Collection
-				newRequiredResources.add(newRequiredResource);
+	// 			// add to Main Collection
+	// 			newRequiredResources.add(newRequiredResource);
 
-			}// END IF
-		}// END FOR
-			// after all, retrieve correct collection
-		return newRequiredResources;
-	}// end method
+	// 		}// END IF
+	// 	}// END FOR
+	// 		// after all, retrieve correct collection
+	// 	return newRequiredResources;
+	// }// end method
 
 
 	private Collection<RequiredPeople> copyRequiredPeople(Collection theRequiredPeople, Normal destinationNormal,
@@ -1355,20 +1356,20 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 
 					newRequiredPeople = new ReqAgent();
 
-					if (((ReqAgent) currentReqPeople).getTheRole() != null) {
-						((ReqAgent) newRequiredPeople).insertIntoTheRole(((ReqAgent) currentReqPeople).getTheRole());
-						coordinateKey = ((ReqAgent) newRequiredPeople).getTheRole().getIdent();
-					}
+					// if (((ReqAgent) currentReqPeople).getTheRole() != null) {
+					// 	((ReqAgent) newRequiredPeople).insertIntoTheRole(((ReqAgent) currentReqPeople).getTheRole());
+					// 	coordinateKey = ((ReqAgent) newRequiredPeople).getTheRole().getIdent();
+					// }
 
 					if (((ReqAgent) currentReqPeople).getTheAgent() != null) {
-						((ReqAgent) newRequiredPeople).insertIntoTheAgent(((ReqAgent) currentReqPeople).getTheAgent());
+						((ReqAgent) newRequiredPeople).setTheAgent(((ReqAgent) currentReqPeople).getTheAgent());
 						coordinateKey = coordinateKey + ":" + ((ReqAgent) newRequiredPeople).getTheAgent().getIdent();
 					}
 					// about ReqAgentRequiresAbility
-					Collection<ReqAgentRequiresAbility> newReqAgReqAbility = null;
-					newReqAgReqAbility = copyReqAgentReqAbility(((ReqAgent) currentReqPeople).getTheReqAgentRequiresAbilities(),
-							((ReqAgent) newRequiredPeople));
-					((ReqAgent) newRequiredPeople).setTheReqAgentRequiresAbilities((Set<ReqAgentRequiresAbility>) newReqAgReqAbility);
+					// Collection<ReqAgentRequiresAbility> newReqAgReqAbility = null;
+					// newReqAgReqAbility = copyReqAgentReqAbility(((ReqAgent) currentReqPeople).getTheReqAgentRequiresAbilities(),
+					// 		((ReqAgent) newRequiredPeople));
+					// ((ReqAgent) newRequiredPeople).setTheReqAgentRequiresAbilities((Set<ReqAgentRequiresAbility>) newReqAgReqAbility);
 
 					coordinateKey = coordinateKey + ":" + destinationNormal.getIdent();
 					this.addCoordinate(((ReqAgent) currentReqPeople).getId(), ((ReqAgent) currentReqPeople).getClass().getSimpleName(),
@@ -1379,10 +1380,10 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 
 					newRequiredPeople = new ReqWorkGroup();
 
-					if (((ReqWorkGroup) currentReqPeople).getTheWorkGroupType() != null) {
-						((ReqWorkGroup) newRequiredPeople).setTheWorkGroupType(((ReqWorkGroup) currentReqPeople).getTheWorkGroupType());
-						coordinateKey = ((ReqWorkGroup) newRequiredPeople).getTheWorkGroupType().getIdent();
-					}
+					// if (((ReqWorkGroup) currentReqPeople).getTheWorkGroupType() != null) {
+					// 	((ReqWorkGroup) newRequiredPeople).setTheWorkGroupType(((ReqWorkGroup) currentReqPeople).getTheWorkGroupType());
+					// 	coordinateKey = ((ReqWorkGroup) newRequiredPeople).getTheWorkGroupType().getIdent();
+					// }
 
 					if (((ReqWorkGroup) currentReqPeople).getTheWorkGroup() != null) {
 						((ReqWorkGroup) newRequiredPeople).setTheWorkGroup(((ReqWorkGroup) currentReqPeople).getTheWorkGroup());
@@ -1397,7 +1398,7 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 				}// end if
 
 				// the common attribute normal activity
-				newRequiredPeople.insertIntoTheNormal(destinationNormal);
+				newRequiredPeople.setTheNormal(destinationNormal);
 
 				// add to main collection
 				newRequiredPeoples.add(newRequiredPeople);
@@ -1411,36 +1412,36 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 	}// end method
 
 
-	private Collection<ReqAgentRequiresAbility> copyReqAgentReqAbility(Collection theReqAgentRequiresAbility, ReqAgent newReqAgent) {
-		Collection<ReqAgentRequiresAbility> newReqAgReqAbilities = new HashSet<ReqAgentRequiresAbility>();
+	// private Collection<ReqAgentRequiresAbility> copyReqAgentReqAbility(Collection theReqAgentRequiresAbility, ReqAgent newReqAgent) {
+	// 	Collection<ReqAgentRequiresAbility> newReqAgReqAbilities = new HashSet<ReqAgentRequiresAbility>();
 
-		for (Iterator<ReqAgentRequiresAbility> requiredIterator = theReqAgentRequiresAbility.iterator(); requiredIterator.hasNext();) {
+	// 	for (Iterator<ReqAgentRequiresAbility> requiredIterator = theReqAgentRequiresAbility.iterator(); requiredIterator.hasNext();) {
 
-			ReqAgentRequiresAbility currentReqAgReqAbility = requiredIterator.next();
-			if (currentReqAgReqAbility != null) {
-				ReqAgentRequiresAbility newReqAgReqAb = new ReqAgentRequiresAbility();
+	// 		ReqAgentRequiresAbility currentReqAgReqAbility = requiredIterator.next();
+	// 		if (currentReqAgReqAbility != null) {
+	// 			ReqAgentRequiresAbility newReqAgReqAb = new ReqAgentRequiresAbility();
 
-				if (currentReqAgReqAbility.getTheAbility() != null) {
-					newReqAgReqAb.insertIntoTheAbility(currentReqAgReqAbility.getTheAbility());
-				}
+	// 			if (currentReqAgReqAbility.getTheAbility() != null) {
+	// 				newReqAgReqAb.insertIntoTheAbility(currentReqAgReqAbility.getTheAbility());
+	// 			}
 
-				newReqAgReqAb.setDegree(currentReqAgReqAbility.getDegree());
-				newReqAgReqAb.insertIntoTheReqAgent(newReqAgent);
+	// 			newReqAgReqAb.setDegree(currentReqAgReqAbility.getDegree());
+	// 			newReqAgReqAb.insertIntoTheReqAgent(newReqAgent);
 
-				// add to Main Collection
-				newReqAgReqAbilities.add(newReqAgReqAb);
+	// 			// add to Main Collection
+	// 			newReqAgReqAbilities.add(newReqAgReqAb);
 
-			}// END IF
+	// 		}// END IF
 
-		}// END FOR
-			// after all, retrieve correct collection
-		return newReqAgReqAbilities;
-	}
+	// 	}// END FOR
+	// 		// after all, retrieve correct collection
+	// 	return newReqAgReqAbilities;
+	// }
 
 	private void copyDecomposedProperties(Decomposed newDecomposed, Decomposed currentDecomposed, Hashtable<String, String> coordinates) {
-		if (currentDecomposed.getTheActivityType() != null) {
-			newDecomposed.setTheActivityType(currentDecomposed.getTheActivityType());
-		}
+		// if (currentDecomposed.getTheActivityType() != null) {
+		// 	newDecomposed.setTheActivityType(currentDecomposed.getTheActivityType());
+		// }
 		if (currentDecomposed.getName() != null) {
 			newDecomposed.setName(currentDecomposed.getName());
 		}
@@ -1500,19 +1501,21 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 					newActivity = new Normal();
 					newActivity.setIdent(newActivityIdent);
 					copyNormalProperties(((Normal) newActivity), ((Normal) currentActivity), coordinates);
-				} else if (currentActivity instanceof Automatic) {
-					newActivity = new Automatic();
-					newActivity.setIdent(newActivityIdent);
-					copyAutomaticProperties(((Automatic) newActivity), ((Automatic) currentActivity));
-				} else if (currentActivity instanceof Decomposed) {
+        }
+        // else if (currentActivity instanceof Automatic) {
+				// 	newActivity = new Automatic();
+				// 	newActivity.setIdent(newActivityIdent);
+				// 	copyAutomaticProperties(((Automatic) newActivity), ((Automatic) currentActivity));
+        // }
+        else if (currentActivity instanceof Decomposed) {
 					newActivity = new Decomposed();
 					newActivity.setIdent(newActivityIdent);
 					copyDecomposedProperties(((Decomposed) newActivity), ((Decomposed) currentActivity), coordinates);
 				}
 
-				if (currentActivity.getTheActivityType() != null) {
-					newActivity.setTheActivityType(currentActivity.getTheActivityType());
-				}
+				// if (currentActivity.getTheActivityType() != null) {
+				// 	newActivity.setTheActivityType(currentActivity.getTheActivityType());
+				// }
 
 				// add to main Collection
 				newActivities.put(currentActivity.getIdent(), newActivity);

@@ -1,7 +1,15 @@
 {
     "name": "RequiredPeople",
     "fields": [],
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "normal",
+            "otherEntityRelationshipName": "theRequiredPeople",
+            "relationshipName": "theNormal",
+            "otherEntityField": "id"
+        }
+    ],
     "changelogDate": "20191024134436",
     "entityTableName": "required_people",
     "dto": "no",

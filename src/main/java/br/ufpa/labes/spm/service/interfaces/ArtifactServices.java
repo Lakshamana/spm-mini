@@ -6,7 +6,6 @@ import java.util.Map;
 import br.ufpa.labes.spm.service.dto.SimpleArtifactDescriptorDTO;
 import br.ufpa.labes.spm.service.dto.ArtifactDTO;
 import br.ufpa.labes.spm.service.dto.ArtifactsDTO;
-import br.ufpa.labes.spm.service.dto.TypesDTO;
 import br.ufpa.labes.spm.exceptions.RepositoryQueryException;
 
 public interface ArtifactServices {

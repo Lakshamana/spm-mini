@@ -34,6 +34,12 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
+            "otherEntityName": "requiredPeople",
+            "otherEntityRelationshipName": "theNormal",
+            "relationshipName": "theRequiredPeople"
+        },
+        {
+            "relationshipType": "one-to-many",
             "otherEntityName": "involvedArtifact",
             "otherEntityRelationshipName": "inInvolvedArtifacts",
             "relationshipName": "involvedArtifactToNormal"

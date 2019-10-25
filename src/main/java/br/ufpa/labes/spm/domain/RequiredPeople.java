@@ -1,4 +1,5 @@
 package br.ufpa.labes.spm.domain;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -20,6 +21,10 @@ public class RequiredPeople implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JsonIgnoreProperties("theRequiredPeople")
+    private Normal theNormal;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -27,6 +32,19 @@ public class RequiredPeople implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Normal getTheNormal() {
+        return theNormal;
+    }
+
+    public RequiredPeople theNormal(Normal normal) {
+        this.theNormal = normal;
+        return this;
+    }
+
+    public void setTheNormal(Normal normal) {
+        this.theNormal = normal;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

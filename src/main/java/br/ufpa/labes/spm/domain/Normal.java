@@ -45,6 +45,10 @@ public class Normal extends Plain implements Serializable {
     @Column(name = "auto_allocable")
     private Boolean autoAllocable;
 
+    @OneToMany(mappedBy = "theNormal")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<RequiredPeople> theRequiredPeople = new HashSet<>();
+
     @OneToMany(mappedBy = "inInvolvedArtifacts")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<InvolvedArtifact> involvedArtifactToNormals = new HashSet<>();
@@ -151,6 +155,31 @@ public class Normal extends Plain implements Serializable {
 
     public void setAutoAllocable(Boolean autoAllocable) {
         this.autoAllocable = autoAllocable;
+    }
+
+    public Set<RequiredPeople> getTheRequiredPeople() {
+        return theRequiredPeople;
+    }
+
+    public Normal theRequiredPeople(Set<RequiredPeople> requiredPeople) {
+        this.theRequiredPeople = requiredPeople;
+        return this;
+    }
+
+    public Normal addTheRequiredPeople(RequiredPeople requiredPeople) {
+        this.theRequiredPeople.add(requiredPeople);
+        requiredPeople.setTheNormal(this);
+        return this;
+    }
+
+    public Normal removeTheRequiredPeople(RequiredPeople requiredPeople) {
+        this.theRequiredPeople.remove(requiredPeople);
+        requiredPeople.setTheNormal(null);
+        return this;
+    }
+
+    public void setTheRequiredPeople(Set<RequiredPeople> requiredPeople) {
+        this.theRequiredPeople = requiredPeople;
     }
 
     public Set<InvolvedArtifact> getInvolvedArtifactToNormals() {
