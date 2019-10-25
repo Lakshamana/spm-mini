@@ -1,0 +1,48 @@
+{
+    "name": "Dependency",
+    "fields": [
+        {
+            "fieldName": "kindDep",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "sequence",
+            "otherEntityRelationshipName": "theDependency",
+            "relationshipName": "theSequence",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "multipleCon",
+            "otherEntityRelationshipName": "theDependency",
+            "relationshipName": "theMultipleCon",
+            "ownerSide": false
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "multipleCon",
+            "otherEntityRelationshipName": "theDependencyToMultipleCons",
+            "relationshipName": "theMultipleConsToDependency"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "sequence",
+            "otherEntityRelationshipName": "theDependencyToMultipleSequences",
+            "relationshipName": "theMultipleSequences"
+        }
+    ],
+    "changelogDate": "20191025145246",
+    "entityTableName": "dependency",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

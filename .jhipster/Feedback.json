@@ -1,0 +1,15 @@
+{
+    "name": "Feedback",
+    "fields": [],
+    "relationships": [],
+    "changelogDate": "20191025145244",
+    "entityTableName": "feedback",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

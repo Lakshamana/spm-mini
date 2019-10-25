@@ -113,6 +113,11 @@ public class CacheConfiguration {
             createCache(cm, br.ufpa.labes.spm.domain.Normal.class.getName() + ".involvedArtifactToNormals");
             createCache(cm, br.ufpa.labes.spm.domain.Normal.class.getName() + ".involvedArtifactFromNormals");
             createCache(cm, br.ufpa.labes.spm.domain.Normal.class.getName() + ".theRequiredPeople");
+            createCache(cm, br.ufpa.labes.spm.domain.Feedback.class.getName());
+            createCache(cm, br.ufpa.labes.spm.domain.Sequence.class.getName());
+            createCache(cm, br.ufpa.labes.spm.domain.Dependency.class.getName());
+            createCache(cm, br.ufpa.labes.spm.domain.Dependency.class.getName() + ".theMultipleConsToDependencies");
+            createCache(cm, br.ufpa.labes.spm.domain.Dependency.class.getName() + ".theMultipleSequences");
             // jhipster-needle-ehcache-add-entry
         };
     }

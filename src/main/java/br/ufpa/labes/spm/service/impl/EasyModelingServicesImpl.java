@@ -1931,52 +1931,52 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 	/**
 	 * Taken from processUtility.CopyProcess
 	 */
-	private Set<ToolParameter> copySubroutineToolParameters(Collection theToolParameters, Subroutine newSubRoutine) {
-		Set<ToolParameter> newParameters = new HashSet<ToolParameter>();
+	// private Set<ToolParameter> copySubroutineToolParameters(Collection theToolParameters, Subroutine newSubRoutine) {
+	// 	Set<ToolParameter> newParameters = new HashSet<ToolParameter>();
 
-		for (Iterator<ToolParameter> paramIterator = theToolParameters.iterator(); paramIterator.hasNext();) {
-			ToolParameter currentParameter = paramIterator.next();
-			if (currentParameter != null) {
-				ToolParameter newParameter = null;
-				newParameter = new ToolParameter();
-				newParameter.setTheSubroutine(newSubRoutine);
+	// 	for (Iterator<ToolParameter> paramIterator = theToolParameters.iterator(); paramIterator.hasNext();) {
+	// 		ToolParameter currentParameter = paramIterator.next();
+	// 		if (currentParameter != null) {
+	// 			ToolParameter newParameter = null;
+	// 			newParameter = new ToolParameter();
+	// 			newParameter.setTheSubroutine(newSubRoutine);
 
-				newParameter.setLabel(currentParameter.getLabel());
-				newParameter.setSeparatorSymbol(currentParameter.getSeparatorSymbol());
-				if (currentParameter.getTheArtifactType() != null) {
-					newParameter.setTheArtifactType(currentParameter.getTheArtifactType());
-				}
-				if (currentParameter.getThePrimitiveType() != null) {
-					newParameter.setThePrimitiveType(currentParameter.getThePrimitiveType());
-				}
+	// 			newParameter.setLabel(currentParameter.getLabel());
+	// 			newParameter.setSeparatorSymbol(currentParameter.getSeparatorSymbol());
+	// 			if (currentParameter.getTheArtifactType() != null) {
+	// 				newParameter.setTheArtifactType(currentParameter.getTheArtifactType());
+	// 			}
+	// 			if (currentParameter.getThePrimitiveType() != null) {
+	// 				newParameter.setThePrimitiveType(currentParameter.getThePrimitiveType());
+	// 			}
 
-				// add to main collection
-				newParameters.add(newParameter);
-			}
-		}
-		// after all, retrieve correct collection
-		return newParameters;
-	}
+	// 			// add to main collection
+	// 			newParameters.add(newParameter);
+	// 		}
+	// 	}
+	// 	// after all, retrieve correct collection
+	// 	return newParameters;
+	// }
 
 	/**
 	 * Taken from processUtility.CopyProcess
 	 */
-	private Set<Parameter> copyAutomaticParameters(Collection theParameters, Automatic newAutomatic) {
-		Set<Parameter> newParameters = new HashSet<Parameter>();
-		for (Iterator<Parameter> paramIterator = theParameters.iterator(); paramIterator.hasNext();) {
-			Parameter currentParameter = paramIterator.next();
-			if (currentParameter != null) {
-				Parameter newParameter = null;
-				newParameter = new Parameter();
-				newParameter.setTheAutomatic(newAutomatic);
-				newParameter.setDescription(currentParameter.getDescription());
-				// add to main collection
-				newParameters.add(newParameter);
-			}
-		}
-		// after all, retrieve correct collection
-    return newParameters;
-	}
+	// private Set<Parameter> copyAutomaticParameters(Collection theParameters, Automatic newAutomatic) {
+	// 	Set<Parameter> newParameters = new HashSet<Parameter>();
+	// 	for (Iterator<Parameter> paramIterator = theParameters.iterator(); paramIterator.hasNext();) {
+	// 		Parameter currentParameter = paramIterator.next();
+	// 		if (currentParameter != null) {
+	// 			Parameter newParameter = null;
+	// 			newParameter = new Parameter();
+	// 			newParameter.setTheAutomatic(newAutomatic);
+	// 			newParameter.setDescription(currentParameter.getDescription());
+	// 			// add to main collection
+	// 			newParameters.add(newParameter);
+	// 		}
+	// 	}
+	// 	// after all, retrieve correct collection
+  //   return newParameters;
+	// }
 
 	/**
 	 * Generate Ident for copies
@@ -2154,13 +2154,13 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 		}
 	}
 
-	private void upperPropagation(Decomposed actDecomposed, Activity already,CalendarDTO utilsDays) {
-		if (actDecomposed != null) {
-			this.propagateReplanning(actDecomposed, already,utilsDays);
-			Decomposed upperDecomposed = actDecomposed.getTheProcessModel().getTheDecomposed();
-			this.upperPropagation(upperDecomposed, actDecomposed,utilsDays);
-		}
-	}
+	// private void upperPropagation(Decomposed actDecomposed, Activity already,CalendarDTO utilsDays) {
+	// 	if (actDecomposed != null) {
+	// 		this.propagateReplanning(actDecomposed, already,utilsDays);
+	// 		Decomposed upperDecomposed = actDecomposed.getTheProcessModel().getTheDecomposed();
+	// 		this.upperPropagation(upperDecomposed, actDecomposed,utilsDays);
+	// 	}
+	// }
 
 	private Normal retrieveBasedOnLastDate(Collection coll) {
 		// if (coll.isEmpty())
@@ -2878,74 +2878,74 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 	 * applyAllocationToProcess(java.lang.String, java.lang.String,
 	 * java.lang.String)
 	 */
-	@Override
-	public void applyAllocationToProcess(String process_id, String role_id, String agent_id) {
+	// @Override
+	// public void applyAllocationToProcess(String process_id, String role_id, String agent_id) {
 
 
-		SimpleActivityQueryResult[] acts = procRepository.getAllNormalActivitiesFromProcess(process_id);
+	// 	SimpleActivityQueryResult[] acts = procRepository.getAllNormalActivitiesFromProcess(process_id);
 
-		NormalRepositoryQueryImpl nRepositoryQuery = new NormalRepositoryQueryImpl();
+	// 	NormalRepositoryQueryImpl nRepositoryQuery = new NormalRepositoryQueryImpl();
 
-		for (int i = 0; i < acts.length; i++) {
+	// 	for (int i = 0; i < acts.length; i++) {
 
-			// defineRequiredAgent(act.getIdent(),role_id, agent_id);
-			String normal_id = acts[i].getIdent();
+	// 		// defineRequiredAgent(act.getIdent(),role_id, agent_id);
+	// 		String normal_id = acts[i].getIdent();
 
-			Normal currentNormal = null;
-			currentNormal = (Normal) nRepositoryQuery.retrieveBySecondaryKey(normal_id);
+	// 		Normal currentNormal = null;
+	// 		currentNormal = (Normal) nRepositoryQuery.retrieveBySecondaryKey(normal_id);
 
-			if (currentNormal == null)
-				continue;
+	// 		if (currentNormal == null)
+	// 			continue;
 
-			Collection<RequiredPeople> reqps = currentNormal.getTheRequiredPeople();
+	// 		Collection<RequiredPeople> reqps = currentNormal.getTheRequiredPeople();
 
-			for (RequiredPeople reqp : reqps) {
-				if (reqp instanceof ReqAgent) {
-					// Not instantiated yet
-					if (((ReqAgent) reqp).getTheAgent() == null) {
-						if ((((ReqAgent) reqp).getTheRole() != null) && (((ReqAgent) reqp).getTheRole().getIdent().equals(role_id))) {
-							// allocate agent to this role
-							// try {
-							// 	// String act_id, String role_id, String ag_id
-							// 	dynamicModeling.defineRequiredAgent(currentNormal.getIdent(), role_id, agent_id);
-							// } catch (WebapseeException e) {
-							// 	// TODO Auto-generated catch block
-							// 	e.printStackTrace();
-							// }
-							break;// break current loop, because we can
-							// allocate only once the same agent
-							// to one activity
-						}
-					}
-				}
-			}// end for
-		}
+	// 		for (RequiredPeople reqp : reqps) {
+	// 			if (reqp instanceof ReqAgent) {
+	// 				// Not instantiated yet
+	// 				if (((ReqAgent) reqp).getTheAgent() == null) {
+	// 					if ((((ReqAgent) reqp).getTheRole() != null) && (((ReqAgent) reqp).getTheRole().getIdent().equals(role_id))) {
+	// 						// allocate agent to this role
+	// 						// try {
+	// 						// 	// String act_id, String role_id, String ag_id
+	// 						// 	dynamicModeling.defineRequiredAgent(currentNormal.getIdent(), role_id, agent_id);
+	// 						// } catch (WebapseeException e) {
+	// 						// 	// TODO Auto-generated catch block
+	// 						// 	e.printStackTrace();
+	// 						// }
+	// 						break;// break current loop, because we can
+	// 						// allocate only once the same agent
+	// 						// to one activity
+	// 					}
+	// 				}
+	// 			}
+	// 		}// end for
+	// 	}
 
-	}
+	// }
 
-	public CalendarDTO filtraDatas(CalendarDTO calendar){
-		CalendarDTO replainDates = new CalendarDTO();
-		ArrayList<String> replainTexto = new ArrayList<>();
-
-
-		for (int i = 0; i < calendar.getNotWorkingDays().size(); i++) {
-			String c[] = calendar.getNotWorkingDays().get(i).split("\\,");
-
-			replainTexto.add(c[3]);
-		}
-
-			replainDates.setNotWorkingDays(replainTexto);
-			System.out.println("calendario "+replainDates.getNotWorkingDays().get(0));
-			System.out.println("calendario "+replainDates.getNotWorkingDays().get(1));
+	// public CalendarDTO filtraDatas(CalendarDTO calendar){
+	// 	CalendarDTO replainDates = new CalendarDTO();
+	// 	ArrayList<String> replainTexto = new ArrayList<>();
 
 
-		return replainDates;
+	// 	for (int i = 0; i < calendar.getNotWorkingDays().size(); i++) {
+	// 		String c[] = calendar.getNotWorkingDays().get(i).split("\\,");
+
+	// 		replainTexto.add(c[3]);
+	// 	}
+
+	// 		replainDates.setNotWorkingDays(replainTexto);
+	// 		System.out.println("calendario "+replainDates.getNotWorkingDays().get(0));
+	// 		System.out.println("calendario "+replainDates.getNotWorkingDays().get(1));
 
 
+	// 	return replainDates;
 
 
 
-	}
+
+
+	// }
 
 	/*
 	 * (non-Javadoc)

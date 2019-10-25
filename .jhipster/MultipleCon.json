@@ -8,6 +8,21 @@
     ],
     "relationships": [
         {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "dependency",
+            "otherEntityRelationshipName": "theMultipleCon",
+            "relationshipName": "theDependency",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "dependency",
+            "otherEntityRelationshipName": "theMultipleConsToDependency",
+            "relationshipName": "theDependencyToMultipleCons",
+            "otherEntityField": "id"
+        },
+        {
             "relationshipType": "one-to-many",
             "otherEntityName": "branchCon",
             "otherEntityRelationshipName": "fromMultipleConnection",

@@ -41,6 +41,9 @@
     <include file="config/liquibase/changelog/20191024134443_added_entity_Template.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191024142725_added_entity_Project.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191025131123_added_entity_InvolvedArtifact.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191025145244_added_entity_Feedback.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191025145245_added_entity_Sequence.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191025145246_added_entity_Dependency.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20191024134419_added_entity_constraints_Activity.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191024134420_added_entity_constraints_Decomposed.xml" relativeToChangelogFile="false"/>
@@ -63,5 +66,8 @@
     <include file="config/liquibase/changelog/20191024142725_added_entity_constraints_Project.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191025131123_added_entity_constraints_InvolvedArtifact.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191024134436_added_entity_constraints_RequiredPeople.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191025145245_added_entity_constraints_Sequence.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191025145246_added_entity_constraints_Dependency.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191024134429_added_entity_constraints_MultipleCon.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

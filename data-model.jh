@@ -382,13 +382,13 @@ entity ArtifactCon {} //extends Connection
 
 entity SimpleCon {} //extends Connection
 
-// entity Feedback {} //extends SimpleCon
+entity Feedback {} //extends SimpleCon
 
-// entity Sequence {} //extends SimpleCon
+entity Sequence {} //extends SimpleCon
 
-// entity Dependency {
-//     kindDep String
-// }
+entity Dependency {
+    kindDep String
+}
 
 entity JoinCon {  //extends MultipleCon
     kindJoin String
@@ -422,7 +422,7 @@ relationship ManyToOne {
     Connection{theProcessModel} to ProcessModel{theConnection},
     // Connection{theConnectionType} to ConnectionType{theConnection}
 
-    // MultipleCon{theDependencyToMultipleCons} to Dependency{theMultipleConsToDependency},
+    MultipleCon{theDependencyToMultipleCons} to Dependency{theMultipleConsToDependency},
 
     BranchCon{fromMultipleConnection} to MultipleCon{toBranchCon},
 
@@ -430,7 +430,7 @@ relationship ManyToOne {
 
     BranchConCondToMultipleCon{theMultipleCon} to MultipleCon{theBranchConCondToMultipleCon},
 
-    // Sequence{theDependencyToMultipleSequences} to Dependency{theMultipleSequences},
+    Sequence{theDependencyToMultipleSequences} to Dependency{theMultipleSequences},
 
     JoinCon{toMultipleCon} to MultipleCon{theJoinCon}
 }
@@ -443,11 +443,11 @@ relationship ManyToMany {
     JoinCon{fromMultipleCon} to MultipleCon{theJoinConToMultipleCon}
 }
 
-// relationship OneToOne {
-//   MultipleCon{theDependency} to Dependency{theMultipleCon},
+relationship OneToOne {
+  MultipleCon{theDependency} to Dependency{theMultipleCon},
 
-//   Dependency{theSequence} to Sequence{theDependency}
-// }
+  Dependency{theSequence} to Sequence{theDependency}
+}
 
 //package driver ------------------------------------------- OK
 

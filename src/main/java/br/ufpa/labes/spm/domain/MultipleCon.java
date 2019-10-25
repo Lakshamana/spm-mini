@@ -2,12 +2,8 @@ package br.ufpa.labes.spm.domain;
 
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-
-
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -34,6 +30,14 @@ public class MultipleCon extends Connection implements Serializable {
 
     @Column(name = "fired")
     private Boolean fired;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Dependency theDependency;
+
+    @ManyToOne
+    @JsonIgnoreProperties("theMultipleConsToDependencies")
+    private Dependency theDependencyToMultipleCons;
 
     @OneToMany(mappedBy = "fromMultipleConnection")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -82,6 +86,32 @@ public class MultipleCon extends Connection implements Serializable {
 
     public void setFired(Boolean fired) {
         this.fired = fired;
+    }
+
+    public Dependency getTheDependency() {
+        return theDependency;
+    }
+
+    public MultipleCon theDependency(Dependency dependency) {
+        this.theDependency = dependency;
+        return this;
+    }
+
+    public void setTheDependency(Dependency dependency) {
+        this.theDependency = dependency;
+    }
+
+    public Dependency getTheDependencyToMultipleCons() {
+        return theDependencyToMultipleCons;
+    }
+
+    public MultipleCon theDependencyToMultipleCons(Dependency dependency) {
+        this.theDependencyToMultipleCons = dependency;
+        return this;
+    }
+
+    public void setTheDependencyToMultipleCons(Dependency dependency) {
+        this.theDependencyToMultipleCons = dependency;
     }
 
     public Set<BranchCon> getToBranchCons() {
