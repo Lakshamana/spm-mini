@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import br.ufpa.labes.spm.annotations.Criteria;
@@ -30,8 +31,8 @@ public class GenericRepositoryImpl<T, PK> extends SimpleJpaRepository<T, PK>
 
   private Class<T> clazz;
 
-  public GenericRepositoryImpl(Class<T> clazz, EntityManager em) {
-    super(clazz, em);
+  public GenericRepositoryImpl(JpaEntityInformation entityInformation, EntityManager em) {
+    super(entityInformation, em);
   }
 
   @Override

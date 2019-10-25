@@ -18,7 +18,9 @@ import br.ufpa.labes.spm.beans.GenericRepositoryFactoryBean;
 import java.sql.SQLException;
 
 @Configuration
-@EnableJpaRepositories(repositoryFactoryBeanClass = GenericRepositoryFactoryBean.class)
+@EnableJpaRepositories(
+    basePackages = "br.ufpa.labes.spm.repository",
+    repositoryFactoryBeanClass = GenericRepositoryFactoryBean.class)
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
 public class DatabaseConfiguration {
