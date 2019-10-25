@@ -7,12 +7,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import br.ufpa.labes.spm.repository.impl.BaseRepositoryQueryImpl;
 import br.ufpa.labes.spm.repository.interfaces.ProcessRepositoryQuery;
-import br.ufpa.labes.spm.repository.interfaces.BaseRepositoryQuery;
 import br.ufpa.labes.spm.domain.Activity;
 import br.ufpa.labes.spm.domain.Normal;
-import br.ufpa.labes.spm.domain.Process;
 import br.ufpa.labes.spm.service.util.SimpleActivityQueryResult;
 
 public class ProcessRepositoryQueryImpl implements ProcessRepositoryQuery {
