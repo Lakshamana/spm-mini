@@ -48,14 +48,10 @@ import br.ufpa.labes.spm.repository.AgentRepository;
 import br.ufpa.labes.spm.repository.ArtifactRepository;
 import br.ufpa.labes.spm.repository.DecomposedRepository;
 import br.ufpa.labes.spm.repository.GraphicCoordinateRepository;
-import br.ufpa.labes.spm.repository.ProcessEstimationRepository;
 import br.ufpa.labes.spm.repository.ProcessModelRepository;
 import br.ufpa.labes.spm.repository.ProcessRepository;
 import br.ufpa.labes.spm.repository.ProjectRepository;
-import br.ufpa.labes.spm.repository.SpmLogRepository;
-import br.ufpa.labes.spm.repository.TaskRepository;
 import br.ufpa.labes.spm.repository.WebAPSEEObjectRepository;
-import br.ufpa.labes.spm.repository.interfaces.ReportRepositoryQuery;
 import br.ufpa.labes.spm.service.dto.dashboard.ProjectCost;
 import br.ufpa.labes.spm.service.dto.dashboard.ProjectStatistic;
 import br.ufpa.labes.spm.service.dto.dashboard.Time;
@@ -72,16 +68,9 @@ import br.ufpa.labes.spm.exceptions.WebapseeException;
 import br.ufpa.labes.spm.domain.Activity;
 import br.ufpa.labes.spm.domain.Decomposed;
 import br.ufpa.labes.spm.domain.Plain;
-import br.ufpa.labes.spm.domain.Ability;
 import br.ufpa.labes.spm.domain.Agent;
-import br.ufpa.labes.spm.domain.AgentAffinityAgent;
-import br.ufpa.labes.spm.domain.AgentHasAbility;
-import br.ufpa.labes.spm.domain.AgentPlaysRole;
 import br.ufpa.labes.spm.domain.WorkGroup;
-import br.ufpa.labes.spm.domain.Role;
-import br.ufpa.labes.spm.domain.RoleNeedsAbility;
 import br.ufpa.labes.spm.domain.Artifact;
-import br.ufpa.labes.spm.domain.ArtifactTask;
 import br.ufpa.labes.spm.domain.ArtifactCon;
 import br.ufpa.labes.spm.domain.BranchCon;
 import br.ufpa.labes.spm.domain.BranchANDCon;
@@ -95,75 +84,18 @@ import br.ufpa.labes.spm.domain.JoinCon;
 import br.ufpa.labes.spm.domain.MultipleCon;
 import br.ufpa.labes.spm.domain.Sequence;
 import br.ufpa.labes.spm.domain.SimpleCon;
-import br.ufpa.labes.spm.domain.AgendaEvent;
-import br.ufpa.labes.spm.domain.CatalogEvent;
-import br.ufpa.labes.spm.domain.ConnectionEvent;
-import br.ufpa.labes.spm.domain.GlobalActivityEvent;
-import br.ufpa.labes.spm.domain.SpmLog;
-import br.ufpa.labes.spm.domain.ModelingActivityEvent;
-import br.ufpa.labes.spm.domain.ProcessEvent;
-import br.ufpa.labes.spm.domain.ProcessModelEvent;
-import br.ufpa.labes.spm.domain.ResourceEvent;
-import br.ufpa.labes.spm.domain.Company;
 import br.ufpa.labes.spm.domain.Project;
-import br.ufpa.labes.spm.domain.DevelopingSystem;
-import br.ufpa.labes.spm.domain.Organization;
-import br.ufpa.labes.spm.domain.ArtifactParam;
-import br.ufpa.labes.spm.domain.Automatic;
-import br.ufpa.labes.spm.domain.EnactionDescription;
 import br.ufpa.labes.spm.domain.InvolvedArtifact;
 import br.ufpa.labes.spm.domain.Normal;
-import br.ufpa.labes.spm.domain.PrimitiveParam;
 import br.ufpa.labes.spm.domain.ReqAgent;
-import br.ufpa.labes.spm.domain.ReqAgentRequiresAbility;
 import br.ufpa.labes.spm.domain.ReqWorkGroup;
 import br.ufpa.labes.spm.domain.RequiredPeople;
-import br.ufpa.labes.spm.domain.RequiredResource;
-import br.ufpa.labes.spm.domain.ActivityEstimation;
-import br.ufpa.labes.spm.domain.ActivityMetric;
-import br.ufpa.labes.spm.domain.AgentEstimation;
-import br.ufpa.labes.spm.domain.AgentMetric;
-import br.ufpa.labes.spm.domain.ArtifactEstimation;
-import br.ufpa.labes.spm.domain.ArtifactMetric;
-import br.ufpa.labes.spm.domain.WorkGroupEstimation;
-import br.ufpa.labes.spm.domain.WorkGroupMetric;
-import br.ufpa.labes.spm.domain.MetricDefinition;
-import br.ufpa.labes.spm.domain.OrganizationEstimation;
-import br.ufpa.labes.spm.domain.OrganizationMetric;
-import br.ufpa.labes.spm.domain.ProcessEstimation;
-import br.ufpa.labes.spm.domain.ProcessMetric;
-import br.ufpa.labes.spm.domain.ResourceEstimation;
-import br.ufpa.labes.spm.domain.ResourceMetric;
 import br.ufpa.labes.spm.domain.GraphicCoordinate;
 import br.ufpa.labes.spm.domain.WebAPSEEObject;
 import br.ufpa.labes.spm.domain.Process;
 import br.ufpa.labes.spm.domain.ProcessModel;
 import br.ufpa.labes.spm.domain.Template;
-import br.ufpa.labes.spm.domain.Consumable;
-import br.ufpa.labes.spm.domain.Exclusive;
-import br.ufpa.labes.spm.domain.Resource;
-import br.ufpa.labes.spm.domain.Shareable;
-import br.ufpa.labes.spm.domain.ProcessAgenda;
-import br.ufpa.labes.spm.domain.Task;
-import br.ufpa.labes.spm.domain.TaskAgenda;
-import br.ufpa.labes.spm.domain.ClassMethodCall;
-import br.ufpa.labes.spm.domain.PrimitiveType;
-import br.ufpa.labes.spm.domain.Script;
-import br.ufpa.labes.spm.domain.Subroutine;
-import br.ufpa.labes.spm.domain.ToolDefinition;
-import br.ufpa.labes.spm.domain.ToolParameter;
-import br.ufpa.labes.spm.domain.AbilityType;
-import br.ufpa.labes.spm.domain.ActivityType;
-import br.ufpa.labes.spm.domain.ArtifactType;
-import br.ufpa.labes.spm.domain.EventType;
-import br.ufpa.labes.spm.domain.WorkGroupType;
-import br.ufpa.labes.spm.domain.MetricType;
-import br.ufpa.labes.spm.domain.ResourceType;
-import br.ufpa.labes.spm.domain.RoleType;
-import br.ufpa.labes.spm.domain.ToolType;
-import br.ufpa.labes.spm.domain.Type;
 // import org.qrconsult.spm.process.interfaces.IProcessExporter;
-import br.ufpa.labes.spm.service.interfaces.EnactmentEngineLocal;
 import br.ufpa.labes.spm.service.interfaces.ProjectServices;
 // import br.ufpa.labes.spm.service.interfaces.ReportServices;
 import br.ufpa.labes.spm.util.UtilReflection;
@@ -176,15 +108,15 @@ public class ProjectServicesImpl implements ProjectServices {
 
 	private static final String AGENT_CLASSNAME = Agent.class.getSimpleName();
 
-	private static final String TASKAGENDA_CLASSNAME = TaskAgenda.class.getSimpleName();
+	// private static final String TASKAGENDA_CLASSNAME = TaskAgenda.class.getSimpleName();
 
-	private static final String PROCESS_AGENDA_CLASSNAME = ProcessAgenda.class.getName();
+	// private static final String PROCESS_AGENDA_CLASSNAME = ProcessAgenda.class.getName();
 
 	private static final String PROCESS_CLASSNAME = Process.class.getName();
 
 	private static final String ACTIVITY_CLASSNAME = ProcessModel.class.getName();
 
-	private static final String TASK_CLASSNAME = Task.class.getName();
+	// private static final String TASK_CLASSNAME = Task.class.getName();
 
   @Autowired
 	private ProjectRepository projectRepository;
@@ -290,10 +222,10 @@ public class ProjectServicesImpl implements ProjectServices {
 			if(activity instanceof Normal) {
 				Normal normal = (Normal) activity;
 				theNormal.add(normal);
-				ActivityType actType = normal.getTheActivityType();
-				String actTypeElem = (actType!=null ? actType.getIdent() : "");
-				String state = normal.getTheEnactionDescription().getState().toUpperCase();
-				processXML.append("<NORMAL ID=\"" + normal.getIdent() + "\" IDENT=\"" + normal.getName() + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
+				// ActivityType actType = normal.getTheActivityType();
+				// String actTypeElem = (actType!=null ? actType.getIdent() : "");
+				// String state = normal.getTheEnactionDescription().getState().toUpperCase();
+				// processXML.append("<NORMAL ID=\"" + normal.getIdent() + "\" IDENT=\"" + normal.getName() + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
 				processXML.append(getPositionTag(normal.getId(), normal.getClass().getSimpleName()));
 				processXML.append("</NORMAL>\n");
 
@@ -311,10 +243,10 @@ public class ProjectServicesImpl implements ProjectServices {
 
 			} else if(activity instanceof Decomposed){
 				Decomposed decomposed = (Decomposed) activity;
-				ActivityType actType = decomposed.getTheActivityType();
-				String actTypeElem = (actType!=null ? actType.getIdent() : "");
-				String state = decomposed.getTheProcessModel().getPmState().toUpperCase();
-				processXML.append("<DECOMPOSED ID=\"" + decomposed.getIdent() + "\" IDENT=\"" + decomposed.getName() + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
+				// ActivityType actType = decomposed.getTheActivityType();
+				// String actTypeElem = (actType!=null ? actType.getIdent() : "");
+				// String state = decomposed.getTheProcessModel().getPmState().toUpperCase();
+				// processXML.append("<DECOMPOSED ID=\"" + decomposed.getIdent() + "\" IDENT=\"" + decomposed.getName() + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
 				processXML.append(getPositionTag(decomposed.getId(), decomposed.getClass().getSimpleName()));
 				processXML.append("</DECOMPOSED>\n");
 			}
@@ -339,7 +271,7 @@ public class ProjectServicesImpl implements ProjectServices {
 						processXML.append("<REQAGENT ID=\"" + reqAgent.getId() + "\">\n");
 						processXML.append("<AGENT>" + (reqAgent.getTheAgent()!=null ? reqAgent.getTheAgent().getIdent() : "") + "</AGENT>\n");
 						processXML.append("<NAME>" + (reqAgent.getTheAgent()!=null ? reqAgent.getTheAgent().getName() : "") + "</NAME>\n");
-						processXML.append("<ROLE>" + (reqAgent.getTheRole()!=null ? reqAgent.getTheRole().getIdent() : "") + "</ROLE>\n");
+						// processXML.append("<ROLE>" + (reqAgent.getTheRole()!=null ? reqAgent.getTheRole().getIdent() : "") + "</ROLE>\n");
 						processXML.append("<NORMAL>" + reqAgent.getTheNormal().getIdent() + "</NORMAL>\n");
 						processXML.append(getPositionTag(reqAgent.getId(), reqAgent.getClass().getSimpleName()));
 						processXML.append("</REQAGENT>\n");
@@ -352,11 +284,11 @@ public class ProjectServicesImpl implements ProjectServices {
 					if(reqWorkGroup.getTheWorkGroup() != null) {
 						String WorkGroup = reqWorkGroup.getTheWorkGroup()!=null ? reqWorkGroup.getTheWorkGroup().getIdent() : "";
 						String WorkGroupName = reqWorkGroup.getTheWorkGroup()!=null ? reqWorkGroup.getTheWorkGroup().getName() : "";
-						String WorkGroupType = reqWorkGroup.getTheWorkGroupType()!=null ? reqWorkGroup.getTheWorkGroupType().getIdent() : "";
+						// String WorkGroupType = reqWorkGroup.getTheWorkGroupType()!=null ? reqWorkGroup.getTheWorkGroupType().getIdent() : "";
 						processXML.append("<REQWorkGroup ID=\"" + reqWorkGroup.getId() + "\">\n");
 						processXML.append("<WorkGroup>" + WorkGroup + "</WorkGroup>\n");
 						processXML.append("<NAME>" + WorkGroupName + "</NAME>\n");
-						processXML.append("<WorkGroupTYPE>" + WorkGroupType + "</WorkGroupTYPE>\n");
+						// processXML.append("<WorkGroupTYPE>" + WorkGroupType + "</WorkGroupTYPE>\n");
 						processXML.append("<NORMAL>" + reqWorkGroup.getTheNormal().getIdent() + "</NORMAL>\n");
 						processXML.append(getPositionTag(reqWorkGroup.getId(), reqWorkGroup.getClass().getSimpleName()));
 						processXML.append("</REQWorkGroup>\n");
@@ -367,27 +299,27 @@ public class ProjectServicesImpl implements ProjectServices {
 		processXML.append("</PEOPLE>\n");
 
 		//Load Resource
-		processXML.append("<RESOURCES>\n");
-		for (Iterator<Normal> iterator = theNormal.iterator(); iterator.hasNext();) {
-			Normal normal = (Normal) iterator.next();
-			Collection<RequiredResource> resources = normal.getTheRequiredResources();
-			for (Iterator<RequiredResource> iterator2 = resources.iterator(); iterator2.hasNext();) {
-				RequiredResource requiredResource = (RequiredResource) iterator2.next();
-				if(requiredResource.getTheResource()!=null){
-					String resource = requiredResource.getTheResource()!=null ? requiredResource.getTheResource().getIdent() : "";
-					String resourceName = requiredResource.getTheResource()!=null ? requiredResource.getTheResource().getName() : "";
-					String resourceType = requiredResource.getTheResourceType()!=null ? requiredResource.getTheResourceType().getIdent() : "";
-					processXML.append("<REQUIREDRESOURCE ID=\"" + requiredResource.getId() + "\">\n");
-					processXML.append("<RESOURCE>" + resource + "</RESOURCE>\n");
-					processXML.append("<NAME>" + resourceName + "</NAME>\n");
-					processXML.append("<RESOURCETYPE>" + resourceType + "</RESOURCETYPE>\n");
-					processXML.append("<NORMAL>" + requiredResource.getTheNormal().getIdent() + "</NORMAL>\n");
-					processXML.append(getPositionTag(requiredResource.getId(), requiredResource.getClass().getSimpleName()));
-					processXML.append("</REQUIREDRESOURCE>\n");
-				}
-			}
-		}
-		processXML.append("</RESOURCES>\n");
+		// processXML.append("<RESOURCES>\n");
+		// for (Iterator<Normal> iterator = theNormal.iterator(); iterator.hasNext();) {
+		// 	Normal normal = (Normal) iterator.next();
+		// 	Collection<RequiredResource> resources = normal.getTheRequiredResources();
+		// 	for (Iterator<RequiredResource> iterator2 = resources.iterator(); iterator2.hasNext();) {
+		// 		RequiredResource requiredResource = (RequiredResource) iterator2.next();
+		// 		if(requiredResource.getTheResource()!=null){
+		// 			String resource = requiredResource.getTheResource()!=null ? requiredResource.getTheResource().getIdent() : "";
+		// 			String resourceName = requiredResource.getTheResource()!=null ? requiredResource.getTheResource().getName() : "";
+		// 			String resourceType = requiredResource.getTheResourceType()!=null ? requiredResource.getTheResourceType().getIdent() : "";
+		// 			processXML.append("<REQUIREDRESOURCE ID=\"" + requiredResource.getId() + "\">\n");
+		// 			processXML.append("<RESOURCE>" + resource + "</RESOURCE>\n");
+		// 			processXML.append("<NAME>" + resourceName + "</NAME>\n");
+		// 			processXML.append("<RESOURCETYPE>" + resourceType + "</RESOURCETYPE>\n");
+		// 			processXML.append("<NORMAL>" + requiredResource.getTheNormal().getIdent() + "</NORMAL>\n");
+		// 			processXML.append(getPositionTag(requiredResource.getId(), requiredResource.getClass().getSimpleName()));
+		// 			processXML.append("</REQUIREDRESOURCE>\n");
+		// 		}
+		// 	}
+		// }
+		// processXML.append("</RESOURCES>\n");
 
 
 		//Load Connections
@@ -565,10 +497,10 @@ public class ProjectServicesImpl implements ProjectServices {
 		if(artifact!=null)
 			artConXML.append("<ARTIFACT>" + artifact.getIdent() + "</ARTIFACT>\n");
 		else artConXML.append("<ARTIFACT></ARTIFACT>\n");
-		ArtifactType artType = artifactCon.getTheArtifactType();
-		if(artType!=null)
-			artConXML.append("<ARTIFACTTYPE>" + artType.getIdent() + "</ARTIFACTTYPE>\n");
-		else artConXML.append("<ARTIFACTTYPE></ARTIFACTTYPE>\n");
+		// ArtifactType artType = artifactCon.getTheArtifactType();
+		// if(artType!=null)
+		// 	artConXML.append("<ARTIFACTTYPE>" + artType.getIdent() + "</ARTIFACTTYPE>\n");
+		// else artConXML.append("<ARTIFACTTYPE></ARTIFACTTYPE>\n");
 
 		//FROM
 		Collection<Activity> fromActivities = artifactCon.getFromActivities();
@@ -851,14 +783,14 @@ public class ProjectServicesImpl implements ProjectServices {
 		return false;
 	}
 
-	private Set<Task> getTasksForProject(String projectName) {
-		String hql = "select o from " + TASK_CLASSNAME + " o where o.theNormal.ident like :projectName";
-		query = projectRepository.getPersistenceContext().createQuery(hql);
-		query.setParameter("projectName", projectName + "%");
+	// private Set<Task> getTasksForProject(String projectName) {
+	// 	String hql = "select o from " + TASK_CLASSNAME + " o where o.theNormal.ident like :projectName";
+	// 	query = projectRepository.getPersistenceContext().createQuery(hql);
+	// 	query.setParameter("projectName", projectName + "%");
 
-		List<Task> result = query.getResultList();
-		return result.stream().collect(Collectors.toSet());
-	}
+	// 	List<Task> result = query.getResultList();
+	// 	return result.stream().collect(Collectors.toSet());
+	// }
 
 	@SuppressWarnings("unchecked")
 	private Set<Project> getAllProjects() {
@@ -914,21 +846,21 @@ public class ProjectServicesImpl implements ProjectServices {
 		return project;
 	}
 
-	@Override
-	public ProjectStatistic getProjectForDashboard(Long oid) {
-		Project project = this.getProjectForId(oid);
-		ProjectStatistic statistic = convertProjectToProjectStatistic(project);
+	// @Override
+	// public ProjectStatistic getProjectForDashboard(Long oid) {
+	// 	Project project = this.getProjectForId(oid);
+	// 	ProjectStatistic statistic = convertProjectToProjectStatistic(project);
 
-		return statistic;
-	}
+	// 	return statistic;
+	// }
 
-	@Override
-	public Set<ProjectStatistic> getProjectsForDashboard() {
-		Set<Project> projects = this.getAllProjects();
-		Set<ProjectStatistic> result = new HashSet<ProjectStatistic>();
+	// @Override
+	// public Set<ProjectStatistic> getProjectsForDashboard() {
+	// 	Set<Project> projects = this.getAllProjects();
+	// 	Set<ProjectStatistic> result = new HashSet<ProjectStatistic>();
 
-		for (Project project : projects) {
-			ProjectStatistic statistic = convertProjectToProjectStatistic(project);
+	// 	for (Project project : projects) {
+	// 		ProjectStatistic statistic = convertProjectToProjectStatistic(project);
 //			Set<ResourcesCostPlanItem> planoDeCustos = reportServices.generateResourcesCostPlanReport(project.getIdent());
 //
 //			Double exclusivesCost = 0.0, consumablesCost = 0.0, shareablesCost = 0.0,
@@ -945,20 +877,20 @@ public class ProjectServicesImpl implements ProjectServices {
 //
 //			Double custoEstimado = exclusivesCost + consumablesCost + shareablesCost + humansEstimatedCost + activitiesCost;
 //			Double custoReal = exclusivesCost + consumablesCost + shareablesCost + humansRealCost + activitiesCost;
+//
+	// 		Double custoEstimado = 0.0;
+	// 		Double custoReal = 0.0;
 
-			Double custoEstimado = 0.0;
-			Double custoReal = 0.0;
+	// 		statistic.setProjectEstimatedCost(custoEstimado);
+	// 		statistic.setProjectRealCost(custoReal);
+	// 		statistic.generateCostLink(project.getId());
+	// 		result.add(statistic);
+	// 	}
+	// 	return result;
+	// }
 
-			statistic.setProjectEstimatedCost(custoEstimado);
-			statistic.setProjectRealCost(custoReal);
-			statistic.generateCostLink(project.getId());
-			result.add(statistic);
-		}
-		return result;
-	}
-
-	@Override
-	public ProjectCost getProjectCost(Long projectId) {
+	// @Override
+	// public ProjectCost getProjectCost(Long projectId) {
 		// Project project = this.getProjectForId(projectId);
 		// Set<ResourcesCostPlanItem> planoDeCustos = reportServices.generateResourcesCostPlanReport(project.getIdent());
 
@@ -982,96 +914,95 @@ public class ProjectServicesImpl implements ProjectServices {
 		// cost.setRealCost(custoReal);
 
     // return cost;
-    return null;
-	}
+	// }
 
-	private ProjectStatistic convertProjectToProjectStatistic(Project project) {
-		Set<Task> tasks = this.getTasksForProject(project.getIdent());
-		int numberOfTasks = tasks.size();
-		int finishedTasks = 0;
-		int delayedTasks = 0;
-		int totalHours = 0;
-		int totalMinutes = 0;
+// 	private ProjectStatistic convertProjectToProjectStatistic(Project project) {
+// 		Set<Task> tasks = this.getTasksForProject(project.getIdent());
+// 		int numberOfTasks = tasks.size();
+// 		int finishedTasks = 0;
+// 		int delayedTasks = 0;
+// 		int totalHours = 0;
+// 		int totalMinutes = 0;
 
-		float estimatedHours = 0; //processEstimationRepository.getHoursEstimationForProject(project.getIdent());
-		Time estimatedTime = new Time((int) estimatedHours, (int) ((estimatedHours * 60) % 60));
+// 		float estimatedHours = 0; //processEstimationRepository.getHoursEstimationForProject(project.getIdent());
+// 		Time estimatedTime = new Time((int) estimatedHours, (int) ((estimatedHours * 60) % 60));
 
-		for (Task task : tasks) {
-			if(isTaskDelayed(task)) delayedTasks += 1;
-			if(isTaskFinished(task)) finishedTasks += 1;
+// 		for (Task task : tasks) {
+// 			if(isTaskDelayed(task)) delayedTasks += 1;
+// 			if(isTaskFinished(task)) finishedTasks += 1;
 
-			String agentIdent = task.getTheProcessAgenda().getTheTaskAgenda().getTheAgent().getIdent();
-			Time taskRealEffort = new Time();//taskRepository.getWorkingHoursForTask2(task.getTheNormal().getIdent(), agentIdent);
-			if(taskRealEffort.getHour() > 0) totalHours += taskRealEffort.getHour();
-			if(taskRealEffort.getMinutes() > 0) totalMinutes += taskRealEffort.getMinutes();
+// 			String agentIdent = task.getTheProcessAgenda().getTheTaskAgenda().getTheAgent().getIdent();
+// 			Time taskRealEffort = new Time();//taskRepository.getWorkingHoursForTask2(task.getTheNormal().getIdent(), agentIdent);
+// 			if(taskRealEffort.getHour() > 0) totalHours += taskRealEffort.getHour();
+// 			if(taskRealEffort.getMinutes() > 0) totalMinutes += taskRealEffort.getMinutes();
 
-//			float estimatedTask = processEstimationRepository.getHoursEstimationForTask(task.getTheNormal().getIdent());
-//			Time estimatedTaskTime = new Time((int) estimatedTask, (int) ((estimatedTask * 60) % 60));
-//			java.lang.System.out.println("--> " + task.getTheNormal().getIdent() + " - " + estimatedTaskTime);
-		}
+// //			float estimatedTask = processEstimationRepository.getHoursEstimationForTask(task.getTheNormal().getIdent());
+// //			Time estimatedTaskTime = new Time((int) estimatedTask, (int) ((estimatedTask * 60) % 60));
+// //			java.lang.System.out.println("--> " + task.getTheNormal().getIdent() + " - " + estimatedTaskTime);
+// 		}
 
-		int DECIMAL_SCALE = 2;
-		float finishedTasksPercentage = percentageOf(finishedTasks, numberOfTasks, DECIMAL_SCALE).floatValue();
-		float delayedTasksPercentage = percentageOf(delayedTasks, numberOfTasks, DECIMAL_SCALE).floatValue();
-		ProjectStatistic statistic = new ProjectStatistic();
-		ProjectDTO dto = this.convertProjectToProjectDTO(project);
-		statistic.setProject(dto);
-		statistic.setFinishedTasksPercentage(finishedTasksPercentage);
-		statistic.setDelayedTasksPercentage(delayedTasksPercentage);
-		statistic.setTotalTasks(numberOfTasks);
-		statistic.setFinishedTasks(finishedTasks);
-		statistic.setDelayedTasks(delayedTasks);
-		statistic.setRealDuration(new Time(totalHours, totalMinutes));
-		statistic.setEstimatedDuration(estimatedTime);
+// 		int DECIMAL_SCALE = 2;
+// 		float finishedTasksPercentage = percentageOf(finishedTasks, numberOfTasks, DECIMAL_SCALE).floatValue();
+// 		float delayedTasksPercentage = percentageOf(delayedTasks, numberOfTasks, DECIMAL_SCALE).floatValue();
+// 		ProjectStatistic statistic = new ProjectStatistic();
+// 		ProjectDTO dto = this.convertProjectToProjectDTO(project);
+// 		statistic.setProject(dto);
+// 		statistic.setFinishedTasksPercentage(finishedTasksPercentage);
+// 		statistic.setDelayedTasksPercentage(delayedTasksPercentage);
+// 		statistic.setTotalTasks(numberOfTasks);
+// 		statistic.setFinishedTasks(finishedTasks);
+// 		statistic.setDelayedTasks(delayedTasks);
+// 		statistic.setRealDuration(new Time(totalHours, totalMinutes));
+// 		statistic.setEstimatedDuration(estimatedTime);
 
-		return statistic;
-	}
+// 		return statistic;
+// 	}
 
-	private boolean isTaskDelayed(Task task) {
-		boolean isTaskDelayed = false;
-		boolean endDateNotNull = task.getEndDate() != null;
-		boolean isTaskRunning = isTaskRunning(task);
-		boolean plannedEndNotNull = task.getTheNormal().getPlannedEnd() != null;
+	// private boolean isTaskDelayed(Task task) {
+	// 	boolean isTaskDelayed = false;
+	// 	boolean endDateNotNull = task.getEndDate() != null;
+	// 	boolean isTaskRunning = isTaskRunning(task);
+	// 	boolean plannedEndNotNull = task.getTheNormal().getPlannedEnd() != null;
 
-		if(isTaskRunning && plannedEndNotNull) {
-			if(endDateNotNull) {
-				isTaskDelayed = task.getTheNormal().getPlannedEnd().isBefore(task.getEndDate());
-			} else {
-				isTaskDelayed = task.getTheNormal().getPlannedEnd().isBefore(LocalDate.now());
-			}
-		}
+	// 	if(isTaskRunning && plannedEndNotNull) {
+	// 		if(endDateNotNull) {
+	// 			isTaskDelayed = task.getTheNormal().getPlannedEnd().isBefore(task.getEndDate());
+	// 		} else {
+	// 			isTaskDelayed = task.getTheNormal().getPlannedEnd().isBefore(LocalDate.now());
+	// 		}
+	// 	}
 
-		return isTaskDelayed;
-	}
+	// 	return isTaskDelayed;
+	// }
 
-	private boolean isTaskRunning(Task task) {
-		boolean isActive = task.getLocalState().equalsIgnoreCase("active");
-		boolean isPaused = task.getLocalState().equalsIgnoreCase("paused");
-		boolean isReady = task.getLocalState().equalsIgnoreCase("ready");
+	// private boolean isTaskRunning(Task task) {
+	// 	boolean isActive = task.getLocalState().equalsIgnoreCase("active");
+	// 	boolean isPaused = task.getLocalState().equalsIgnoreCase("paused");
+	// 	boolean isReady = task.getLocalState().equalsIgnoreCase("ready");
 
-		return isActive || isPaused || isReady;
-	}
+	// 	return isActive || isPaused || isReady;
+	// }
 
-	private boolean isTaskFinished(Task task) {
-		boolean isTaskFinished = false;
-		isTaskFinished = task.getLocalState().equals("Finished");
+	// private boolean isTaskFinished(Task task) {
+	// 	boolean isTaskFinished = false;
+	// 	isTaskFinished = task.getLocalState().equals("Finished");
 
-		return isTaskFinished;
-	}
+	// 	return isTaskFinished;
+	// }
 
-	private BigDecimal percentageOf(int part, int total, int scale) {
-		BigDecimal percentage = new BigDecimal(part);
+	// private BigDecimal percentageOf(int part, int total, int scale) {
+	// 	BigDecimal percentage = new BigDecimal(part);
 
-		if((total == 0) || (part == 0)) {
-			percentage = new BigDecimal(0);
-		} else {
-			percentage = percentage.divide(new BigDecimal(total), MathContext.DECIMAL128);
-			percentage = percentage.multiply(new BigDecimal(100));
-			percentage = percentage.setScale(scale, RoundingMode.HALF_UP);
-		}
+	// 	if((total == 0) || (part == 0)) {
+	// 		percentage = new BigDecimal(0);
+	// 	} else {
+	// 		percentage = percentage.divide(new BigDecimal(total), MathContext.DECIMAL128);
+	// 		percentage = percentage.multiply(new BigDecimal(100));
+	// 		percentage = percentage.setScale(scale, RoundingMode.HALF_UP);
+	// 	}
 
-		return percentage;
-	}
+	// 	return percentage;
+	// }
 
 	@SuppressWarnings("unchecked")
 	private ProjectsDTO getProjectsWhereActive(boolean isActive) {
@@ -1352,11 +1283,11 @@ public class ProjectServicesImpl implements ProjectServices {
 
 			// Load Organizational elements to Database
 			Element organizational = rootElement.getChild("Organizational");
-			this.loadOrganizational(organizational);
+			// this.loadOrganizational(organizational);
 
 			// Load Associative elements (classes) to Database
 			Element associatives = rootElement.getChild("Associatives");
-			this.loadOrgAssociatives(associatives);
+			// this.loadOrgAssociatives(associatives);
 
 			// Load Process Components elements to Database
 			this.loadProcessIssues(processComponents, organizational);
@@ -1376,97 +1307,97 @@ public class ProjectServicesImpl implements ProjectServices {
 		}
 	}
 
-	private void loadOrganizational(Element organizational) {
+	// private void loadOrganizational(Element organizational) {
 
-		this.loadTypes(organizational);
+	// 	this.loadTypes(organizational);
 
-		this.loadOrganization(organizational);
-		this.loadSystem(organizational);
-		this.loadProject(organizational);
+	// 	this.loadOrganization(organizational);
+	// 	this.loadSystem(organizational);
+	// 	this.loadProject(organizational);
 
-		this.loadArtifact(organizational);
+	// 	this.loadArtifact(organizational);
 
-		this.loadAbility(organizational);
-		this.loadAgent(organizational);
-		this.loadTaskAgenda(organizational);
-		this.loadWorkGroup(organizational);
-		this.loadRole(organizational);
+	// 	this.loadAbility(organizational);
+	// 	this.loadAgent(organizational);
+	// 	this.loadTaskAgenda(organizational);
+	// 	this.loadWorkGroup(organizational);
+	// 	this.loadRole(organizational);
 
-		this.loadResource(organizational);
+	// 	this.loadResource(organizational);
 
-		this.loadMetricDefinition(organizational);
+	// 	this.loadMetricDefinition(organizational);
 
-		this.loadToolDefinition(organizational);
-		this.loadSubroutine(organizational);
-		this.loadToolParameters(organizational);
-		this.loadPrimitiveType(organizational);
+	// 	this.loadToolDefinition(organizational);
+	// 	this.loadSubroutine(organizational);
+	// 	this.loadToolParameters(organizational);
+	// 	this.loadPrimitiveType(organizational);
 
-		// At this point, all organizational objects are saved
-		// and related to their organizational relationships settled.
-	}
+	// 	// At this point, all organizational objects are saved
+	// 	// and related to their organizational relationships settled.
+	// }
 
-	private void loadTypes(Element organizational) {
+	// private void loadTypes(Element organizational) {
 
-		ElementFilter abilityTypeFilter = new ElementFilter(AbilityType.class.getSimpleName());
-		ElementFilter activityTypeFilter = new ElementFilter(ActivityType.class.getSimpleName());
-		ElementFilter artifactTypeFilter = new ElementFilter(ArtifactType.class.getSimpleName());
-		ElementFilter eventTypeFilter = new ElementFilter(EventType.class.getSimpleName());
-		ElementFilter WorkGroupTypeFilter = new ElementFilter(WorkGroupType.class.getSimpleName());
-		ElementFilter metricTypeFilter = new ElementFilter(MetricType.class.getSimpleName());
-		// ElementFilter policyTypeFilter = new ElementFilter(PolicyType.class.getSimpleName());
-		ElementFilter resourceTypeFilter = new ElementFilter(ResourceType.class.getSimpleName());
-		ElementFilter roleTypeFilter = new ElementFilter(RoleType.class.getSimpleName());
-		ElementFilter toolTypeFilter = new ElementFilter(ToolType.class.getSimpleName());
+	// 	ElementFilter abilityTypeFilter = new ElementFilter(AbilityType.class.getSimpleName());
+	// 	ElementFilter activityTypeFilter = new ElementFilter(ActivityType.class.getSimpleName());
+	// 	ElementFilter artifactTypeFilter = new ElementFilter(ArtifactType.class.getSimpleName());
+	// 	ElementFilter eventTypeFilter = new ElementFilter(EventType.class.getSimpleName());
+	// 	ElementFilter WorkGroupTypeFilter = new ElementFilter(WorkGroupType.class.getSimpleName());
+	// 	ElementFilter metricTypeFilter = new ElementFilter(MetricType.class.getSimpleName());
+	// 	// ElementFilter policyTypeFilter = new ElementFilter(PolicyType.class.getSimpleName());
+	// 	ElementFilter resourceTypeFilter = new ElementFilter(ResourceType.class.getSimpleName());
+	// 	ElementFilter roleTypeFilter = new ElementFilter(RoleType.class.getSimpleName());
+	// 	ElementFilter toolTypeFilter = new ElementFilter(ToolType.class.getSimpleName());
 
-		AbstractFilter typeFilter = ((AbstractFilter) abilityTypeFilter.or(activityTypeFilter));
-		typeFilter = ((AbstractFilter) typeFilter.or(artifactTypeFilter));
-		typeFilter = ((AbstractFilter) typeFilter.or((Filter) eventTypeFilter));
-		typeFilter = ((AbstractFilter) typeFilter.or(WorkGroupTypeFilter));
-		typeFilter = ((AbstractFilter) typeFilter.or(metricTypeFilter));
-		// typeFilter = ((AbstractFilter) typeFilter.or(policyTypeFilter));
-		typeFilter = ((AbstractFilter) typeFilter.or(resourceTypeFilter));
-		typeFilter = ((AbstractFilter) typeFilter.or(roleTypeFilter));
-		typeFilter = ((AbstractFilter) typeFilter.or(toolTypeFilter));
+	// 	AbstractFilter typeFilter = ((AbstractFilter) abilityTypeFilter.or(activityTypeFilter));
+	// 	typeFilter = ((AbstractFilter) typeFilter.or(artifactTypeFilter));
+	// 	typeFilter = ((AbstractFilter) typeFilter.or((Filter) eventTypeFilter));
+	// 	typeFilter = ((AbstractFilter) typeFilter.or(WorkGroupTypeFilter));
+	// 	typeFilter = ((AbstractFilter) typeFilter.or(metricTypeFilter));
+	// 	// typeFilter = ((AbstractFilter) typeFilter.or(policyTypeFilter));
+	// 	typeFilter = ((AbstractFilter) typeFilter.or(resourceTypeFilter));
+	// 	typeFilter = ((AbstractFilter) typeFilter.or(roleTypeFilter));
+	// 	typeFilter = ((AbstractFilter) typeFilter.or(toolTypeFilter));
 
-		Iterator<Element> iterTypes = organizational.getDescendants(typeFilter);
-		while (iterTypes.hasNext()) {
-			Element typeElement = (Element) iterTypes.next();
-			this.buildOrgObject(typeElement);
-		}
+	// 	Iterator<Element> iterTypes = organizational.getDescendants(typeFilter);
+	// 	while (iterTypes.hasNext()) {
+	// 		Element typeElement = (Element) iterTypes.next();
+	// 		this.buildOrgObject(typeElement);
+	// 	}
 
-		iterTypes = organizational.getDescendants(typeFilter);
-		while (iterTypes.hasNext()) {
-			Element typeElement = (Element) iterTypes.next();
+	// 	iterTypes = organizational.getDescendants(typeFilter);
+	// 	while (iterTypes.hasNext()) {
+	// 		Element typeElement = (Element) iterTypes.next();
 
-			Element superTypeElm = typeElement.getChild("SuperType");
-			if(superTypeElm != null){
-				String typeKey = typeElement.getAttributeValue("KEY");
-				Type type = (Type) this.organizational.get(typeKey);
-				String superKey = superTypeElm.getAttributeValue("REF");
-				Type superType = (Type) this.organizational.get(superKey);
-				type.setSuperType(superType);
-			}
-		}
-	}
+	// 		Element superTypeElm = typeElement.getChild("SuperType");
+	// 		if(superTypeElm != null){
+	// 			String typeKey = typeElement.getAttributeValue("KEY");
+	// 			Type type = (Type) this.organizational.get(typeKey);
+	// 			String superKey = superTypeElm.getAttributeValue("REF");
+	// 			Type superType = (Type) this.organizational.get(superKey);
+	// 			type.setSuperType(superType);
+	// 		}
+	// 	}
+	// }
 
-	private void loadOrganization(Element organizational) {
-		Element organization = organizational.getChild(Organization.class.getSimpleName());
-		this.buildOrgObject(organization);
-	}
+// 	private void loadOrganization(Element organizational) {
+// 		Element organization = organizational.getChild(Organization.class.getSimpleName());
+// 		this.buildOrgObject(organization);
+// 	}
 
-	private void loadSystem(Element organizational) {
-		Element system = organizational.getChild(DevelopingSystem.class.getSimpleName());
-		DevelopingSystem sys = (DevelopingSystem) this.buildOrgObject(system);
-		if(sys == null) return;
-		// Setting organization...
-		Element orgElm = system.getChild("TheOrganization");
-		if(orgElm != null){
-			String orgKey = orgElm.getAttributeValue("REF");
-			Company company = new Company();
-			sys.setTheOrganization(company);
-//			sys.insertIntoTheOrganization((Organization) this.organizational.get(orgKey));
-		}
-	}
+// 	private void loadSystem(Element organizational) {
+// 		Element system = organizational.getChild(DevelopingSystem.class.getSimpleName());
+// 		DevelopingSystem sys = (DevelopingSystem) this.buildOrgObject(system);
+// 		if(sys == null) return;
+// 		// Setting organization...
+// 		Element orgElm = system.getChild("TheOrganization");
+// 		if(orgElm != null){
+// 			String orgKey = orgElm.getAttributeValue("REF");
+// 			Company company = new Company();
+// 			sys.setTheOrganization(company);
+// //			sys.insertIntoTheOrganization((Organization) this.organizational.get(orgKey));
+// 		}
+// 	}
 
 	private void loadProject(Element organizational) {
 		List<Element> projects = organizational.getChildren(Project.class.getSimpleName());
@@ -1476,11 +1407,11 @@ public class ProjectServicesImpl implements ProjectServices {
 			Project project = (Project) this.buildOrgObject(element);
 			if(project == null) continue;
 			// Setting organization...
-			Element sysElm = element.getChild("TheSystem");
-			if(sysElm != null){
-				String sysKey = sysElm.getAttributeValue("REF");
-				project.setTheSystem((DevelopingSystem) this.organizational.get(sysKey));
-			}
+			// Element sysElm = element.getChild("TheSystem");
+			// if(sysElm != null){
+			// 	String sysKey = sysElm.getAttributeValue("REF");
+			// 	project.setTheSystem((DevelopingSystem) this.organizational.get(sysKey));
+			// }
 			project.setIdent(project.getName());
 		}
 	}
@@ -1494,7 +1425,7 @@ public class ProjectServicesImpl implements ProjectServices {
 			if(artifact == null) continue;
 			// Setting type...
 			String typeKey = element.getChild("TheArtifactType").getAttributeValue("REF");
-			artifact.setTheArtifactType((ArtifactType) this.organizational.get(typeKey));
+			// artifact.setTheArtifactType((ArtifactType) this.organizational.get(typeKey));
 		}
 
 		iter = artifacts.iterator();
@@ -1518,46 +1449,46 @@ public class ProjectServicesImpl implements ProjectServices {
 		}
 	}
 
-	private void loadAbility(Element organizational){
-		List<Element> abilities = organizational.getChildren(Ability.class.getSimpleName());
-		Iterator<Element> iter = abilities.iterator();
-		while (iter.hasNext()) {
-			Element element = (Element) iter.next();
-			Ability ability = (Ability) this.buildOrgObject(element);
-			if(ability == null) continue;
-			// Setting type...
-			String typeKey = element.getChild("TheAbilityType").getAttributeValue("REF");
-			ability.setTheAbilityType((AbilityType) this.organizational.get(typeKey));
+	// private void loadAbility(Element organizational){
+	// 	List<Element> abilities = organizational.getChildren(Ability.class.getSimpleName());
+	// 	Iterator<Element> iter = abilities.iterator();
+	// 	while (iter.hasNext()) {
+	// 		Element element = (Element) iter.next();
+	// 		Ability ability = (Ability) this.buildOrgObject(element);
+	// 		if(ability == null) continue;
+	// 		// Setting type...
+	// 		String typeKey = element.getChild("TheAbilityType").getAttributeValue("REF");
+	// 		ability.setTheAbilityType((AbilityType) this.organizational.get(typeKey));
 
-			this.organizational.put(element.getAttributeValue("KEY"), ability);
-		}
-	}
+	// 		this.organizational.put(element.getAttributeValue("KEY"), ability);
+	// 	}
+	// }
 
-	private void loadRole(Element organizational) {
-		List<Element> roles = organizational.getChildren(Role.class.getSimpleName());
-		Iterator<Element> iter = roles.iterator();
-		while (iter.hasNext()) {
-			Element element = (Element) iter.next();
-			Role role = (Role) this.buildOrgObject(element);
-			if(role == null) continue;
-			// Setting type...
-			String typeKey = element.getChild("TheRoleType").getAttributeValue("REF");
-			role.setTheRoleType((RoleType) this.organizational.get(typeKey));
-		}
+	// private void loadRole(Element organizational) {
+	// 	List<Element> roles = organizational.getChildren(Role.class.getSimpleName());
+	// 	Iterator<Element> iter = roles.iterator();
+	// 	while (iter.hasNext()) {
+	// 		Element element = (Element) iter.next();
+	// 		Role role = (Role) this.buildOrgObject(element);
+	// 		if(role == null) continue;
+	// 		// Setting type...
+	// 		String typeKey = element.getChild("TheRoleType").getAttributeValue("REF");
+	// 		role.setTheRoleType((RoleType) this.organizational.get(typeKey));
+	// 	}
 
 
-		iter = roles.iterator();
-		while (iter.hasNext()) {
-			Element element = (Element) iter.next();
-			Role role = (Role) this.organizational.get(element.getAttributeValue("KEY"));
-			// Setting subordinate
-			Element subordElm = element.getChild("Subordinate");
-			if(subordElm != null){
-				String subordKey = subordElm.getAttributeValue("REF");
-				role.setSubordinate((Role) this.organizational.get(subordKey));
-			}
-		}
-	}
+	// 	iter = roles.iterator();
+	// 	while (iter.hasNext()) {
+	// 		Element element = (Element) iter.next();
+	// 		Role role = (Role) this.organizational.get(element.getAttributeValue("KEY"));
+	// 		// Setting subordinate
+	// 		Element subordElm = element.getChild("Subordinate");
+	// 		if(subordElm != null){
+	// 			String subordKey = subordElm.getAttributeValue("REF");
+	// 			role.setSubordinate((Role) this.organizational.get(subordKey));
+	// 		}
+	// 	}
+	// }
 
 	private void loadAgent(Element organizational) {
 
@@ -1569,20 +1500,20 @@ public class ProjectServicesImpl implements ProjectServices {
 		}
 	}
 
-	private void loadTaskAgenda(Element organizational) {
+	// private void loadTaskAgenda(Element organizational) {
 
-		List<Element> taskAgendas = organizational.getChildren(TaskAgenda.class.getSimpleName());
-		Iterator<Element> iter = taskAgendas.iterator();
-		while (iter.hasNext()) {
-			Element element = (Element) iter.next();
+	// 	List<Element> taskAgendas = organizational.getChildren(TaskAgenda.class.getSimpleName());
+	// 	Iterator<Element> iter = taskAgendas.iterator();
+	// 	while (iter.hasNext()) {
+	// 		Element element = (Element) iter.next();
 
-			 String agentREF = element.getChild("TheAgent").getAttributeValue("REF");
-			 Agent agent = (Agent) this.organizational.get(agentREF);
+	// 		 String agentREF = element.getChild("TheAgent").getAttributeValue("REF");
+	// 		 Agent agent = (Agent) this.organizational.get(agentREF);
 
-			 // At this operation, the database (or default) task agenda is inserted into the organizational hash table.
-			 this.organizational.put(element.getAttributeValue("KEY"), agent.getTheTaskAgenda());
-		}
-	}
+	// 		 // At this operation, the database (or default) task agenda is inserted into the organizational hash table.
+	// 		//  this.organizational.put(element.getAttributeValue("KEY"), agent.getTheTaskAgenda());
+	// 	}
+	// }
 
 	private void loadWorkGroup(Element organizational) {
 		List<Element> WorkGroups = organizational.getChildren(WorkGroup.class.getSimpleName());
@@ -1593,7 +1524,7 @@ public class ProjectServicesImpl implements ProjectServices {
 			if(WorkGroup == null) continue;
 			// Setting type...
 			String typeKey = element.getChild("TheWorkGroupType").getAttributeValue("REF");
-			WorkGroup.setTheGroupType((WorkGroupType) this.organizational.get(typeKey));
+			// WorkGroup.setTheGroupType((WorkGroupType) this.organizational.get(typeKey));
 
 			// Setting super WorkGroup...
 			Element superElm = element.getChild("SuperWorkGroup");
@@ -1618,262 +1549,262 @@ public class ProjectServicesImpl implements ProjectServices {
 		}
 	}
 
-	private void loadMetricDefinition(Element organizational) {
-		List<Element> metricDefinitions = organizational.getChildren(MetricDefinition.class.getSimpleName());
-		Iterator<Element> iter = metricDefinitions.iterator();
-		while (iter.hasNext()) {
-			Element element = (Element) iter.next();
-			this.buildOrgObject(element);
-		}
-	}
+	// private void loadMetricDefinition(Element organizational) {
+	// 	List<Element> metricDefinitions = organizational.getChildren(MetricDefinition.class.getSimpleName());
+	// 	Iterator<Element> iter = metricDefinitions.iterator();
+	// 	while (iter.hasNext()) {
+	// 		Element element = (Element) iter.next();
+	// 		this.buildOrgObject(element);
+	// 	}
+	// }
 
-	private void loadResource(Element organizational) {
+	// private void loadResource(Element organizational) {
 
-		ElementFilter shareableFilter = new ElementFilter(Shareable.class.getSimpleName());
-		ElementFilter exclusiveFilter = new ElementFilter(Exclusive.class.getSimpleName());
-		ElementFilter consumableFilter = new ElementFilter(Consumable.class.getSimpleName());
+	// 	ElementFilter shareableFilter = new ElementFilter(Shareable.class.getSimpleName());
+	// 	ElementFilter exclusiveFilter = new ElementFilter(Exclusive.class.getSimpleName());
+	// 	ElementFilter consumableFilter = new ElementFilter(Consumable.class.getSimpleName());
 
-		AbstractFilter resourceFilter = ((AbstractFilter) shareableFilter.or(exclusiveFilter));
-		resourceFilter = ((AbstractFilter) resourceFilter.or(consumableFilter));
+	// 	AbstractFilter resourceFilter = ((AbstractFilter) shareableFilter.or(exclusiveFilter));
+	// 	resourceFilter = ((AbstractFilter) resourceFilter.or(consumableFilter));
 
-		Iterator<Element> iter = organizational.getDescendants(resourceFilter);
-		while (iter.hasNext()) {
-			Element element = (Element) iter.next();
-			Resource resource = (Resource) this.buildOrgObject(element);
-			if(resource == null) continue;
-			// Setting type...
-			String typeKey = element.getChild("TheResourceType").getAttributeValue("REF");
-			resource.setTheResourceType((ResourceType) this.organizational.get(typeKey));
+	// 	Iterator<Element> iter = organizational.getDescendants(resourceFilter);
+	// 	while (iter.hasNext()) {
+	// 		Element element = (Element) iter.next();
+	// 		Resource resource = (Resource) this.buildOrgObject(element);
+	// 		if(resource == null) continue;
+	// 		// Setting type...
+	// 		String typeKey = element.getChild("TheResourceType").getAttributeValue("REF");
+	// 		resource.setTheResourceType((ResourceType) this.organizational.get(typeKey));
 
-			// Setting belongsTo...
-			Element belongsToElm = element.getChild("BelongsTo");
-			if(belongsToElm != null){
-				String belongsToKey = belongsToElm.getAttributeValue("REF");
-				resource.setBelongsTo((Resource) this.organizational.get(belongsToKey));
-			}
+	// 		// Setting belongsTo...
+	// 		Element belongsToElm = element.getChild("BelongsTo");
+	// 		if(belongsToElm != null){
+	// 			String belongsToKey = belongsToElm.getAttributeValue("REF");
+	// 			resource.setBelongsTo((Resource) this.organizational.get(belongsToKey));
+	// 		}
 
-			this.organizational.put(element.getAttributeValue("KEY"), resource);
-		}
-	}
+	// 		this.organizational.put(element.getAttributeValue("KEY"), resource);
+	// 	}
+	// }
 
-	private void loadToolDefinition(Element organizational) {
-		List<Element> toolDefinitions = organizational.getChildren(ToolDefinition.class.getSimpleName());
-		Iterator<Element> iter = toolDefinitions.iterator();
-		while (iter.hasNext()) {
-			Element element = (Element) iter.next();
-			ToolDefinition toolDef = (ToolDefinition) this.buildOrgObject(element);
-			if(toolDef == null) continue;
-			// Setting type...
-			String typeKey = element.getChild("TheToolType").getAttributeValue("REF");
-			toolDef.setTheToolType((ToolType) this.organizational.get(typeKey));
+	// private void loadToolDefinition(Element organizational) {
+	// 	List<Element> toolDefinitions = organizational.getChildren(ToolDefinition.class.getSimpleName());
+	// 	Iterator<Element> iter = toolDefinitions.iterator();
+	// 	while (iter.hasNext()) {
+	// 		Element element = (Element) iter.next();
+	// 		ToolDefinition toolDef = (ToolDefinition) this.buildOrgObject(element);
+	// 		if(toolDef == null) continue;
+	// 		// Setting type...
+	// 		String typeKey = element.getChild("TheToolType").getAttributeValue("REF");
+	// 		toolDef.setTheToolType((ToolType) this.organizational.get(typeKey));
 
-			// Setting artifact types...
-			Element artTypes = element.getChild("TheArtifactType");
-			if(artTypes != null){
-				List<Element> itens = element.getChildren("Item");
-				Iterator<Element> iterItens = itens.iterator();
-				while (iterItens.hasNext()) {
-					Element artTypeElm = (Element) iterItens.next();
-					String artTypeKey = artTypeElm.getValue();
-					toolDef.addTheArtifactTypes((ArtifactType) this.organizational.get(artTypeKey));
-				}
-			}
+	// 		// Setting artifact types...
+	// 		Element artTypes = element.getChild("TheArtifactType");
+	// 		if(artTypes != null){
+	// 			List<Element> itens = element.getChildren("Item");
+	// 			Iterator<Element> iterItens = itens.iterator();
+	// 			while (iterItens.hasNext()) {
+	// 				Element artTypeElm = (Element) iterItens.next();
+	// 				String artTypeKey = artTypeElm.getValue();
+	// 				toolDef.addTheArtifactTypes((ArtifactType) this.organizational.get(artTypeKey));
+	// 			}
+	// 		}
 
-			this.organizational.put(element.getAttributeValue("KEY"), toolDef);
-		}
-	}
+	// 		this.organizational.put(element.getAttributeValue("KEY"), toolDef);
+	// 	}
+	// }
 
-	private void loadSubroutine(Element organizational) {
+	// private void loadSubroutine(Element organizational) {
 
-		ElementFilter scriptFilter = new ElementFilter(Script.class.getSimpleName());
-		ElementFilter classMethodCallFilter = new ElementFilter(ClassMethodCall.class.getSimpleName());
-		AbstractFilter subroutineFilter = ((AbstractFilter) classMethodCallFilter.or(scriptFilter));
+	// 	ElementFilter scriptFilter = new ElementFilter(Script.class.getSimpleName());
+	// 	ElementFilter classMethodCallFilter = new ElementFilter(ClassMethodCall.class.getSimpleName());
+	// 	AbstractFilter subroutineFilter = ((AbstractFilter) classMethodCallFilter.or(scriptFilter));
 
-		Iterator<Element> iter = organizational.getDescendants(subroutineFilter);
-		while (iter.hasNext()) {
-			Element element = (Element) iter.next();
-			Subroutine subroutine = (Subroutine) this.buildOrgObject(element);
-			if(subroutine == null) continue;
-			// Setting type...
-			String typeKey = element.getChild("TheArtifactType").getAttributeValue("REF");
-			subroutine.setTheArtifactType((ArtifactType) this.organizational.get(typeKey));
+	// 	Iterator<Element> iter = organizational.getDescendants(subroutineFilter);
+	// 	while (iter.hasNext()) {
+	// 		Element element = (Element) iter.next();
+	// 		Subroutine subroutine = (Subroutine) this.buildOrgObject(element);
+	// 		if(subroutine == null) continue;
+	// 		// Setting type...
+	// 		String typeKey = element.getChild("TheArtifactType").getAttributeValue("REF");
+	// 		subroutine.setTheArtifactType((ArtifactType) this.organizational.get(typeKey));
 
-			this.organizational.put(element.getAttributeValue("KEY"), subroutine);
-		}
-	}
+	// 		this.organizational.put(element.getAttributeValue("KEY"), subroutine);
+	// 	}
+	// }
 
-	private void loadPrimitiveType(Element organizational) {
-		List<Element> primitiveTypes = organizational.getChildren(PrimitiveType.class.getSimpleName());
-		Iterator<Element> iter = primitiveTypes.iterator();
-		while (iter.hasNext()) {
-			Element element = (Element) iter.next();
-		this.buildOrgObject(element);
-		}
-	}
+	// private void loadPrimitiveType(Element organizational) {
+	// 	List<Element> primitiveTypes = organizational.getChildren(PrimitiveType.class.getSimpleName());
+	// 	Iterator<Element> iter = primitiveTypes.iterator();
+	// 	while (iter.hasNext()) {
+	// 		Element element = (Element) iter.next();
+	// 	this.buildOrgObject(element);
+	// 	}
+	// }
 
-	private void loadToolParameters(Element organizational) {
-		List<Element> toolParameters = organizational.getChildren(ToolParameter.class.getSimpleName());
-		Iterator<Element> iter = toolParameters.iterator();
-		while (iter.hasNext()) {
-			Element element = (Element) iter.next();
-			ToolParameter toolParams = new ToolParameter();
-			toolParams.setLabel(element.getChildText("Label"));
-			toolParams.setSeparatorSymbol(element.getChildText("SeparatorSymbol"));
+	// private void loadToolParameters(Element organizational) {
+	// 	List<Element> toolParameters = organizational.getChildren(ToolParameter.class.getSimpleName());
+	// 	Iterator<Element> iter = toolParameters.iterator();
+	// 	while (iter.hasNext()) {
+	// 		Element element = (Element) iter.next();
+	// 		ToolParameter toolParams = new ToolParameter();
+	// 		toolParams.setLabel(element.getChildText("Label"));
+	// 		toolParams.setSeparatorSymbol(element.getChildText("SeparatorSymbol"));
 
-			// Setting artifact type...
-			String typeKey = element.getChild("TheArtifactType").getAttributeValue("REF");
-			toolParams.setTheArtifactType((ArtifactType) this.organizational.get(typeKey));
+	// 		// Setting artifact type...
+	// 		String typeKey = element.getChild("TheArtifactType").getAttributeValue("REF");
+	// 		toolParams.setTheArtifactType((ArtifactType) this.organizational.get(typeKey));
 
-			// Setting primitive type...
-			Element primitiveElm = element.getChild("ThePrimitiveType");
-			if(primitiveElm != null){
-				String primitiveKey = primitiveElm.getAttributeValue("REF");
-				toolParams.setThePrimitiveType((PrimitiveType) this.organizational.get(primitiveKey));
-			}
+	// 		// Setting primitive type...
+	// 		Element primitiveElm = element.getChild("ThePrimitiveType");
+	// 		if(primitiveElm != null){
+	// 			String primitiveKey = primitiveElm.getAttributeValue("REF");
+	// 			toolParams.setThePrimitiveType((PrimitiveType) this.organizational.get(primitiveKey));
+	// 		}
 
-			// Setting subroutine...
-			Element subroutineElm = element.getChild("TheSubroutine");
-			if(subroutineElm != null){
-				String subroutineKey = subroutineElm.getAttributeValue("REF");
-				toolParams.setTheSubroutine((Subroutine) this.organizational.get(subroutineKey));
-			}
+	// 		// Setting subroutine...
+	// 		Element subroutineElm = element.getChild("TheSubroutine");
+	// 		if(subroutineElm != null){
+	// 			String subroutineKey = subroutineElm.getAttributeValue("REF");
+	// 			toolParams.setTheSubroutine((Subroutine) this.organizational.get(subroutineKey));
+	// 		}
 
-			this.persistObject(toolParams, null);
+	// 		this.persistObject(toolParams, null);
 
-			this.organizational.put(element.getAttributeValue("KEY"), toolParams);
-		}
-	}
+	// 		this.organizational.put(element.getAttributeValue("KEY"), toolParams);
+	// 	}
+	// }
 
-	/**
-	 * Import Organizational Associative Objects
-	 */
-	private void loadOrgAssociatives(Element associatives) {
-		/*
-		 * ArtifactTask, BranchConCondToActivity, BranchConCondToMultipleCon,
-		 * ReqAgentRequiresAbility
-		 */
-		List<Element> aaas = associatives.getChildren(AgentAffinityAgent.class.getSimpleName());
-		Iterator<Element> iteraaas = aaas.iterator();
-		while (iteraaas.hasNext()) {
-			Element aaaElm = (Element) iteraaas.next();
+	// /**
+	//  * Import Organizational Associative Objects
+	//  */
+	// private void loadOrgAssociatives(Element associatives) {
+	// 	/*
+	// 	 * ArtifactTask, BranchConCondToActivity, BranchConCondToMultipleCon,
+	// 	 * ReqAgentRequiresAbility
+	// 	 */
+	// 	List<Element> aaas = associatives.getChildren(AgentAffinityAgent.class.getSimpleName());
+	// 	Iterator<Element> iteraaas = aaas.iterator();
+	// 	while (iteraaas.hasNext()) {
+	// 		Element aaaElm = (Element) iteraaas.next();
 
-			String key = aaaElm.getAttributeValue("KEY");
+	// 		String key = aaaElm.getAttributeValue("KEY");
 
-			Element toAffinityElm = aaaElm.getChild("ToAffinity");
-			String toKey = toAffinityElm.getAttributeValue("REF");
+	// 		Element toAffinityElm = aaaElm.getChild("ToAffinity");
+	// 		String toKey = toAffinityElm.getAttributeValue("REF");
 
-			Agent toAffinity = (Agent) this.organizational.get(toKey);
+	// 		Agent toAffinity = (Agent) this.organizational.get(toKey);
 
-			Element fromAffinityElm = aaaElm.getChild("FromAffinity");
-			String fromKey = fromAffinityElm.getAttributeValue("REF");
+	// 		Element fromAffinityElm = aaaElm.getChild("FromAffinity");
+	// 		String fromKey = fromAffinityElm.getAttributeValue("REF");
 
-			Agent fromAffinity = (Agent) this.organizational.get(fromKey);
+	// 		Agent fromAffinity = (Agent) this.organizational.get(fromKey);
 
-			if(!this.isAssociativeExists(AgentAffinityAgent.class, fromAffinity, toAffinity)){
+	// 		if(!this.isAssociativeExists(AgentAffinityAgent.class, fromAffinity, toAffinity)){
 
-				AgentAffinityAgent aaa = new AgentAffinityAgent();
-				aaa.setToAffinity(toAffinity);
-				aaa.setFromAffinity(fromAffinity);
-				aaa.setDegree(Integer.valueOf(aaaElm.getChildText("Degree")));
+	// 			AgentAffinityAgent aaa = new AgentAffinityAgent();
+	// 			aaa.setToAffinity(toAffinity);
+	// 			aaa.setFromAffinity(fromAffinity);
+	// 			aaa.setDegree(Integer.valueOf(aaaElm.getChildText("Degree")));
 
-				aaa = (AgentAffinityAgent) this.persistObject(aaa, null);
+	// 			aaa = (AgentAffinityAgent) this.persistObject(aaa, null);
 
-				this.associatives.put(key, aaa);
-			}
-		}
+	// 			this.associatives.put(key, aaa);
+	// 		}
+	// 	}
 
-		List<Element> ahas = associatives.getChildren(AgentHasAbility.class.getSimpleName());
-		Iterator<Element> iterahas = ahas.iterator();
-		while (iterahas.hasNext()) {
-			Element ahaElm = (Element) iterahas.next();
+	// 	List<Element> ahas = associatives.getChildren(AgentHasAbility.class.getSimpleName());
+	// 	Iterator<Element> iterahas = ahas.iterator();
+	// 	while (iterahas.hasNext()) {
+	// 		Element ahaElm = (Element) iterahas.next();
 
-			String key = ahaElm.getAttributeValue("KEY");
+	// 		String key = ahaElm.getAttributeValue("KEY");
 
-			Element abilityElm = ahaElm.getChild("TheAbility");
-			String abilityKey = abilityElm.getAttributeValue("REF");
+	// 		Element abilityElm = ahaElm.getChild("TheAbility");
+	// 		String abilityKey = abilityElm.getAttributeValue("REF");
 
-			Ability ability = (Ability) this.organizational.get(abilityKey);
+	// 		Ability ability = (Ability) this.organizational.get(abilityKey);
 
-			Element agentElm = ahaElm.getChild("TheAgent");
-			String agentKey = agentElm.getAttributeValue("REF");
+	// 		Element agentElm = ahaElm.getChild("TheAgent");
+	// 		String agentKey = agentElm.getAttributeValue("REF");
 
-			Agent agent = (Agent) this.organizational.get(agentKey);
+	// 		Agent agent = (Agent) this.organizational.get(agentKey);
 
-			if(!this.isAssociativeExists(AgentHasAbility.class, agent, ability)){
+	// 		if(!this.isAssociativeExists(AgentHasAbility.class, agent, ability)){
 
-				AgentHasAbility aha = new AgentHasAbility();
-				aha.setTheAbility(ability);
-				aha.setTheAgent(agent);
-				aha.setDegree(Integer.valueOf(ahaElm.getChildText("Degree")));
+	// 			AgentHasAbility aha = new AgentHasAbility();
+	// 			aha.setTheAbility(ability);
+	// 			aha.setTheAgent(agent);
+	// 			aha.setDegree(Integer.valueOf(ahaElm.getChildText("Degree")));
 
-				aha = (AgentHasAbility) this.persistObject(aha, null);
+	// 			aha = (AgentHasAbility) this.persistObject(aha, null);
 
-				this.associatives.put(key, aha);
-			}
-		}
+	// 			this.associatives.put(key, aha);
+	// 		}
+	// 	}
 
-		List<Element> aprs = associatives.getChildren(AgentPlaysRole.class.getSimpleName());
-		Iterator<Element> iteraprs = aprs.iterator();
-		while (iteraprs.hasNext()) {
-			Element aprElm = (Element) iteraprs.next();
+	// 	List<Element> aprs = associatives.getChildren(AgentPlaysRole.class.getSimpleName());
+	// 	Iterator<Element> iteraprs = aprs.iterator();
+	// 	while (iteraprs.hasNext()) {
+	// 		Element aprElm = (Element) iteraprs.next();
 
-			String key = aprElm.getAttributeValue("KEY");
+	// 		String key = aprElm.getAttributeValue("KEY");
 
-			Element roleElm = aprElm.getChild("TheRole");
-			String roleKey = roleElm.getAttributeValue("REF");
+	// 		Element roleElm = aprElm.getChild("TheRole");
+	// 		String roleKey = roleElm.getAttributeValue("REF");
 
-			Role role = (Role) this.organizational.get(roleKey);
+	// 		Role role = (Role) this.organizational.get(roleKey);
 
-			Element agentElm = aprElm.getChild("TheAgent");
-			String agentKey = agentElm.getAttributeValue("REF");
+	// 		Element agentElm = aprElm.getChild("TheAgent");
+	// 		String agentKey = agentElm.getAttributeValue("REF");
 
-			Agent agent = (Agent) this.organizational.get(agentKey);
+	// 		Agent agent = (Agent) this.organizational.get(agentKey);
 
-			if(!this.isAssociativeExists(AgentPlaysRole.class, agent, role)){
+	// 		if(!this.isAssociativeExists(AgentPlaysRole.class, agent, role)){
 
-				AgentPlaysRole apr = new AgentPlaysRole();
-				if(role != null)
-					apr.setTheRole(role);
-				if(agent != null)
-					apr.setTheAgent(agent);
-				apr.setSinceDate((LocalDate) this.buildAttribute(Date.class, aprElm.getChildText("Since_date")));
+	// 			AgentPlaysRole apr = new AgentPlaysRole();
+	// 			if(role != null)
+	// 				apr.setTheRole(role);
+	// 			if(agent != null)
+	// 				apr.setTheAgent(agent);
+	// 			apr.setSinceDate((LocalDate) this.buildAttribute(Date.class, aprElm.getChildText("Since_date")));
 
-				apr = (AgentPlaysRole) this.persistObject(apr, null);
+	// 			apr = (AgentPlaysRole) this.persistObject(apr, null);
 
-				this.associatives.put(key, apr);
-			}
-		}
+	// 			this.associatives.put(key, apr);
+	// 		}
+	// 	}
 
-		List<Element> rnas = associatives.getChildren(RoleNeedsAbility.class.getSimpleName());
-		Iterator<Element> iterrnas = rnas.iterator();
-		while (iterrnas.hasNext()) {
-			Element rnaElm = (Element) iterrnas.next();
+	// 	List<Element> rnas = associatives.getChildren(RoleNeedsAbility.class.getSimpleName());
+	// 	Iterator<Element> iterrnas = rnas.iterator();
+	// 	while (iterrnas.hasNext()) {
+	// 		Element rnaElm = (Element) iterrnas.next();
 
-			String key = rnaElm.getAttributeValue("KEY");
+	// 		String key = rnaElm.getAttributeValue("KEY");
 
-			Element roleElm = rnaElm.getChild("TheRole");
-			String roleKey = roleElm.getAttributeValue("REF");
+	// 		Element roleElm = rnaElm.getChild("TheRole");
+	// 		String roleKey = roleElm.getAttributeValue("REF");
 
-			Role role = (Role) this.organizational.get(roleKey);
+	// 		Role role = (Role) this.organizational.get(roleKey);
 
-			Element abilityElm = rnaElm.getChild("TheAbility");
-			String abilityKey = abilityElm.getAttributeValue("REF");
+	// 		Element abilityElm = rnaElm.getChild("TheAbility");
+	// 		String abilityKey = abilityElm.getAttributeValue("REF");
 
-			Ability ability = (Ability) this.organizational.get(abilityKey);
+	// 		Ability ability = (Ability) this.organizational.get(abilityKey);
 
-			if(!this.isAssociativeExists(RoleNeedsAbility.class, role, ability)){
+	// 		if(!this.isAssociativeExists(RoleNeedsAbility.class, role, ability)){
 
-        RoleNeedsAbility rna = new RoleNeedsAbility();
-				rna.setTheRole(role);
-				rna.setTheAbility(ability);
-				rna.setDegree(Integer.valueOf(rnaElm.getChildText("Degree")));
+  //       RoleNeedsAbility rna = new RoleNeedsAbility();
+	// 			rna.setTheRole(role);
+	// 			rna.setTheAbility(ability);
+	// 			rna.setDegree(Integer.valueOf(rnaElm.getChildText("Degree")));
 
-				rna = (RoleNeedsAbility) this.persistObject(rna, null);
+	// 			rna = (RoleNeedsAbility) this.persistObject(rna, null);
 
-				this.associatives.put(key, rna);
-			}
-		}
-	}
+	// 			this.associatives.put(key, rna);
+	// 		}
+	// 	}
+	// }
 
 	/**
 	 * Import Process Components Objects
@@ -1882,17 +1813,17 @@ public class ProjectServicesImpl implements ProjectServices {
 
 		this.loadProcess(processComponents, organizational);
 
-		// Load activities
-		this.loadActivity(processComponents);
+		// // Load activities
+		// this.loadActivity(processComponents);
 
-		// Load enaction descriptions
-		this.loadEnactionDescription(processComponents);
+		// // Load enaction descriptions
+		// this.loadEnactionDescription(processComponents);
 
-		// Load required people
-		this.loadRequiredPeople(processComponents, organizational);
+		// // Load required people
+		// this.loadRequiredPeople(processComponents, organizational);
 
-		// Load required resource
-		this.loadRequiredResource(processComponents, organizational);
+		// // Load required resource
+		// this.loadRequiredResource(processComponents, organizational);
 
 		// Load involved artifacts
 		this.loadInvolvedArtifacts(processComponents, organizational);
@@ -1909,11 +1840,11 @@ public class ProjectServicesImpl implements ProjectServices {
 		// Load metrics and estimations
 		this.loadMetricAndEstimation(processComponents, organizational);
 
-		// Load process agendas
-		this.loadProcessAgenda(processComponents, organizational);
+		// // Load process agendas
+		// this.loadProcessAgenda(processComponents, organizational);
 
-		// Load tasks
-		this.loadTask(processComponents);
+		// // Load tasks
+		// this.loadTask(processComponents);
 
 		// Load events
 		this.loadEvent(processComponents);
@@ -1943,7 +1874,7 @@ public class ProjectServicesImpl implements ProjectServices {
 		Element activityType = processElm.getChild("TheActivityType");
 		if(activityType != null){
 			String typeKey = activityType.getAttributeValue("REF");
-			process.setTheActivityType((ActivityType) this.organizational.get(typeKey));
+			// process.setTheActivityType((ActivityType) this.organizational.get(typeKey));
 		}
 
 		// Setting project...
@@ -1969,10 +1900,10 @@ public class ProjectServicesImpl implements ProjectServices {
 		}
 
 		// Setting SpmLog into the hash table
-		String logKey = processComponents.getChild(SpmLog.class.getSimpleName()).getAttributeValue("KEY");
-		this.processComponents.put(logKey, process.getTheLog());
+		// String logKey = processComponents.getChild(SpmLog.class.getSimpleName()).getAttributeValue("KEY");
+		// this.processComponents.put(logKey, process.getTheLog());
 
-		this.processComponents.put(processElm.getAttributeValue("KEY"), process);
+		// this.processComponents.put(processElm.getAttributeValue("KEY"), process);
 	}
 
 	private void loadProcessModel(Element processComponents){
@@ -2030,148 +1961,148 @@ public class ProjectServicesImpl implements ProjectServices {
 		}
 	}
 
-	private void loadEnactionDescription(Element processComponents){
+	// private void loadEnactionDescription(Element processComponents){
 
-		List<Element> enactionDescs = processComponents.getChildren(EnactionDescription.class.getSimpleName());
-		Iterator<Element> iter = enactionDescs.iterator();
-		while (iter.hasNext()) {
-			Element enactionDescElm = (Element) iter.next();
-			EnactionDescription enactionDesc = new EnactionDescription();
-			enactionDesc.setState(enactionDescElm.getChildText("State"));
-			enactionDesc.setActualBegin((LocalDate) this.buildAttribute(Date.class, enactionDescElm.getChildText("ActualBegin")));
-			enactionDesc.setActualEnd((LocalDate) this.buildAttribute(Date.class, enactionDescElm.getChildText("ActualEnd")));
+	// 	List<Element> enactionDescs = processComponents.getChildren(EnactionDescription.class.getSimpleName());
+	// 	Iterator<Element> iter = enactionDescs.iterator();
+	// 	while (iter.hasNext()) {
+	// 		Element enactionDescElm = (Element) iter.next();
+	// 		EnactionDescription enactionDesc = new EnactionDescription();
+	// 		enactionDesc.setState(enactionDescElm.getChildText("State"));
+	// 		enactionDesc.setActualBegin((LocalDate) this.buildAttribute(Date.class, enactionDescElm.getChildText("ActualBegin")));
+	// 		enactionDesc.setActualEnd((LocalDate) this.buildAttribute(Date.class, enactionDescElm.getChildText("ActualEnd")));
 
-			Element plainElm = enactionDescElm.getChild("ThePlain");
-			if(plainElm != null){
-				String plainKey = plainElm.getAttributeValue("REF");
-				enactionDesc.setThePlain((Plain) this.processComponents.get(plainKey));
-			}
+	// 		Element plainElm = enactionDescElm.getChild("ThePlain");
+	// 		if(plainElm != null){
+	// 			String plainKey = plainElm.getAttributeValue("REF");
+	// 			enactionDesc.setThePlain((Plain) this.processComponents.get(plainKey));
+	// 		}
 
-			this.persistObject(enactionDesc, null);
+	// 		this.persistObject(enactionDesc, null);
 
-			this.processComponents.put(enactionDescElm.getAttributeValue("KEY"), enactionDesc);
-		}
-	}
+	// 		this.processComponents.put(enactionDescElm.getAttributeValue("KEY"), enactionDesc);
+	// 	}
+	// }
 
-	private void loadActivity(Element processComponents){
+	// private void loadActivity(Element processComponents){
 
-		ElementFilter normalFilter = new ElementFilter(Normal.class.getSimpleName());
-		ElementFilter decomposedFilter = new ElementFilter(Decomposed.class.getSimpleName());
-		ElementFilter automaticFilter = new ElementFilter(Automatic.class.getSimpleName());
+	// 	ElementFilter normalFilter = new ElementFilter(Normal.class.getSimpleName());
+	// 	ElementFilter decomposedFilter = new ElementFilter(Decomposed.class.getSimpleName());
+	// 	ElementFilter automaticFilter = new ElementFilter(Automatic.class.getSimpleName());
 
-		AbstractFilter activityFilter = ((AbstractFilter) normalFilter.or(decomposedFilter));
-		activityFilter = ((AbstractFilter) activityFilter.or(automaticFilter));
+	// 	AbstractFilter activityFilter = ((AbstractFilter) normalFilter.or(decomposedFilter));
+	// 	activityFilter = ((AbstractFilter) activityFilter.or(automaticFilter));
 
-		Iterator<Element> iterActivities = processComponents.getDescendants(activityFilter);
-		while (iterActivities.hasNext()) {
-			Element actElm = (Element) iterActivities.next();
+	// 	Iterator<Element> iterActivities = processComponents.getDescendants(activityFilter);
+	// 	while (iterActivities.hasNext()) {
+	// 		Element actElm = (Element) iterActivities.next();
 
-			Activity activity = (Activity) this.buildProcObject(actElm);
-			if(activity == null) continue;
-			Element actTypeElm = actElm.getChild("TheActivityType");
-			if(actTypeElm != null){
-				String typeKey = actTypeElm.getAttributeValue("REF");
-				ActivityType actType = (ActivityType) this.organizational.get(typeKey);
-				activity.setTheActivityType(actType);
-			}
+	// 		Activity activity = (Activity) this.buildProcObject(actElm);
+	// 		if(activity == null) continue;
+	// 		Element actTypeElm = actElm.getChild("TheActivityType");
+	// 		if(actTypeElm != null){
+	// 			String typeKey = actTypeElm.getAttributeValue("REF");
+	// 			ActivityType actType = (ActivityType) this.organizational.get(typeKey);
+	// 			activity.setTheActivityType(actType);
+	// 		}
 
-			Element versionElm = actElm.getChild("IsVersion");
-			if(versionElm != null){
-				String versionKey = versionElm.getAttributeValue("REF");
-				Activity actVersion = (Activity) this.organizational.get(versionKey);
-				activity.addHasVersions(actVersion);
-			}
-		}
-	}
+	// 		Element versionElm = actElm.getChild("IsVersion");
+	// 		if(versionElm != null){
+	// 			String versionKey = versionElm.getAttributeValue("REF");
+	// 			Activity actVersion = (Activity) this.organizational.get(versionKey);
+	// 			activity.addHasVersions(actVersion);
+	// 		}
+	// 	}
+	// }
 
-	private void loadRequiredPeople(Element processComponents, Element organizational){
+	// private void loadRequiredPeople(Element processComponents, Element organizational){
 
-		ElementFilter reqAgentFilter = new ElementFilter(ReqAgent.class.getSimpleName());
-		ElementFilter reqWorkGroupFilter = new ElementFilter(ReqWorkGroup.class.getSimpleName());
+	// 	ElementFilter reqAgentFilter = new ElementFilter(ReqAgent.class.getSimpleName());
+	// 	ElementFilter reqWorkGroupFilter = new ElementFilter(ReqWorkGroup.class.getSimpleName());
 
-		AbstractFilter requiredPeopleFilter = ((AbstractFilter) reqAgentFilter.or(reqWorkGroupFilter));
+	// 	AbstractFilter requiredPeopleFilter = ((AbstractFilter) reqAgentFilter.or(reqWorkGroupFilter));
 
-		Iterator<Element> iter = processComponents.getDescendants(requiredPeopleFilter);
-		while (iter.hasNext()) {
-			Element requiredPeopleElm = (Element) iter.next();
+	// 	Iterator<Element> iter = processComponents.getDescendants(requiredPeopleFilter);
+	// 	while (iter.hasNext()) {
+	// 		Element requiredPeopleElm = (Element) iter.next();
 
-			String tagName = requiredPeopleElm.getQualifiedName();
-			if(tagName.equals(ReqAgent.class.getSimpleName())){
-				ReqAgent reqAgent = new ReqAgent();
+	// 		String tagName = requiredPeopleElm.getQualifiedName();
+	// 		if(tagName.equals(ReqAgent.class.getSimpleName())){
+	// 			ReqAgent reqAgent = new ReqAgent();
 
-				Element roleElm = requiredPeopleElm.getChild("TheRole");
-				if(roleElm == null)	continue; // Inconsistency handle
+	// 			Element roleElm = requiredPeopleElm.getChild("TheRole");
+	// 			if(roleElm == null)	continue; // Inconsistency handle
 
-				String roleKey = roleElm.getAttributeValue("REF");
-				reqAgent.insertIntoTheRole((Role) this.organizational.get(roleKey));
+	// 			// String roleKey = roleElm.getAttributeValue("REF");
+	// 			// reqAgent.setTheRole((Role) this.organizational.get(roleKey));
 
-				String normalKey = requiredPeopleElm.getChild("TheNormal").getAttributeValue("REF");
-				reqAgent.insertIntoTheNormal((Normal) this.processComponents.get(normalKey));
+	// 			String normalKey = requiredPeopleElm.getChild("TheNormal").getAttributeValue("REF");
+	// 			reqAgent.setTheNormal((Normal) this.processComponents.get(normalKey));
 
-				Element agentElm = requiredPeopleElm.getChild("TheAgent");
-				if(agentElm != null){
-					String agentKey = agentElm.getAttributeValue("REF");
-					reqAgent.insertIntoTheAgent((Agent) this.organizational.get(agentKey));
-				}
+	// 			Element agentElm = requiredPeopleElm.getChild("TheAgent");
+	// 			if(agentElm != null){
+	// 				String agentKey = agentElm.getAttributeValue("REF");
+	// 				reqAgent.setTheAgent((Agent) this.organizational.get(agentKey));
+	// 			}
 
-				this.persistObject(reqAgent, null);
+	// 			this.persistObject(reqAgent, null);
 
-				this.processComponents.put(requiredPeopleElm.getAttributeValue("KEY"), reqAgent);
-			}
-			else { //tagName.equals(ReqWorkGroup.class.getSimpleName()
+	// 			this.processComponents.put(requiredPeopleElm.getAttributeValue("KEY"), reqAgent);
+	// 		}
+	// 		else { //tagName.equals(ReqWorkGroup.class.getSimpleName()
 
-				ReqWorkGroup reqWorkGroup = new ReqWorkGroup();
+	// 			ReqWorkGroup reqWorkGroup = new ReqWorkGroup();
 
-				Element WorkGroupTypeElm = requiredPeopleElm.getChild("TheWorkGroupType");
-				if(WorkGroupTypeElm == null) continue; // Inconsistency handle
-				String WorkGroupTypeKey = WorkGroupTypeElm.getAttributeValue("REF");
-				reqWorkGroup.setTheWorkGroupType((WorkGroupType) this.organizational.get(WorkGroupTypeKey));
+	// 			Element WorkGroupTypeElm = requiredPeopleElm.getChild("TheWorkGroupType");
+	// 			if(WorkGroupTypeElm == null) continue; // Inconsistency handle
+	// 			String WorkGroupTypeKey = WorkGroupTypeElm.getAttributeValue("REF");
+	// 			reqWorkGroup.setTheWorkGroupType((WorkGroupType) this.organizational.get(WorkGroupTypeKey));
 
-				String normalKey = requiredPeopleElm.getChild("TheNormal").getAttributeValue("REF");
-				reqWorkGroup.insertIntoTheNormal((Normal) this.processComponents.get(normalKey));
+	// 			String normalKey = requiredPeopleElm.getChild("TheNormal").getAttributeValue("REF");
+	// 			reqWorkGroup.setTheNormal((Normal) this.processComponents.get(normalKey));
 
-				Element WorkGroupElm = requiredPeopleElm.getChild("TheWorkGroup");
-				if(WorkGroupElm != null){
-					String WorkGroupKey = WorkGroupElm.getAttributeValue("REF");
-					reqWorkGroup.setTheWorkGroup((WorkGroup) this.organizational.get(WorkGroupKey));
-				}
+	// 			Element WorkGroupElm = requiredPeopleElm.getChild("TheWorkGroup");
+	// 			if(WorkGroupElm != null){
+	// 				String WorkGroupKey = WorkGroupElm.getAttributeValue("REF");
+	// 				reqWorkGroup.setTheWorkGroup((WorkGroup) this.organizational.get(WorkGroupKey));
+	// 			}
 
-				this.persistObject(reqWorkGroup, null);
+	// 			this.persistObject(reqWorkGroup, null);
 
-				this.processComponents.put(requiredPeopleElm.getAttributeValue("KEY"), reqWorkGroup);
-			}
-		}
-	}
+	// 			this.processComponents.put(requiredPeopleElm.getAttributeValue("KEY"), reqWorkGroup);
+	// 		}
+	// 	}
+	// }
 
-	private void loadRequiredResource(Element processComponents, Element organizational) {
+	// private void loadRequiredResource(Element processComponents, Element organizational) {
 
-		List<Element> requiredResources = processComponents.getChildren(RequiredResource.class.getSimpleName());
-		Iterator<Element> iter = requiredResources.iterator();
-		while (iter.hasNext()) {
-			Element requiredResourceElm = (Element) iter.next();
+	// 	List<Element> requiredResources = processComponents.getChildren(RequiredResource.class.getSimpleName());
+	// 	Iterator<Element> iter = requiredResources.iterator();
+	// 	while (iter.hasNext()) {
+	// 		Element requiredResourceElm = (Element) iter.next();
 
-			RequiredResource reqResource = new RequiredResource();
+	// 		RequiredResource reqResource = new RequiredResource();
 
-			Element resType = requiredResourceElm.getChild("TheResourceType");
-			if(resType == null) continue; // Inconsistency handle
+	// 		Element resType = requiredResourceElm.getChild("TheResourceType");
+	// 		if(resType == null) continue; // Inconsistency handle
 
-			String resourceTypeKey = resType.getAttributeValue("REF");
-			reqResource.insertIntoTheResourceType((ResourceType) this.organizational.get(resourceTypeKey));
+	// 		String resourceTypeKey = resType.getAttributeValue("REF");
+	// 		reqResource.insertIntoTheResourceType((ResourceType) this.organizational.get(resourceTypeKey));
 
-			String normalKey = requiredResourceElm.getChild("TheNormal").getAttributeValue("REF");
-			reqResource.insertIntoTheNormal((Normal) this.processComponents.get(normalKey));
+	// 		String normalKey = requiredResourceElm.getChild("TheNormal").getAttributeValue("REF");
+	// 		reqResource.insertIntoTheNormal((Normal) this.processComponents.get(normalKey));
 
-			Element resourceElm = requiredResourceElm.getChild("TheResource");
-			if(resourceElm != null){
-				String resourceKey = resourceElm.getAttributeValue("REF");
-				reqResource.setTheResource((Resource) this.organizational.get(resourceKey));
-			}
+	// 		Element resourceElm = requiredResourceElm.getChild("TheResource");
+	// 		if(resourceElm != null){
+	// 			String resourceKey = resourceElm.getAttributeValue("REF");
+	// 			reqResource.setTheResource((Resource) this.organizational.get(resourceKey));
+	// 		}
 
-			this.persistObject(reqResource, null);
+	// 		this.persistObject(reqResource, null);
 
-			this.processComponents.put(requiredResourceElm.getAttributeValue("KEY"), reqResource);
-		}
-	}
+	// 		this.processComponents.put(requiredResourceElm.getAttributeValue("KEY"), reqResource);
+	// 	}
+	// }
 
 	private void loadInvolvedArtifacts(Element processComponents, Element organizational) {
 
@@ -2185,8 +2116,8 @@ public class ProjectServicesImpl implements ProjectServices {
 			Element artTypeElm = invArtElm.getChild("TheArtifactType");
 			if(artTypeElm == null) continue; // Inconsistency handle
 
-			String artifactTypeKey = artTypeElm.getAttributeValue("REF");
-			invArt.setTheArtifactType((ArtifactType) this.organizational.get(artifactTypeKey));
+			// String artifactTypeKey = artTypeElm.getAttributeValue("REF");
+			// invArt.setTheArtifactType((ArtifactType) this.organizational.get(artifactTypeKey));
 
 			Element in = invArtElm.getChild("InInvolvedArtifacts");
 			if(in != null){
@@ -2258,8 +2189,8 @@ public class ProjectServicesImpl implements ProjectServices {
 					}
 				}
 
-				Element artTypeElm = connectionElm.getChild("TheArtifactType");
-				artifactCon.setTheArtifactType((ArtifactType) this.organizational.get(artTypeElm.getAttributeValue("REF")));
+				// Element artTypeElm = connectionElm.getChild("TheArtifactType");
+				// artifactCon.setTheArtifactType((ArtifactType) this.organizational.get(artTypeElm.getAttributeValue("REF")));
 
 				Element artElm = connectionElm.getChild("TheArtifact");
 				if(artElm != null){
@@ -2465,31 +2396,31 @@ public class ProjectServicesImpl implements ProjectServices {
 		}
 	}
 
-	private void loadProcessAgenda(Element processComponents, Element organizational) {
+	// private void loadProcessAgenda(Element processComponents, Element organizational) {
 
-		List<Element> processAgendas = processComponents.getChildren(ProcessAgenda.class.getSimpleName());
-		Iterator<Element> iterProcessAgendas = processAgendas.iterator();
-		while (iterProcessAgendas.hasNext()) {
-			Element processAgendaElm = (Element) iterProcessAgendas.next();
-			String processAgendaKey = processAgendaElm.getAttributeValue("KEY");
+	// 	List<Element> processAgendas = processComponents.getChildren(ProcessAgenda.class.getSimpleName());
+	// 	Iterator<Element> iterProcessAgendas = processAgendas.iterator();
+	// 	while (iterProcessAgendas.hasNext()) {
+	// 		Element processAgendaElm = (Element) iterProcessAgendas.next();
+	// 		String processAgendaKey = processAgendaElm.getAttributeValue("KEY");
 
-			String taskAgendaRef = processAgendaElm.getChild("TheTaskAgenda").getAttributeValue("REF");
-			TaskAgenda taskAgenda = (TaskAgenda) this.organizational.get(taskAgendaRef);
+	// 		String taskAgendaRef = processAgendaElm.getChild("TheTaskAgenda").getAttributeValue("REF");
+	// 		TaskAgenda taskAgenda = (TaskAgenda) this.organizational.get(taskAgendaRef);
 
-			String processRef = processAgendaElm.getChild("TheProcess").getAttributeValue("REF");
-			Process process = (Process) this.processComponents.get(processRef);
+	// 		String processRef = processAgendaElm.getChild("TheProcess").getAttributeValue("REF");
+	// 		Process process = (Process) this.processComponents.get(processRef);
 
-			ProcessAgenda processAgenda = new ProcessAgenda();
-			taskAgenda.addTheProcessAgenda(processAgenda);
+	// 		ProcessAgenda processAgenda = new ProcessAgenda();
+	// 		taskAgenda.addTheProcessAgenda(processAgenda);
 
-			process.addTheProcessAgenda(processAgenda);
+	// 		process.addTheProcessAgenda(processAgenda);
 
-			this.persistObject(processAgenda, null);
-			this.processComponents.put(processAgendaKey, processAgenda);
-		}
-	}
+	// 		this.persistObject(processAgenda, null);
+	// 		this.processComponents.put(processAgendaKey, processAgenda);
+	// 	}
+	// }
 
-	private void loadTask(Element processComponents) {
+	// private void loadTask(Element processComponents) {
 		// List<Element> tasks = processComponents.getChildren(Task.class.getSimpleName());
 		// Iterator<Element> iter = tasks.iterator();
 		// while (iter.hasNext()) {
@@ -2532,7 +2463,7 @@ public class ProjectServicesImpl implements ProjectServices {
 
 		// 	this.processComponents.put(key, task);
 		// }
-	}
+	// }
 
 	private void loadEvent(Element processComponents) {
 
@@ -3561,8 +3492,8 @@ public class ProjectServicesImpl implements ProjectServices {
 		String key = new String(e.getAttribute("KEY").getValue());
 		String ident = e.getChildText("Ident");
 		if (ident == null) {
-			if (obj instanceof MetricDefinition)
-				ident = e.getChildText("Name");
+			// if (obj instanceof MetricDefinition)
+			// 	ident = e.getChildText("Name");
 		}
 
 		if (!(obj instanceof Connection)) {
@@ -3971,18 +3902,18 @@ public class ProjectServicesImpl implements ProjectServices {
 		AgentDTO agentDTO = new AgentDTO();
 		try {
 			agentDTO = (AgentDTO) converter.getDTO(agent, AgentDTO.class);
-			if (!agent.getTheAgentPlaysRoles().isEmpty()) {
-				agentDTO.setRoleToAgent(new ArrayList<String>());
+			// if (!agent.getTheAgentPlaysRoles().isEmpty()) {
+			// 	agentDTO.setRoleToAgent(new ArrayList<String>());
 
-				for (AgentPlaysRole agentPlayRole : agent
-						.getTheAgentPlaysRoles()) {
-					agentDTO.getRoleToAgent().add(
-							agentPlayRole.getTheRole().getName());
-				}
+			// 	for (AgentPlaysRole agentPlayRole : agent
+			// 			.getTheAgentPlaysRoles()) {
+			// 		agentDTO.getRoleToAgent().add(
+			// 				agentPlayRole.getTheRole().getName());
+			// 	}
 
-			} else {
-				agentDTO.setRoleToAgent(new ArrayList<String>());
-			}
+			// } else {
+			// 	agentDTO.setRoleToAgent(new ArrayList<String>());
+			// }
 
 			agentDTO.setGroupToAgent(new ArrayList<String>());
 			for (WorkGroup WorkGroup : agent.getTheWorkGroups()) {
@@ -3990,21 +3921,21 @@ public class ProjectServicesImpl implements ProjectServices {
 			}
 
 			agentDTO.setAbilityToAgent(new ArrayList<String>());
-			for (AgentHasAbility agentHasAbility : agent
-					.getTheAgentHasAbilities()) {
-				String abilityName = agentHasAbility.getTheAbility().getName();
+			// for (AgentHasAbility agentHasAbility : agent
+			// 		.getTheAgentHasAbilities()) {
+			// 	String abilityName = agentHasAbility.getTheAbility().getName();
 
-				agentDTO.getAbilityToAgent().add(abilityName);
-			}
+			// 	agentDTO.getAbilityToAgent().add(abilityName);
+			// }
 
 			agentDTO.setAfinityToAgent(new ArrayList<String>());
-			for (AgentAffinityAgent agentAffinityAgent : agent
-					.getFromAgentAffinities()) {
-				String fromAffinityName = agentAffinityAgent.getFromAffinity()
-						.getName();
+			// for (AgentAffinityAgent agentAffinityAgent : agent
+			// 		.getFromAgentAffinities()) {
+			// 	String fromAffinityName = agentAffinityAgent.getFromAffinity()
+			// 			.getName();
 
-				agentDTO.getAfinityToAgent().add(fromAffinityName);
-			}
+			// 	agentDTO.getAfinityToAgent().add(fromAffinityName);
+			// }
 
 			return agentDTO;
 
@@ -4015,63 +3946,63 @@ public class ProjectServicesImpl implements ProjectServices {
 		return null;
 	}
 
-	private boolean isAssociativeExists(Class classe, Object from, Object to){
+// 	private boolean isAssociativeExists(Class classe, Object from, Object to){
 
-		if( (from == null) || (to == null) ) {
-			return false;
-		}
+// 		if( (from == null) || (to == null) ) {
+// 			return false;
+// 		}
 
-		String hql = "FROM "+ classe.getName() +" as obj WHERE ";
-		if(classe.equals(AgentAffinityAgent.class))
-			hql += "obj.fromAffinity.ident = '"+ ((Agent)from).getIdent() + "' AND obj.toAffinity.ident = '"+ ((Agent)to).getIdent() + "'";
-		else if(classe.equals(AgentHasAbility.class))
-			hql += "obj.theAgent.ident = '"+ ((Agent)from).getIdent() + "' AND obj.theAbility.ident = '"+ ((Ability)to).getIdent() + "'";
-		else if(classe.equals(AgentPlaysRole.class)) {
-			hql += "obj.theAgent.ident = '"+ ((Agent)from).getIdent() + "' AND obj.theRole.ident = '"+ ((Role)to).getIdent() + "'";
-		}
-		else if(classe.equals(RoleNeedsAbility.class))
-			hql += "obj.theRole.ident = '"+ ((Role)from).getIdent() + "' AND obj.theAbility.ident = '"+ ((Ability)to).getIdent() + "'";
-		else if(classe.equals(ArtifactTask.class))
-			hql += "obj.theArtifact.ident = '"+ ((Artifact)from).getIdent() + "' AND obj.theTask.theNormal.ident = '"+ ((Task)to).getTheNormal().getIdent() + "'";
-		else if(classe.equals(BranchConCondToActivity.class))
-			hql += "obj.theBranchCond.ident = '"+ ((BranchConCond)from).getIdent() + "' AND obj.theActivity.ident = '"+ ((Activity)to).getIdent() + "'";
-		else if(classe.equals(BranchConCondToMultipleCon.class))
-			hql += "obj.theBranchCond.ident = '"+ ((BranchConCond)from).getIdent() + "' AND obj.theMultipleCon.ident = '"+ ((MultipleCon)to).getIdent() + "'";
-		else if(classe.equals(ReqAgentRequiresAbility.class))
-			hql += "obj.theReqAgent.theNormal.ident = '"+ ((ReqAgent)from).getTheNormal().getIdent() +"' " +
-					"AND obj.theReqAgent.theRole.ident = '"+ ((ReqAgent)from).getTheRole().getIdent() +"' " +
-					"AND obj.theReqAgent.theAgent.ident = '"+ ((ReqAgent)from).getTheAgent().getIdent() +"' " +
-					"AND obj.theAbility.ident = '"+ ((Ability)to).getIdent() + "'";
-		else return false;
+// 		String hql = "FROM "+ classe.getName() +" as obj WHERE ";
+// 		if(classe.equals(AgentAffinityAgent.class))
+// 			hql += "obj.fromAffinity.ident = '"+ ((Agent)from).getIdent() + "' AND obj.toAffinity.ident = '"+ ((Agent)to).getIdent() + "'";
+// 		else if(classe.equals(AgentHasAbility.class))
+// 			hql += "obj.theAgent.ident = '"+ ((Agent)from).getIdent() + "' AND obj.theAbility.ident = '"+ ((Ability)to).getIdent() + "'";
+// 		else if(classe.equals(AgentPlaysRole.class)) {
+// 			hql += "obj.theAgent.ident = '"+ ((Agent)from).getIdent() + "' AND obj.theRole.ident = '"+ ((Role)to).getIdent() + "'";
+// 		}
+// 		else if(classe.equals(RoleNeedsAbility.class))
+// 			hql += "obj.theRole.ident = '"+ ((Role)from).getIdent() + "' AND obj.theAbility.ident = '"+ ((Ability)to).getIdent() + "'";
+// 		else if(classe.equals(ArtifactTask.class))
+// 			hql += "obj.theArtifact.ident = '"+ ((Artifact)from).getIdent() + "' AND obj.theTask.theNormal.ident = '"+ ((Task)to).getTheNormal().getIdent() + "'";
+// 		else if(classe.equals(BranchConCondToActivity.class))
+// 			hql += "obj.theBranchCond.ident = '"+ ((BranchConCond)from).getIdent() + "' AND obj.theActivity.ident = '"+ ((Activity)to).getIdent() + "'";
+// 		else if(classe.equals(BranchConCondToMultipleCon.class))
+// 			hql += "obj.theBranchCond.ident = '"+ ((BranchConCond)from).getIdent() + "' AND obj.theMultipleCon.ident = '"+ ((MultipleCon)to).getIdent() + "'";
+// 		else if(classe.equals(ReqAgentRequiresAbility.class))
+// 			hql += "obj.theReqAgent.theNormal.ident = '"+ ((ReqAgent)from).getTheNormal().getIdent() +"' " +
+// 					"AND obj.theReqAgent.theRole.ident = '"+ ((ReqAgent)from).getTheRole().getIdent() +"' " +
+// 					"AND obj.theReqAgent.theAgent.ident = '"+ ((ReqAgent)from).getTheAgent().getIdent() +"' " +
+// 					"AND obj.theAbility.ident = '"+ ((Ability)to).getIdent() + "'";
+// 		else return false;
 
-//		Query query = this.currentSession.createQuery(hql);
-//		List result = query.list();
+// //		Query query = this.currentSession.createQuery(hql);
+// //		List result = query.list();
 
-		query.setMaxResults(10);
-		query = dao.createQuery(hql);
-		List result = query.getResultList();
+// 		query.setMaxResults(10);
+// 		query = dao.createQuery(hql);
+// 		List result = query.getResultList();
 
-		if(result.isEmpty()) return false;
-		return true;
+// 		if(result.isEmpty()) return false;
+// 		return true;
 
-	}
-	@SuppressWarnings("unchecked")
-	@Override
-	public AgentsDTO getAgentsFromProjects(String theProcess_oid,Long agent_oid) {
+// 	}
+	// @SuppressWarnings("unchecked")
+	// @Override
+	// public AgentsDTO getAgentsFromProjects(String theProcess_oid,Long agent_oid) {
 
-		String hql_project = "SELECT agent FROM " + AGENT_CLASSNAME + " as agent," +
-						" "+TASKAGENDA_CLASSNAME+" as taskagenda,"+PROCESS_AGENDA_CLASSNAME+" as processagenda"+
-		                     " WHERE agent.oid = taskagenda.theAgent.oid AND taskagenda.oid = processagenda.theTaskAgenda.oid " +
-		                     "AND processagenda.theProcess.ident = :theProcess_oid and agent.oid <>:agent_oid";
+	// 	String hql_project = "SELECT agent FROM " + AGENT_CLASSNAME + " as agent," +
+	// 					" "+TASKAGENDA_CLASSNAME+" as taskagenda,"+PROCESS_AGENDA_CLASSNAME+" as processagenda"+
+	// 	                     " WHERE agent.oid = taskagenda.theAgent.oid AND taskagenda.oid = processagenda.theTaskAgenda.oid " +
+	// 	                     "AND processagenda.theProcess.ident = :theProcess_oid and agent.oid <>:agent_oid";
 
-		query = agentRepository.getPersistenceContext().createQuery(hql_project);
-		query.setParameter( "theProcess_oid", theProcess_oid );
-		query.setParameter( "agent_oid", agent_oid );
-		Set<Agent> agentList = new HashSet<Agent>();
-		agentList.addAll(query.getResultList());
+	// 	query = agentRepository.getPersistenceContext().createQuery(hql_project);
+	// 	query.setParameter( "theProcess_oid", theProcess_oid );
+	// 	query.setParameter( "agent_oid", agent_oid );
+	// 	Set<Agent> agentList = new HashSet<Agent>();
+	// 	agentList.addAll(query.getResultList());
 
-		return convertAgentsToAgentsDTO(agentList);
-	}
+	// 	return convertAgentsToAgentsDTO(agentList);
+	// }
 
 	public AgentsDTO getAgentsOnline(Long agent_oid) {
 

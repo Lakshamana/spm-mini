@@ -48,17 +48,17 @@ public interface ProjectServices {
 
 	public ProjectDTO executeProcess(String projectName) throws RepositoryQueryException, WebapseeException;
 
-	public AgentsDTO getAgentsFromProjects(String theProcess_oid, Long agent_oid);
+	// public AgentsDTO getAgentsFromProjects(String theProcess_oid, Long agent_oid);
 
 	public AgentsDTO getAgentsOnline(Long agent_oid);
 
 	public ProjectDTO getProjectById(Long oid);
 
-  public Set<ProjectStatistic> getProjectsForDashboard();
+  // public Set<ProjectStatistic> getProjectsForDashboard();
 
-	public ProjectStatistic getProjectForDashboard(Long oid);
+	// public ProjectStatistic getProjectForDashboard(Long oid);
 
 	public ProjectDTO getProjectByIdent(String ident);
 
-	public ProjectCost getProjectCost(Long projectId);
+	// public ProjectCost getProjectCost(Long projectId);
 }
