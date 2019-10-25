@@ -3,6 +3,10 @@ package br.ufpa.labes.spm.domain;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -18,7 +22,8 @@ import java.io.Serializable;
 @Table(name = "branch_con")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Inheritance(strategy=InheritanceType.JOINED)
-public class BranchCon extends MultipleCon implements Serializable {
+@Inheritance(strategy=InheritanceType.JOINED)
+public class BranchCon extends MultipleCon extends MultipleCon implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

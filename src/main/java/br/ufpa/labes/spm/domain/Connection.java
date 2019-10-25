@@ -3,6 +3,10 @@ package br.ufpa.labes.spm.domain;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -27,7 +31,7 @@ public class Connection implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    
+
     @Column(name = "ident", unique = true)
     private String ident;
 

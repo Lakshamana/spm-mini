@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "normal")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Normal implements Serializable {
+public class Normal extends Plain implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

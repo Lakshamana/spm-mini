@@ -948,133 +948,133 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 	}
 
 
-	public void calculateUtilsDays(long new_begin_date, long new_end_date,CalendarDTO replainDates){
-		System.out.print("caiu no recalcula" +new_begin_date+" "+new_end_date);
-		CalendarDTO newDates = new CalendarDTO();
-		newDates = filtraDatas(replainDates);
-		int inicial = 0;
+	// public void calculateUtilsDays(long new_begin_date, long new_end_date,CalendarDTO replainDates){
+	// 	System.out.print("caiu no recalcula" +new_begin_date+" "+new_end_date);
+	// 	CalendarDTO newDates = new CalendarDTO();
+	// 	newDates = filtraDatas(replainDates);
+	// 	int inicial = 0;
 
-		ArrayList<Date> notWorkingDays = new  ArrayList<>();
+	// 	ArrayList<Date> notWorkingDays = new  ArrayList<>();
 
-		Date plannedBegin = new Date(new_begin_date);
-		Date plannedEnd = new Date(new_end_date);
+	// 	Date plannedBegin = new Date(new_begin_date);
+	// 	Date plannedEnd = new Date(new_end_date);
 
-		SimpleDateFormat simple =  new SimpleDateFormat("MMM dd HH:mm:ss yyyy");
+	// 	SimpleDateFormat simple =  new SimpleDateFormat("MMM dd HH:mm:ss yyyy");
 
-		for (int i = 0; i < newDates.getNotWorkingDays().size(); i++) {
-			try {
-				String s[] = newDates.getNotWorkingDays().get(i).split(" ");
-				Date d =  new Date();
-				 d = simple.parse(s[1]+" "+s[2]+" "+s[3]+" "+s[5]);
-				notWorkingDays.add(new Date((d).getTime()));
-				System.out.println("not" +notWorkingDays.get(i));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	// 	for (int i = 0; i < newDates.getNotWorkingDays().size(); i++) {
+	// 		try {
+	// 			String s[] = newDates.getNotWorkingDays().get(i).split(" ");
+	// 			Date d =  new Date();
+	// 			 d = simple.parse(s[1]+" "+s[2]+" "+s[3]+" "+s[5]);
+	// 			notWorkingDays.add(new Date((d).getTime()));
+	// 			System.out.println("not" +notWorkingDays.get(i));
+	// 		} catch (ParseException e) {
+	// 			// TODO Auto-generated catch block
+	// 			e.printStackTrace();
+	// 		}
+	// 	}
 
-		System.out.print("inicio" +plannedBegin+" "+plannedEnd+"array"+replainDates.getNotWorkingDays().get(0));
+	// 	System.out.print("inicio" +plannedBegin+" "+plannedEnd+"array"+replainDates.getNotWorkingDays().get(0));
 
-		newBeginDate = new Date();
-		newEndDate = new Date();
+	// 	newBeginDate = new Date();
+	// 	newEndDate = new Date();
 
-		Date end = new Date();
+	// 	Date end = new Date();
 
-		for (int i = 0; i < notWorkingDays.size(); i++) {
+	// 	for (int i = 0; i < notWorkingDays.size(); i++) {
 
-			if (isSunday(plannedBegin) == true) {
+	// 		if (isSunday(plannedBegin) == true) {
 
-				plannedBegin = new Date(plannedBegin.getTime() + MILLIS_PER_DAY);
+	// 			plannedBegin = new Date(plannedBegin.getTime() + MILLIS_PER_DAY);
 
-				System.out.println("inicio "+plannedBegin);
-            }
-			else if (isSaturday(plannedBegin) == true) {
+	// 			System.out.println("inicio "+plannedBegin);
+  //           }
+	// 		else if (isSaturday(plannedBegin) == true) {
 
-				plannedBegin = new Date(plannedBegin.getTime() + (2 * MILLIS_PER_DAY));
-                System.out.println("fim sabado"+plannedBegin);
+	// 			plannedBegin = new Date(plannedBegin.getTime() + (2 * MILLIS_PER_DAY));
+  //               System.out.println("fim sabado"+plannedBegin);
 
-			}
+	// 		}
 
-            if (isSunday(plannedEnd) == true) {
+  //           if (isSunday(plannedEnd) == true) {
 
-            	plannedEnd = new Date(plannedEnd.getTime() + MILLIS_PER_DAY);
-            }
-            else if (isSaturday(plannedEnd) == true) {
+  //           	plannedEnd = new Date(plannedEnd.getTime() + MILLIS_PER_DAY);
+  //           }
+  //           else if (isSaturday(plannedEnd) == true) {
 
-            	plannedEnd = new Date(plannedEnd.getTime() + (2 * MILLIS_PER_DAY));
-            }
-
-
-            //começa o paranauê
-            if (plannedBegin.after(notWorkingDays.get(i)) || plannedEnd.before(notWorkingDays.get(i))) {
-            System.out.println("caiu no if"+notWorkingDays.get(i));
-            newBeginDate = plannedBegin;
-    		newEndDate = plannedEnd;
-            }else if (plannedBegin.before(notWorkingDays.get(i)) && plannedEnd.after(notWorkingDays.get(i))){
-				System.out.println("caiu no else");
-            	 if (isFriday(notWorkingDays.get(i)) == true) {
-                     System.out.println("caiu na sexta");
-                     inicial = inicial + 3;
-
-                 } else {
-                     if (isSaturday(notWorkingDays.get(i)) == true) {
-                         System.out.println("caiu no sabado");
-                         inicial = inicial + 2;
-                         //   begin = new Date(plannedBegin.getTime() + (2 * MILLIS_PER_DAY));
-                         //  end = new Date(plannedEnd.getTime() + (2 * MILLIS_PER_DAY));
-
-                     } else {
-                         System.out.println("dia normal");
-                         inicial = inicial + 1;
-                         //   begin = new Date(begin.getTime()+plannedBegin.getTime() + MILLIS_PER_DAY);
-                         //  end = new Date (plannedEnd.getTime() + (MILLIS_PER_DAY));
-
-                     }
-			}
-            	 end = new Date(plannedEnd.getTime() + (inicial * MILLIS_PER_DAY));
-
-            	 newEndDate =  end;
-				newBeginDate = plannedBegin;
-				System.out.println("nova data inicial parcial"+newBeginDate+" nniva data final parcial"+newEndDate);
-
-				//verifica se a nova data final é sabado ou domingo
-	            if (isSunday(newEndDate) == true) {
-	                newEndDate = new Date(end.getTime() + MILLIS_PER_DAY);
-
-	                for (int i1 = 0; i1 < notWorkingDays.size(); i1++) {
-	                    //verifica se a próxima data é um dia não trabalhado
-	                    if (newEndDate.before(notWorkingDays.get(i1))) {
-	                    } else if (newEndDate.compareTo(notWorkingDays.get(i1))==0) {
-	                        System.out.println("é igual");
-	                        newEndDate = new Date(newEndDate.getTime() + MILLIS_PER_DAY);
-
-	                    }
-	                }
-
-	            } else if (isSaturday(newEndDate) == true) {
-	                newEndDate = new Date(end.getTime() + (2 * MILLIS_PER_DAY));
-
-	                for (int i1 = 0; i1 < notWorkingDays.size(); i1++) {
-	                    if (newEndDate.before(notWorkingDays.get(i1))) {
-	                    } else if (newEndDate.compareTo(notWorkingDays.get(i1))==0) {
-	                        System.out.println("é igual");
-	                        newEndDate = new Date(newEndDate.getTime() + MILLIS_PER_DAY);
-
-	                    }
-	                }
-	            }
-			}
-		}
-
-		System.out.println("nova data inicial "+newBeginDate+" nniva data final "+newEndDate);
+  //           	plannedEnd = new Date(plannedEnd.getTime() + (2 * MILLIS_PER_DAY));
+  //           }
 
 
+  //           //começa o paranauê
+  //           if (plannedBegin.after(notWorkingDays.get(i)) || plannedEnd.before(notWorkingDays.get(i))) {
+  //           System.out.println("caiu no if"+notWorkingDays.get(i));
+  //           newBeginDate = plannedBegin;
+  //   		newEndDate = plannedEnd;
+  //           }else if (plannedBegin.before(notWorkingDays.get(i)) && plannedEnd.after(notWorkingDays.get(i))){
+	// 			System.out.println("caiu no else");
+  //           	 if (isFriday(notWorkingDays.get(i)) == true) {
+  //                    System.out.println("caiu na sexta");
+  //                    inicial = inicial + 3;
 
-	}
+  //                } else {
+  //                    if (isSaturday(notWorkingDays.get(i)) == true) {
+  //                        System.out.println("caiu no sabado");
+  //                        inicial = inicial + 2;
+  //                        //   begin = new Date(plannedBegin.getTime() + (2 * MILLIS_PER_DAY));
+  //                        //  end = new Date(plannedEnd.getTime() + (2 * MILLIS_PER_DAY));
 
-	@Override
-	public void replanningDates(String act_id, long new_begin_date, long new_end_date, CalendarDTO replanningDates) {
+  //                    } else {
+  //                        System.out.println("dia normal");
+  //                        inicial = inicial + 1;
+  //                        //   begin = new Date(begin.getTime()+plannedBegin.getTime() + MILLIS_PER_DAY);
+  //                        //  end = new Date (plannedEnd.getTime() + (MILLIS_PER_DAY));
+
+  //                    }
+	// 		}
+  //           	 end = new Date(plannedEnd.getTime() + (inicial * MILLIS_PER_DAY));
+
+  //           	 newEndDate =  end;
+	// 			newBeginDate = plannedBegin;
+	// 			System.out.println("nova data inicial parcial"+newBeginDate+" nniva data final parcial"+newEndDate);
+
+	// 			//verifica se a nova data final é sabado ou domingo
+	//             if (isSunday(newEndDate) == true) {
+	//                 newEndDate = new Date(end.getTime() + MILLIS_PER_DAY);
+
+	//                 for (int i1 = 0; i1 < notWorkingDays.size(); i1++) {
+	//                     //verifica se a próxima data é um dia não trabalhado
+	//                     if (newEndDate.before(notWorkingDays.get(i1))) {
+	//                     } else if (newEndDate.compareTo(notWorkingDays.get(i1))==0) {
+	//                         System.out.println("é igual");
+	//                         newEndDate = new Date(newEndDate.getTime() + MILLIS_PER_DAY);
+
+	//                     }
+	//                 }
+
+	//             } else if (isSaturday(newEndDate) == true) {
+	//                 newEndDate = new Date(end.getTime() + (2 * MILLIS_PER_DAY));
+
+	//                 for (int i1 = 0; i1 < notWorkingDays.size(); i1++) {
+	//                     if (newEndDate.before(notWorkingDays.get(i1))) {
+	//                     } else if (newEndDate.compareTo(notWorkingDays.get(i1))==0) {
+	//                         System.out.println("é igual");
+	//                         newEndDate = new Date(newEndDate.getTime() + MILLIS_PER_DAY);
+
+	//                     }
+	//                 }
+	//             }
+	// 		}
+	// 	}
+
+	// 	System.out.println("nova data inicial "+newBeginDate+" nniva data final "+newEndDate);
+
+
+
+	// }
+
+	// @Override
+	// public void replanningDates(String act_id, long new_begin_date, long new_end_date, CalendarDTO replanningDates) {
 
 
 	// 	Normal normal = new Normal();
@@ -1144,7 +1144,7 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 	// 			e.printStackTrace();
 	// 		}
 	// 	}
-	}
+	// }
 
 	/**
 	 * AUXILIAR METHODS
@@ -2275,7 +2275,7 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 	 * PlannedEnd(successor) = PlannedBegin(sucessor) + HowLong (business days)
 	 *
 	 */
-	private void applyDatesFromPredecessor(Normal normal, Activity predecessor, String dependency, Date greaterPredecessor,CalendarDTO replanningDates ) {
+	// private void applyDatesFromPredecessor(Normal normal, Activity predecessor, String dependency, Date greaterPredecessor,CalendarDTO replanningDates ) {
 
 // 		if (predecessor instanceof Normal) {
 // 			Normal predNormal = (Normal) predecessor;
@@ -2440,7 +2440,7 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 // 				}
 // 			}
 // 		}
-	}
+	// }
 
 	private Collection getCandidatesToFinal(Decomposed dec) {
 
@@ -2641,81 +2641,81 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 	/**
 	 * Replan dates for normal activities
 	 */
-	private boolean replanningNormalDates(Normal normal, Object[] greaterPredecessor,CalendarDTO utilsDays) {
+	// private boolean replanningNormalDates(Normal normal, Object[] greaterPredecessor,CalendarDTO utilsDays) {
 
-		String state = normal.getTheEnactionDescription().getState();
-		if (!(state.equals(Plain.FINISHED) || state.equals(Plain.FAILED) || state.equals(Plain.CANCELED))) {
+	// 	String state = normal.getTheEnactionDescription().getState();
+	// 	if (!(state.equals(Plain.FINISHED) || state.equals(Plain.FAILED) || state.equals(Plain.CANCELED))) {
 
-			this.applyDatesFromPredecessor(normal, this.lastValid, (String) greaterPredecessor[1], (Date) greaterPredecessor[0],utilsDays);
+	// 		this.applyDatesFromPredecessor(normal, this.lastValid, (String) greaterPredecessor[1], (Date) greaterPredecessor[0],utilsDays);
 
-			long newHowLong = normal.getHowLong().longValue();
-			if (normal.getPlannedBegin() != null && normal.getPlannedEnd() != null)
-				newHowLong = this.businessDays(normal.getPlannedBegin().toEpochDay(), normal.getPlannedEnd().toEpochDay());
+	// 		long newHowLong = normal.getHowLong().longValue();
+	// 		if (normal.getPlannedBegin() != null && normal.getPlannedEnd() != null)
+	// 			newHowLong = this.businessDays(normal.getPlannedBegin().toEpochDay(), normal.getPlannedEnd().toEpochDay());
 
-			normal.setHowLong(new Float(Math.round(newHowLong)));
+	// 		normal.setHowLong(new Float(Math.round(newHowLong)));
 
-			return true;
-		}
-		return false;
-	}
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	/**
 	 * Replanning the subprocess
 	 */
-	private void replanningDecomposedDates(Decomposed decomposed, Activity predecessor, Object[] greaterPredecessor,CalendarDTO utilsDays) {
+	// private void replanningDecomposedDates(Decomposed decomposed, Activity predecessor, Object[] greaterPredecessor,CalendarDTO utilsDays) {
 
-		ProcessModel processModel = decomposed.getTheReferedProcessModel();
-		String state = processModel.getPmState();
+	// 	ProcessModel processModel = decomposed.getTheReferedProcessModel();
+	// 	String state = processModel.getPmState();
 
-		if (!(state.equals(ProcessModel.FINISHED) || state.equals(ProcessModel.FAILED) || state.equals(ProcessModel.CANCELED))) { // It
-																																	// means
-																																	// that
-																																	// decomposed
-																																	// activity
-																																	// has
-																																	// already
-																																	// in
-																																	// an
-																																	// final
-																																	// state
+	// 	if (!(state.equals(ProcessModel.FINISHED) || state.equals(ProcessModel.FAILED) || state.equals(ProcessModel.CANCELED))) { // It
+	// 																																// means
+	// 																																// that
+	// 																																// decomposed
+	// 																																// activity
+	// 																																// has
+	// 																																// already
+	// 																																// in
+	// 																																// an
+	// 																																// final
+	// 																																// state
 
-			Normal temp = this.lastValid; // This temporary variables assures
-											// that all begginers have the same
-											// predecessor
-											// as a base for the dates calculus.
+	// 		Normal temp = this.lastValid; // This temporary variables assures
+	// 										// that all begginers have the same
+	// 										// predecessor
+	// 										// as a base for the dates calculus.
 
-			Collection beginners = this.getBeginners(decomposed); // The firsts
-																	// activities
-																	// to be
-																	// enacted
-																	// inside
-																	// this
-																	// decomposed
-			Iterator iterBeginners = beginners.iterator();
-			while (iterBeginners.hasNext()) {
-				Activity beginner = (Activity) iterBeginners.next();
+	// 		Collection beginners = this.getBeginners(decomposed); // The firsts
+	// 																// activities
+	// 																// to be
+	// 																// enacted
+	// 																// inside
+	// 																// this
+	// 																// decomposed
+	// 		Iterator iterBeginners = beginners.iterator();
+	// 		while (iterBeginners.hasNext()) {
+	// 			Activity beginner = (Activity) iterBeginners.next();
 
-				if (beginner instanceof Normal) {
-					Normal normal = (Normal) beginner;
-					this.replanningNormalDates(normal, greaterPredecessor,utilsDays);
-				} else if (beginner instanceof Decomposed) {
-					Decomposed nextDecomposed = (Decomposed) beginner;
-					this.replanningDecomposedDates(nextDecomposed, predecessor, greaterPredecessor,utilsDays);
-				}
+	// 			if (beginner instanceof Normal) {
+	// 				Normal normal = (Normal) beginner;
+	// 				this.replanningNormalDates(normal, greaterPredecessor,utilsDays);
+	// 			} else if (beginner instanceof Decomposed) {
+	// 				Decomposed nextDecomposed = (Decomposed) beginner;
+	// 				this.replanningDecomposedDates(nextDecomposed, predecessor, greaterPredecessor,utilsDays);
+	// 			}
 
-				this.propagateReplanning(beginner, decomposed,utilsDays);
-				this.lastValid = temp; // After the propagation of each
-										// begginer, the lastValid attribute
-										// returns.
-			}
+	// 			this.propagateReplanning(beginner, decomposed,utilsDays);
+	// 			this.lastValid = temp; // After the propagation of each
+	// 									// begginer, the lastValid attribute
+	// 									// returns.
+	// 		}
 
-			// recent added, since lastValid shold be
-			// the greater planned end inside the decomposed
-			if (!beginners.isEmpty()) {
-				this.lastValid = this.retrieveBasedOnLastDate(this.getCandidatesToFinal(decomposed));
-			}
-		}
-	}
+	// 		// recent added, since lastValid shold be
+	// 		// the greater planned end inside the decomposed
+	// 		if (!beginners.isEmpty()) {
+	// 			this.lastValid = this.retrieveBasedOnLastDate(this.getCandidatesToFinal(decomposed));
+	// 		}
+	// 	}
+	// }
 
 	/**
 	 * Returns a Collection with the successors (Activities only) of a
@@ -2724,11 +2724,12 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 	private Collection getSuccessors(Connection conn) {
 
 		Collection succ = new LinkedList();
-		if (conn instanceof Sequence) {
-			Sequence seq = (Sequence) conn;
-			if (seq.getToActivity() != null)
-				succ.add(seq.getToActivity());
-		} else if (conn instanceof BranchCon) {
+		// if (conn instanceof Sequence) {
+		// 	Sequence seq = (Sequence) conn;
+		// 	if (seq.getToActivity() != null)
+		// 		succ.add(seq.getToActivity());
+    // } else
+    if (conn instanceof BranchCon) {
 			BranchCon branch = (BranchCon) conn;
 			if (branch instanceof BranchANDCon) {
 				BranchANDCon bAND = (BranchANDCon) branch;
@@ -2776,11 +2777,12 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 	private Collection getPredecessors(Connection conn) {
 
 		Collection pred = new LinkedList();
-		if (conn instanceof Sequence) {
-			Sequence seq = (Sequence) conn;
-			if (seq.getFromActivity() != null)
-				pred.add(seq.getFromActivity());
-		} else if (conn instanceof BranchCon) {
+		// if (conn instanceof Sequence) {
+		// 	Sequence seq = (Sequence) conn;
+		// 	if (seq.getFromActivity() != null)
+		// 		pred.add(seq.getFromActivity());
+    // } else
+    if (conn instanceof BranchCon) {
 			BranchCon branch = (BranchCon) conn;
 			if (branch.getFromActivity() != null)
 				pred.add(branch.getFromActivity());
@@ -2848,9 +2850,10 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 		while (iterConnectionsFrom.hasNext()) {
 			Connection connFrom = (Connection) iterConnectionsFrom.next();
 			String dependency = null;
-			if (connFrom instanceof Sequence) {
-				dependency = ((Sequence) connFrom).getTheDependency().getKindDep();
-			} else if (connFrom instanceof MultipleCon) {
+			// if (connFrom instanceof Sequence) {
+			// 	dependency = ((Sequence) connFrom).getTheDependency().getKindDep();
+      // } else
+      if (connFrom instanceof MultipleCon) {
 				dependency = ((MultipleCon) connFrom).getTheDependency().getKindDep();
 			}
 
