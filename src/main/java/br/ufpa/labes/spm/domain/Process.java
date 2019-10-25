@@ -25,11 +25,16 @@ public class Process implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public static final transient String
+      NOT_STARTED	= "Not_Started",
+      ENACTING	= "Enacting",
+      FINISHED	= "Finished";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    
+
     @Column(name = "ident", unique = true)
     private String ident;
 

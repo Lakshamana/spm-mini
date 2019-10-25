@@ -17,6 +17,24 @@ public class WebAPSEEObject implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public static final String ACTIVITY = "Activity";
+    public static final String REQ_AGENT = "ReqAgent";
+    public static final String REQ_RESOURCE = "RequiredResource";
+    public static final String REQ_GROUP = "ReqGroup";
+    public static final String CONNECTION = "Connection";
+
+    public WebAPSEEObject(Long theReferredOid, String className, GraphicCoordinate graphicCoord) {
+      this.theReferredOid = theReferredOid;
+      this.className = className;
+      this.setTheGraphicCoordinate(graphicCoord);
+    }
+
+    public WebAPSEEObject() {
+      this.theReferredOid = 0L;
+      this.className = "";
+      this.theGraphicCoordinate = null;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

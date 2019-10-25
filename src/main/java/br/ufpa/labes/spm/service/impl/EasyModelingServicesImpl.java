@@ -72,6 +72,8 @@ import br.ufpa.labes.spm.exceptions.ModelingException;
 import br.ufpa.labes.spm.exceptions.WebapseeException;
 import br.ufpa.labes.spm.domain.Activity;
 import br.ufpa.labes.spm.domain.Decomposed;
+import br.ufpa.labes.spm.domain.Dependency;
+import br.ufpa.labes.spm.domain.Feedback;
 import br.ufpa.labes.spm.domain.Plain;
 import br.ufpa.labes.spm.domain.Artifact;
 import br.ufpa.labes.spm.domain.ArtifactCon;
@@ -96,6 +98,7 @@ import br.ufpa.labes.spm.domain.ReqAgent;
 // import br.ufpa.labes.spm.domain.ReqAgentRequiresAbility;
 import br.ufpa.labes.spm.domain.ReqWorkGroup;
 import br.ufpa.labes.spm.domain.RequiredPeople;
+import br.ufpa.labes.spm.domain.Sequence;
 // import br.ufpa.labes.spm.domain.RequiredResource;
 import br.ufpa.labes.spm.domain.GraphicCoordinate;
 import br.ufpa.labes.spm.domain.WebAPSEEObject;
@@ -1569,7 +1572,7 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 					if (((Sequence) currentConnection).getTheDependency() != null) {
 						Dependency newDependency = new Dependency();
 						newDependency.setKindDep(((Sequence) currentConnection).getTheDependency().getKindDep());
-						newDependency.insertIntoTheSequence(((Sequence) newConnection));
+						newDependency.setTheSequence(((Sequence) newConnection));
 					}// end if
 						// about activities
 						// ToActivity
@@ -1634,9 +1637,9 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 				}// ########################
 				else if (currentConnection instanceof ArtifactCon) {
 					newConnection = new ArtifactCon();
-					if (((ArtifactCon) currentConnection).getTheArtifactType() != null) {
-						((ArtifactCon) newConnection).setTheArtifactType(((ArtifactCon) currentConnection).getTheArtifactType());
-					}
+					// if (((ArtifactCon) currentConnection).getTheArtifactType() != null) {
+					// 	((ArtifactCon) newConnection).setTheArtifactType(((ArtifactCon) currentConnection).getTheArtifactType());
+					// }
 
 					Artifact theArtifact = ((ArtifactCon) currentConnection).getTheArtifact();
 					if (theArtifact != null) {
@@ -1735,7 +1738,7 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 					if (((BranchCon) currentConnection).getTheDependency() != null) {
 						Dependency newDependency = new Dependency();
 						newDependency.setKindDep(((BranchCon) currentConnection).getTheDependency().getKindDep());
-						newDependency.insertIntoTheMultipleCon(((BranchCon) newConnection));
+						newDependency.setTheMultipleCon(((BranchCon) newConnection));
 					}// end if
 						// about from activity
 					if (((BranchCon) currentConnection).getFromActivity() != null) {
@@ -1763,7 +1766,7 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 					if (((JoinCon) currentConnection).getTheDependency() != null) {
 						Dependency newDependency = new Dependency();
 						newDependency.setKindDep(((JoinCon) currentConnection).getTheDependency().getKindDep());
-						newDependency.insertIntoTheMultipleCon(((JoinCon) newConnection));
+						newDependency.setTheMultipleCon(((JoinCon) newConnection));
 					}// end if
 
 					// About activities
@@ -1795,9 +1798,9 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 				}// end joinCon processing
 
 				// about conection type
-				if (currentConnection.getTheConnectionType() != null) {
-					newConnection.setTheConnectionType(currentConnection.getTheConnectionType());
-				}// end if
+				// if (currentConnection.getTheConnectionType() != null) {
+				// 	newConnection.setTheConnectionType(currentConnection.getTheConnectionType());
+				// }// end if
 				if (newConnection != null) {
 					connectionTable.put(newConnection.getIdent(), newConnection);
 
@@ -1898,35 +1901,35 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 	/**
 	 * Taken from processUtility.CopyProcess
 	 */
-	private void copyAutomaticProperties(Automatic newAutomatic, Automatic currentAutomatic) {
+	// private void copyAutomaticProperties(Automatic newAutomatic, Automatic currentAutomatic) {
 
-		// About Activity Type
-		if (currentAutomatic.getTheActivityType() != null) {
-			newAutomatic.setTheActivityType(currentAutomatic.getTheActivityType());
-		}
+	// 	// About Activity Type
+	// 	if (currentAutomatic.getTheActivityType() != null) {
+	// 		newAutomatic.setTheActivityType(currentAutomatic.getTheActivityType());
+	// 	}
 
-		// set common attribute
-		newAutomatic.setTheArtifact(currentAutomatic.getTheArtifact());
+	// 	// set common attribute
+	// 	newAutomatic.setTheArtifact(currentAutomatic.getTheArtifact());
 
-		// about parameters
-		Set<Parameter> newParameters = null;
-		newParameters = copyAutomaticParameters(currentAutomatic.getTheParameters(), newAutomatic);
-		newAutomatic.setTheParameters(newParameters);
+	// 	// about parameters
+	// 	// Set<Parameter> newParameters = null;
+	// 	// newParameters = copyAutomaticParameters(currentAutomatic.getTheParameters(), newAutomatic);
+	// 	// newAutomatic.setTheParameters(newParameters);
 
-		// about subroutine
-		if (currentAutomatic.getTheSubroutine() != null) {
-			Subroutine newSubRoutine = new Subroutine();
-			if (currentAutomatic.getTheSubroutine().getTheArtifactType() != null) {
-				newSubRoutine.setTheArtifactType(currentAutomatic.getTheSubroutine().getTheArtifactType());
-			}
-			newSubRoutine.setTheAutomatic(newAutomatic);
+	// 	// // about subroutine
+	// 	// if (currentAutomatic.getTheSubroutine() != null) {
+	// 	// 	Subroutine newSubRoutine = new Subroutine();
+	// 	// 	if (currentAutomatic.getTheSubroutine().getTheArtifactType() != null) {
+	// 	// 		newSubRoutine.setTheArtifactType(currentAutomatic.getTheSubroutine().getTheArtifactType());
+	// 	// 	}
+	// 	// 	newSubRoutine.setTheAutomatic(newAutomatic);
 
-			// need to copy a new ToolParameter
-			Set<ToolParameter> newToolParameters = null;
-			newToolParameters = copySubroutineToolParameters(currentAutomatic.getTheSubroutine().getTheToolParameters(), newSubRoutine);
-			newSubRoutine.setTheToolParameters(newToolParameters);
-		}
-	}
+	// 	// 	// need to copy a new ToolParameter
+	// 	// 	Set<ToolParameter> newToolParameters = null;
+	// 	// 	newToolParameters = copySubroutineToolParameters(currentAutomatic.getTheSubroutine().getTheToolParameters(), newSubRoutine);
+	// 	// 	newSubRoutine.setTheToolParameters(newToolParameters);
+	// 	// }
+	// }
 
 	/**
 	 * Taken from processUtility.CopyProcess
@@ -2112,47 +2115,47 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 	/**
 	 * Propagating the new planning for the successors of 'activity'
 	 */
-	private void propagateReplanning(Activity activity, Activity already,CalendarDTO utilsDays) {
+	// private void propagateReplanning(Activity activity, Activity already,CalendarDTO utilsDays) {
 
-		if (activity == null)
-			return;
+	// 	if (activity == null)
+	// 		return;
 
-		if (activity instanceof Normal)
-			this.lastValid = (Normal) activity;
+	// 	if (activity instanceof Normal)
+	// 		this.lastValid = (Normal) activity;
 
-		// greaterPredecessor[0] --> greater Date
-		// greaterPredecessor[1] --> predecessor dependency (String).
-		Object[] greaterPredecessor = new Object[2];
+	// 	// greaterPredecessor[0] --> greater Date
+	// 	// greaterPredecessor[1] --> predecessor dependency (String).
+	// 	Object[] greaterPredecessor = new Object[2];
 
-		Collection connectionsTo = this.getConnectionsTo(activity);
-		Iterator iterConnectionsTo = connectionsTo.iterator();
-		while (iterConnectionsTo.hasNext()) {
-			Connection connection = (Connection) iterConnectionsTo.next();
+	// 	Collection connectionsTo = this.getConnectionsTo(activity);
+	// 	Iterator iterConnectionsTo = connectionsTo.iterator();
+	// 	while (iterConnectionsTo.hasNext()) {
+	// 		Connection connection = (Connection) iterConnectionsTo.next();
 
-			Collection successors = this.getSuccessors(connection);
-			Iterator iterSuccessors = successors.iterator();
-			while (iterSuccessors.hasNext()) {
-				Activity successor = (Activity) iterSuccessors.next();
+	// 		Collection successors = this.getSuccessors(connection);
+	// 		Iterator iterSuccessors = successors.iterator();
+	// 		while (iterSuccessors.hasNext()) {
+	// 			Activity successor = (Activity) iterSuccessors.next();
 
-				if (successor.equals(already))
-					continue;
+	// 			if (successor.equals(already))
+	// 				continue;
 
-				Hashtable<Activity, String> allPredecessors = this.getPredecessorsFrom(successor);
+	// 			Hashtable<Activity, String> allPredecessors = this.getPredecessorsFrom(successor);
 
-				greaterPredecessor = this.getGreaterDateFromCollection(allPredecessors);
-				if (successor instanceof Normal) {
-					Normal succNormal = (Normal) successor;
-					this.replanningNormalDates(succNormal, greaterPredecessor,utilsDays);
-				} else if (successor instanceof Decomposed) {
-					Decomposed decomposed = (Decomposed) successor;
-					this.replanningDecomposedDates(decomposed, activity, greaterPredecessor,utilsDays);
-				}
+	// 			greaterPredecessor = this.getGreaterDateFromCollection(allPredecessors);
+	// 			if (successor instanceof Normal) {
+	// 				Normal succNormal = (Normal) successor;
+	// 				this.replanningNormalDates(succNormal, greaterPredecessor,utilsDays);
+	// 			} else if (successor instanceof Decomposed) {
+	// 				Decomposed decomposed = (Decomposed) successor;
+	// 				this.replanningDecomposedDates(decomposed, activity, greaterPredecessor,utilsDays);
+	// 			}
 
-				// Recursive call for successors of successors...
-				this.propagateReplanning(successor, activity,utilsDays);
-			}
-		}
-	}
+	// 			// Recursive call for successors of successors...
+	// 			this.propagateReplanning(successor, activity,utilsDays);
+	// 		}
+	// 	}
+	// }
 
 	// private void upperPropagation(Decomposed actDecomposed, Activity already,CalendarDTO utilsDays) {
 	// 	if (actDecomposed != null) {
@@ -2954,63 +2957,58 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 	 * applyAllocationToProcessModel(java.lang.String, java.lang.String,
 	 * java.lang.String)
 	 */
-	@Override
-	public void applyAllocationToProcessModel(String pm_id, String role_id, String agent_id) {
+	// @Override
+	// public void applyAllocationToProcessModel(String pm_id, String role_id, String agent_id) {
 
-		ProcessModelRepositoryQueryImpl pmRepositoryQuery = new ProcessModelRepositoryQueryImpl();
+	// 	ProcessModel pm = null;
 
-		ProcessModel pm = null;
+	// 	Decomposed dec = null;
+	// 	Process proc = null;
+	// 	dec = (Decomposed) decRepository.retrieveBySecondaryKey(pm_id);
+	// 	if (dec != null) {
+	// 		// this is not a root process model
+	// 		pm = dec.getTheReferedProcessModel();
+	// 	} else {
+	// 		proc = (Process) procRepository.retrieveBySecondaryKey(pm_id);
+	// 		if (proc != null) {
+	// 			// this is a root process model
+	// 			pm = proc.getTheProcessModel();
+	// 		}
+	// 	}
 
-		DecomposedRepositoryQueryImpl dao = new DecomposedRepositoryQueryImpl();
-		ProcessRepositoryQueryImpl procRepositoryQuery = new ProcessRepositoryQueryImpl();
+	// 	if (pm != null) {
+	// 		Collection<Activity> acts = pm.getTheActivities();
+	// 		for (Activity act : acts) {
 
-		Decomposed dec = null;
-		Process proc = null;
-		dec = (Decomposed) dao.retrieveBySecondaryKey(pm_id);
-		if (dec != null) {
-			// this is not a root process model
-			pm = dec.getTheReferedProcessModel();
-		} else {
-			proc = (Process) procRepository.retrieveBySecondaryKey(pm_id);
-			if (proc != null) {
-				// this is a root process model
-				pm = proc.getTheProcessModel();
-			}
-		}
+	// 			if (act instanceof Normal) {
+	// 				Collection<RequiredPeople> reqps = ((Normal) act).getTheRequiredPeople();
 
-		if (pm != null) {
-			Collection<Activity> acts = pm.getTheActivities();
-			for (Activity act : acts) {
+	// 				for (RequiredPeople reqp : reqps) {
+	// 					if (reqp instanceof ReqAgent) {
+	// 						// Not instantied yet
+	// 						if (((ReqAgent) reqp).getTheAgent() == null) {
+	// 							if ((((ReqAgent) reqp).getTheRole() != null) && (((ReqAgent) reqp).getTheRole().getIdent().equals(role_id))) {
+	// 								// alocate agent to this role
+	// 								// try {
+	// 								// 	// String act_id, String role_id, String
+	// 								// 	// ag_id
+	// 								// 	dynamicModeling.defineRequiredAgent(act.getIdent(), role_id, agent_id);
+	// 								// } catch (WebapseeException e) {
+	// 								// 	// TODO Auto-generated catch block
+	// 								// 	e.printStackTrace();
+	// 								// }
+	// 								break;// break current loop, because we can
+	// 								// allocate only once the same agent
+	// 								// to one activity
+	// 							}
+	// 						}
+	// 					}
+	// 				}// end for
+	// 			}
 
-				if (act instanceof Normal) {
-					Collection<RequiredPeople> reqps = ((Normal) act).getTheRequiredPeople();
+	// 		}// end for
+	// 	}
 
-					for (RequiredPeople reqp : reqps) {
-						if (reqp instanceof ReqAgent) {
-							// Not instantied yet
-							if (((ReqAgent) reqp).getTheAgent() == null) {
-								if ((((ReqAgent) reqp).getTheRole() != null) && (((ReqAgent) reqp).getTheRole().getIdent().equals(role_id))) {
-									// alocate agent to this role
-									// try {
-									// 	// String act_id, String role_id, String
-									// 	// ag_id
-									// 	dynamicModeling.defineRequiredAgent(act.getIdent(), role_id, agent_id);
-									// } catch (WebapseeException e) {
-									// 	// TODO Auto-generated catch block
-									// 	e.printStackTrace();
-									// }
-									break;// break current loop, because we can
-									// allocate only once the same agent
-									// to one activity
-								}
-							}
-						}
-					}// end for
-				}
-
-			}// end for
-		}
-
-	}
+	// }
 
 }

@@ -30,9 +30,9 @@ public interface EasyModelingServices {
 	 */
 	public Hashtable<String, String> copyProcessModelData(ProcessModel oldProcessModel, ProcessModel newProcessModel, String level_to);//end method
 
-	public void applyAllocationToProcess(String process_id, String role_id, String agent_id);
+	// public void applyAllocationToProcess(String process_id, String role_id, String agent_id);
 
-	public void applyAllocationToProcessModel(String pm_id, String role_id, String agent_id);
+	// public void applyAllocationToProcessModel(String pm_id, String role_id, String agent_id);
 
 	// void replanningDates(String act_id, long new_begin_date, long new_end_date,
 	// 		CalendarDTO replanningDates);
