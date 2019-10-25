@@ -31,7 +31,20 @@
             "fieldType": "Boolean"
         }
     ],
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "involvedArtifact",
+            "otherEntityRelationshipName": "inInvolvedArtifacts",
+            "relationshipName": "involvedArtifactToNormal"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "involvedArtifact",
+            "otherEntityRelationshipName": "outInvolvedArtifacts",
+            "relationshipName": "involvedArtifactFromNormal"
+        }
+    ],
     "changelogDate": "20191024134435",
     "entityTableName": "normal",
     "dto": "no",

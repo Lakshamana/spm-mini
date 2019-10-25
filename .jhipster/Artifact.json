@@ -40,6 +40,12 @@
     ],
     "relationships": [
         {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "involvedArtifact",
+            "otherEntityRelationshipName": "theArtifact",
+            "relationshipName": "theInvolvedArtifacts"
+        },
+        {
             "relationshipType": "many-to-one",
             "otherEntityName": "artifact",
             "otherEntityRelationshipName": "derivedTo",

@@ -17,21 +17,19 @@ import br.ufpa.labes.spm.converter.Converter;
 import br.ufpa.labes.spm.converter.ConverterImpl;
 import br.ufpa.labes.spm.exceptions.ImplementationException;
 import br.ufpa.labes.spm.repository.ArtifactRepository;
-import br.ufpa.labes.spm.repository.ArtifactTypeRepository;
 import br.ufpa.labes.spm.repository.ProjectRepository;
-import br.ufpa.labes.spm.repository.TypeRepository;
-import br.ufpa.labes.spm.repository.interfaces.organizationPolicies.ProjectRepositoryQuery;
-import br.ufpa.labes.spm.repository.interfaces.types.ArtifactTypeRepositoryQuery;
-import br.ufpa.labes.spm.repository.interfaces.types.TypeRepositoryQuery;
+// import br.ufpa.labes.spm.repository.interfaces.ProjectRepositoryQuery;
+// import br.ufpa.labes.spm.repository.interfaces.types.ArtifactTypeRepositoryQuery;
+// import br.ufpa.labes.spm.repository.interfaces.types.TypeRepositoryQuery;
 import br.ufpa.labes.spm.service.dto.SimpleArtifactDescriptorDTO;
 import br.ufpa.labes.spm.service.dto.ArtifactDTO;
 import br.ufpa.labes.spm.service.dto.ArtifactsDTO;
-import br.ufpa.labes.spm.service.dto.TypesDTO;
+// import br.ufpa.labes.spm.service.dto.TypesDTO;
 import br.ufpa.labes.spm.exceptions.RepositoryQueryException;
 import br.ufpa.labes.spm.domain.Artifact;
 import br.ufpa.labes.spm.domain.Project;
-import br.ufpa.labes.spm.domain.ArtifactType;
-import br.ufpa.labes.spm.domain.Type;
+// import br.ufpa.labes.spm.domain.ArtifactType;
+// import br.ufpa.labes.spm.domain.Type;
 import br.ufpa.labes.spm.service.interfaces.ArtifactServices;
 import br.ufpa.labes.spm.util.ident.ConversorDeIdent;
 import br.ufpa.labes.spm.util.ident.SemCaracteresEspeciais;
@@ -52,35 +50,32 @@ public class ArtifactServicesImpl implements ArtifactServices {
   @Autowired
 	ProjectRepository projectRepository;
 
-  @Autowired
-	ArtifactTypeRepository artifactTypeRepository;
-
 	Converter converter = new ConverterImpl();
 
 	private Query query;
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public TypesDTO getArtifactTypes() {
+	// @Override
+	// @SuppressWarnings("unchecked")
+	// public TypesDTO getArtifactTypes() {
 
-		String hql;
-		List<Type> typesLists = new ArrayList<Type>();
+	// 	String hql;
+	// 	List<Type> typesLists = new ArrayList<Type>();
 
-		hql = "from " + ArtifactType.class.getSimpleName();
-		query = artifactTypeRepository.getPersistenceContext().createQuery(hql);
-		typesLists = query.getResultList();
+	// 	hql = "from " + ArtifactType.class.getSimpleName();
+	// 	query = artifactTypeRepository.getPersistenceContext().createQuery(hql);
+	// 	typesLists = query.getResultList();
 
-		TypesDTO typesDTO = new TypesDTO(typesLists.size());
-		int j = 0;
-		for (Type type : typesLists) {
-			String typeIdent = type.getIdent();
-			String superTypeIdent = (type.getSuperType()!=null ? type.getSuperType().getIdent() : "");
-			String rootType = ArtifactType.class.getSimpleName();
-			typesDTO.addType(typeIdent, superTypeIdent, rootType, j);
-			j++;
-		}
-		return typesDTO;
-	}
+	// 	TypesDTO typesDTO = new TypesDTO(typesLists.size());
+	// 	int j = 0;
+	// 	for (Type type : typesLists) {
+	// 		String typeIdent = type.getIdent();
+	// 		String superTypeIdent = (type.getSuperType()!=null ? type.getSuperType().getIdent() : "");
+	// 		String rootType = ArtifactType.class.getSimpleName();
+	// 		typesDTO.addType(typeIdent, superTypeIdent, rootType, j);
+	// 		j++;
+	// 	}
+	// 	return typesDTO;
+	// }
 
 	@Override
 	public ArtifactDTO getArtifact(String artifactIdent) {
@@ -88,12 +83,12 @@ public class ArtifactServicesImpl implements ArtifactServices {
 				Artifact artifact = artifactRepository.retrieveBySecondaryKey(artifactIdent);
 				if(artifact != null) {
 					ArtifactDTO artifactDTO = (ArtifactDTO) converter.getDTO(artifact, ArtifactDTO.class);
-					ArtifactType theArtifactType = artifact.getTheArtifactType();
+					// ArtifactType theArtifactType = artifact.getTheArtifactType();
 
-					if(theArtifactType != null) {
-						System.out.println(theArtifactType + " - " + theArtifactType.getIdent());
-						artifactDTO.setTheArtifactType(theArtifactType.getIdent());
-					}
+					// if(theArtifactType != null) {
+					// 	System.out.println(theArtifactType + " - " + theArtifactType.getIdent());
+					// 	artifactDTO.setTheArtifactType(theArtifactType.getIdent());
+					// }
 					return artifactDTO;
 				}
 			} catch (ImplementationException e) {
@@ -120,7 +115,7 @@ public class ArtifactServicesImpl implements ArtifactServices {
 				for (String derivedTo : artifactDTO.getDerivedTo()) {
 					System.out.println(derivedTo);
 				}
-				ArtifactType artifactType = artifactTypeRepository.retrieveBySecondaryKey(artifactDTO.getTheArtifactType());
+				// ArtifactType artifactType = artifactTypeRepository.retrieveBySecondaryKey(artifactDTO.getTheArtifactType());
 
 				List<Artifact> possess = this.getArtifactsFromNames(artifactDTO.getPossess());
 				List<Artifact> derivedTo = this.getArtifactsFromNames(artifactDTO.getDerivedTo());
@@ -132,7 +127,7 @@ public class ArtifactServicesImpl implements ArtifactServices {
 
 				if(artifact == null) {
 					artifact = (Artifact) converter.getEntity(artifactDTO, Artifact.class);
-					artifact.setTheArtifactType(artifactType);
+					// artifact.setTheArtifactType(artifactType);
 					artifactRepository.save(artifact);
 
 					String newIdent = artifactRepository.generateIdent(artifact.getName(), artifact);
@@ -144,7 +139,7 @@ public class ArtifactServicesImpl implements ArtifactServices {
 				} else {
 					artifact.setName(artifactDTO.getName());
 					artifact.setDescription(artifactDTO.getDescription());
-					artifact.setTheArtifactType(artifactType);
+					// artifact.setTheArtifactType(artifactType);
 					artifact.setPathName(artifactDTO.getPathName());
 					artifact.setIsTemplate(artifactDTO.isIsTemplate());
 					artifact.setIsActive(artifactDTO.isIsActive());
@@ -365,8 +360,8 @@ public class ArtifactServicesImpl implements ArtifactServices {
 		try {
 
 			artifactDTO = (ArtifactDTO) converter.getDTO(artifact, ArtifactDTO.class);
-			if(artifact.getTheArtifactType() != null)
-				artifactDTO.setTheArtifactType(artifact.getTheArtifactType().getIdent());
+			// if(artifact.getTheArtifactType() != null)
+			// 	artifactDTO.setTheArtifactType(artifact.getTheArtifactType().getIdent());
 		} catch (ImplementationException e) {
 			e.printStackTrace();
 		}

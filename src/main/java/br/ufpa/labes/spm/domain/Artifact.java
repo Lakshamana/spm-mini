@@ -50,6 +50,10 @@ public class Artifact implements Serializable {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @OneToMany(mappedBy = "theArtifact")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<InvolvedArtifact> theInvolvedArtifacts = new HashSet<>();
+
     @ManyToOne
     @JsonIgnoreProperties("derivedTos")
     private Artifact derivedFrom;
@@ -185,6 +189,31 @@ public class Artifact implements Serializable {
 
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public Set<InvolvedArtifact> getTheInvolvedArtifacts() {
+        return theInvolvedArtifacts;
+    }
+
+    public Artifact theInvolvedArtifacts(Set<InvolvedArtifact> involvedArtifacts) {
+        this.theInvolvedArtifacts = involvedArtifacts;
+        return this;
+    }
+
+    public Artifact addTheInvolvedArtifacts(InvolvedArtifact involvedArtifact) {
+        this.theInvolvedArtifacts.add(involvedArtifact);
+        involvedArtifact.setTheArtifact(this);
+        return this;
+    }
+
+    public Artifact removeTheInvolvedArtifacts(InvolvedArtifact involvedArtifact) {
+        this.theInvolvedArtifacts.remove(involvedArtifact);
+        involvedArtifact.setTheArtifact(null);
+        return this;
+    }
+
+    public void setTheInvolvedArtifacts(Set<InvolvedArtifact> involvedArtifacts) {
+        this.theInvolvedArtifacts = involvedArtifacts;
     }
 
     public Artifact getDerivedFrom() {

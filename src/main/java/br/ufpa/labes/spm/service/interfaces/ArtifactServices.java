@@ -31,7 +31,7 @@ public interface ArtifactServices {
 
 	public Boolean removeArtifact(ArtifactDTO artifactDTO);
 
-	public TypesDTO getArtifactTypes();
+	// public TypesDTO getArtifactTypes();
 
 	ArtifactDTO alreadyExist(String artifactIdent) throws RepositoryQueryException;
 	Map<String, SimpleArtifactDescriptorDTO[]> getArtifactsForSelectedActivity(String identActivity);

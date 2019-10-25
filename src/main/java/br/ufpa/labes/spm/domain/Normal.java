@@ -6,6 +6,8 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A Normal.
@@ -13,7 +15,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "normal")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Normal extends Plain implements Serializable {
+public class Normal implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,6 +44,14 @@ public class Normal extends Plain implements Serializable {
 
     @Column(name = "auto_allocable")
     private Boolean autoAllocable;
+
+    @OneToMany(mappedBy = "inInvolvedArtifacts")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<InvolvedArtifact> involvedArtifactToNormals = new HashSet<>();
+
+    @OneToMany(mappedBy = "outInvolvedArtifacts")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<InvolvedArtifact> involvedArtifactFromNormals = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -141,6 +151,56 @@ public class Normal extends Plain implements Serializable {
 
     public void setAutoAllocable(Boolean autoAllocable) {
         this.autoAllocable = autoAllocable;
+    }
+
+    public Set<InvolvedArtifact> getInvolvedArtifactToNormals() {
+        return involvedArtifactToNormals;
+    }
+
+    public Normal involvedArtifactToNormals(Set<InvolvedArtifact> involvedArtifacts) {
+        this.involvedArtifactToNormals = involvedArtifacts;
+        return this;
+    }
+
+    public Normal addInvolvedArtifactToNormal(InvolvedArtifact involvedArtifact) {
+        this.involvedArtifactToNormals.add(involvedArtifact);
+        involvedArtifact.setInInvolvedArtifacts(this);
+        return this;
+    }
+
+    public Normal removeInvolvedArtifactToNormal(InvolvedArtifact involvedArtifact) {
+        this.involvedArtifactToNormals.remove(involvedArtifact);
+        involvedArtifact.setInInvolvedArtifacts(null);
+        return this;
+    }
+
+    public void setInvolvedArtifactToNormals(Set<InvolvedArtifact> involvedArtifacts) {
+        this.involvedArtifactToNormals = involvedArtifacts;
+    }
+
+    public Set<InvolvedArtifact> getInvolvedArtifactFromNormals() {
+        return involvedArtifactFromNormals;
+    }
+
+    public Normal involvedArtifactFromNormals(Set<InvolvedArtifact> involvedArtifacts) {
+        this.involvedArtifactFromNormals = involvedArtifacts;
+        return this;
+    }
+
+    public Normal addInvolvedArtifactFromNormal(InvolvedArtifact involvedArtifact) {
+        this.involvedArtifactFromNormals.add(involvedArtifact);
+        involvedArtifact.setOutInvolvedArtifacts(this);
+        return this;
+    }
+
+    public Normal removeInvolvedArtifactFromNormal(InvolvedArtifact involvedArtifact) {
+        this.involvedArtifactFromNormals.remove(involvedArtifact);
+        involvedArtifact.setOutInvolvedArtifacts(null);
+        return this;
+    }
+
+    public void setInvolvedArtifactFromNormals(Set<InvolvedArtifact> involvedArtifacts) {
+        this.involvedArtifactFromNormals = involvedArtifacts;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -227,13 +227,13 @@ relationship ManyToOne {
     // ArtifactTask{theTask} to Task{theArtifactTask}
 }
 
-// relationship OneToMany {
-//     Artifact{theInvolvedArtifacts} to InvolvedArtifact{theArtifact},
+relationship OneToMany {
+    Artifact{theInvolvedArtifacts} to InvolvedArtifact{theArtifact}
 //     Artifact{theArtifactParam} to ArtifactParam{theArtifact},
 //     Artifact{theAutomatic} to Automatic{theArtifact},
 //     Artifact{theArtifactMetric} to ArtifactMetric{artifact},
 //     Artifact{theArtifactEstimation} to ArtifactEstimation{artifact}
-// }
+}
 
 //package assets ------------------------------------------- OK
 
@@ -665,7 +665,7 @@ relationship OneToMany {
 //     state String
 // }
 
-// entity InvolvedArtifact {}
+entity InvolvedArtifact {}
 
 entity Normal {
     howLong Float
@@ -700,9 +700,9 @@ entity ReqWorkGroup {} //extends RequiredPeople
 //     amountNeeded Float
 // }
 
-// relationship ManyToOne {
-    // InvolvedArtifact{inInvolvedArtifacts} to Normal{involvedArtifactToNormal},
-    // InvolvedArtifact{outInvolvedArtifacts} to Normal{involvedArtifactFromNormal},
+relationship ManyToOne {
+    InvolvedArtifact{inInvolvedArtifacts} to Normal{involvedArtifactToNormal},
+    InvolvedArtifact{outInvolvedArtifacts} to Normal{involvedArtifactFromNormal}
     // InvolvedArtifact{theArtifactType} to ArtifactType{theInvolvedArtifacts},
 
     // ReqAgentRequiresAbility{theReqAgent} to ReqAgent{theReqAgentRequiresAbility},
@@ -711,7 +711,7 @@ entity ReqWorkGroup {} //extends RequiredPeople
 
     // RequiredResource{theResourceType} to ResourceType{theRequiredResource},
     // RequiredResource{theResource} to Resource{theRequiredResource}
-// }
+}
 
 // relationship OneToMany {
 //     Normal{theTasks} to Task{theNormal},
