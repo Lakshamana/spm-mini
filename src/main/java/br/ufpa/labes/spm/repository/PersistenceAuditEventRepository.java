@@ -5,13 +5,11 @@ import br.ufpa.labes.spm.repository.interfaces.GenericRepository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
 
 /** Spring Data JPA repository for the {@link PersistentAuditEvent} entity. */
-@Repository
 public interface PersistenceAuditEventRepository
     extends GenericRepository<PersistentAuditEvent, Long> {
 

@@ -1,5 +1,6 @@
 package br.ufpa.labes.spm.repository.impl;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -24,15 +25,16 @@ import br.ufpa.labes.spm.util.ident.ConversorDeIdent;
 import br.ufpa.labes.spm.util.ident.SemCaracteresEspeciais;
 import br.ufpa.labes.spm.util.ident.TrocaEspacoPorPonto;
 
-public class GenericRepositoryImpl<T, PK> extends SimpleJpaRepository<T, PK>
+public class GenericRepositoryImpl<T, PK extends Serializable> extends SimpleJpaRepository<T, PK>
     implements GenericRepository<T, PK> {
 
   @PersistenceContext private EntityManager em;
 
   private Class<T> clazz;
 
-  public GenericRepositoryImpl(JpaEntityInformation entityInformation, EntityManager em) {
+  public GenericRepositoryImpl(JpaEntityInformation<T, PK> entityInformation, EntityManager em) {
     super(entityInformation, em);
+    this.clazz = entityInformation.getJavaType();
   }
 
   @Override
