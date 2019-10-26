@@ -174,8 +174,15 @@ public class ProjectServicesImpl implements ProjectServices {
       }
     }
 
-    StringBuffer processXML = new StringBuffer();
-    processXML.append("<EDITOR ID=\"" + level + "\">\n");
+    StringBuilder processXML = new StringBuilder();
+    processXML.append("<mxGraphModel>\n");
+    processXML.append(" <root>\n");
+    processXML.append("  " + String.format("<Diagram label=\"{0}\" href=\"\" id=\"0\">", process.getIdent()));
+    processXML.append("   <mxCell/>");
+    processXML.append("  </Diagram>");
+    processXML.append("  <Layer label=\"Default Layer\" id=\"1\">");
+    processXML.append("   <mxCell/>");
+    processXML.append("  </Layer>");
 
     try {
       if (pModel != null) loadObjectsFromProcessModel(pModel, processXML);
@@ -183,14 +190,15 @@ public class ProjectServicesImpl implements ProjectServices {
       e.printStackTrace();
     }
 
-    processXML.append("</EDITOR>\n");
+    processXML.append(" </root>");
+    processXML.append("</mxGraphModel>");
 
     String xml = processXML.toString();
     java.lang.System.out.println(xml);
     return xml;
   }
 
-  private void loadObjectsFromProcessModel(ProcessModel pModel, StringBuffer processXML)
+  private void loadObjectsFromProcessModel(ProcessModel pModel, StringBuilder processXML)
       throws RepositoryQueryException {
 
     // Load activities
