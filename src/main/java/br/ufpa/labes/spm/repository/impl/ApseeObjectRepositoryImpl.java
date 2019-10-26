@@ -5,7 +5,7 @@ import javax.persistence.PersistenceContext;
 
 import br.ufpa.labes.spm.repository.interfaces.ApseeObjectRepositoryQuery;
 
-public class ApseeObjectRepositoryQueryImpl implements ApseeObjectRepositoryQuery {
+public class ApseeObjectRepositoryImpl implements ApseeObjectRepositoryQuery {
 
   @PersistenceContext private EntityManager em;
 

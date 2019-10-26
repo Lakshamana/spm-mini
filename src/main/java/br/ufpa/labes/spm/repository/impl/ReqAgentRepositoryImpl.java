@@ -9,7 +9,7 @@ import javax.persistence.Query;
 import br.ufpa.labes.spm.repository.interfaces.ReqAgentRepositoryQuery;
 import br.ufpa.labes.spm.domain.ReqAgent;
 
-public class ReqAgentRepositoryQueryImpl implements ReqAgentRepositoryQuery {
+public class ReqAgentRepositoryImpl implements ReqAgentRepositoryQuery {
 
   @PersistenceContext private EntityManager em;
 

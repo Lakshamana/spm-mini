@@ -21,7 +21,7 @@ import br.ufpa.labes.spm.util.ident.ConversorDeIdent;
 import br.ufpa.labes.spm.util.ident.SemCaracteresEspeciais;
 import br.ufpa.labes.spm.util.ident.TrocaEspacoPorPonto;
 
-public class BaseRepositoryQueryImpl<T, PK> implements BaseRepositoryQuery<T, PK> {
+public class BaseRepositoryImpl<T, PK> implements BaseRepositoryQuery<T, PK> {
 
   @PersistenceContext private EntityManager em;
 

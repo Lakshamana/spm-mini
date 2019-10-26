@@ -14,7 +14,7 @@ import br.ufpa.labes.spm.domain.Artifact;
 import br.ufpa.labes.spm.domain.ArtifactCon;
 import br.ufpa.labes.spm.domain.InvolvedArtifact;
 
-public class ArtifactRepositoryQueryImpl implements ArtifactRepositoryQuery {
+public class ArtifactRepositoryImpl implements ArtifactRepositoryQuery {
 
   @PersistenceContext private EntityManager em;
 

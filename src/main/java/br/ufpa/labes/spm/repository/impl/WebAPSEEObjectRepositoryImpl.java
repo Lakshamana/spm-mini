@@ -12,7 +12,7 @@ import br.ufpa.labes.spm.exceptions.RepositoryQueryException;
 import br.ufpa.labes.spm.domain.GraphicCoordinate;
 import br.ufpa.labes.spm.domain.WebAPSEEObject;
 
-public class WebAPSEEObjectRepositoryQueryImpl<T> implements WebAPSEEObjectRepositoryQuery {
+public class WebAPSEEObjectRepositoryImpl implements WebAPSEEObjectRepositoryQuery {
 
   @PersistenceContext private EntityManager em;
 

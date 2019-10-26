@@ -12,7 +12,7 @@ import br.ufpa.labes.spm.domain.Activity;
 import br.ufpa.labes.spm.domain.Normal;
 import br.ufpa.labes.spm.service.util.SimpleActivityQueryResult;
 
-public class ProcessRepositoryQueryImpl implements ProcessRepositoryQuery {
+public class ProcessRepositoryImpl implements ProcessRepositoryQuery {
 
   @PersistenceContext private EntityManager em;
 
