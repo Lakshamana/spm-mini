@@ -137,15 +137,29 @@ public class CacheConfiguration {
           br.ufpa.labes.spm.domain.Dependency.class.getName() + ".theMultipleConsToDependencies");
       createCache(
           cm, br.ufpa.labes.spm.domain.Dependency.class.getName() + ".theMultipleSequences");
-      createCache(cm, br.ufpa.labes.spm.domain.Activity.class.getName() + ".theBranchConCondToActivities");
-      createCache(cm, br.ufpa.labes.spm.domain.Dependency.class.getName() + ".theMultipleConsToDependencies");
-      createCache(cm, br.ufpa.labes.spm.domain.Dependency.class.getName() + ".theMultipleSequences");
-      createCache(cm, br.ufpa.labes.spm.domain.MultipleCon.class.getName() + ".theBranchConCondToMultipleCons");
-      createCache(cm, br.ufpa.labes.spm.domain.MultipleCon.class.getName() + ".theJoinConToMultipleCons");
-      createCache(cm, br.ufpa.labes.spm.domain.BranchConCond.class.getName() + ".theBranchConCondToActivities");
-      createCache(cm, br.ufpa.labes.spm.domain.BranchConCond.class.getName() + ".theBranchConCondToMultipleCons");
-      createCache(cm, br.ufpa.labes.spm.domain.Normal.class.getName() + ".involvedArtifactToNormals");
-      createCache(cm, br.ufpa.labes.spm.domain.Normal.class.getName() + ".involvedArtifactFromNormals");
+      createCache(
+          cm, br.ufpa.labes.spm.domain.Activity.class.getName() + ".theBranchConCondToActivities");
+      createCache(
+          cm,
+          br.ufpa.labes.spm.domain.Dependency.class.getName() + ".theMultipleConsToDependencies");
+      createCache(
+          cm, br.ufpa.labes.spm.domain.Dependency.class.getName() + ".theMultipleSequences");
+      createCache(
+          cm,
+          br.ufpa.labes.spm.domain.MultipleCon.class.getName() + ".theBranchConCondToMultipleCons");
+      createCache(
+          cm, br.ufpa.labes.spm.domain.MultipleCon.class.getName() + ".theJoinConToMultipleCons");
+      createCache(
+          cm,
+          br.ufpa.labes.spm.domain.BranchConCond.class.getName() + ".theBranchConCondToActivities");
+      createCache(
+          cm,
+          br.ufpa.labes.spm.domain.BranchConCond.class.getName()
+              + ".theBranchConCondToMultipleCons");
+      createCache(
+          cm, br.ufpa.labes.spm.domain.Normal.class.getName() + ".involvedArtifactToNormals");
+      createCache(
+          cm, br.ufpa.labes.spm.domain.Normal.class.getName() + ".involvedArtifactFromNormals");
       // jhipster-needle-ehcache-add-entry
     };
   }

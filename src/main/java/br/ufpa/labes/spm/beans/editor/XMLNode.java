@@ -13,19 +13,23 @@ public class XMLNode {
   private int width;
   private int height;
 
-  public static final String
-    NORMAL = "Normal",
-    DECOMPOSED = "Decomposed",
-    REQAGENT = "ReqAgent",
-    REQWORKGROUP = "ReqWorkGroup",
-    ARTIFACT = "Artifact",
-    JOINCON = "Join",
-    BRANCHCON = "Branch",
-    ARTIFACTCON = "ArtifactCon";
+  public static final String NORMAL = "Normal",
+      DECOMPOSED = "Decomposed",
+      REQAGENT = "ReqAgent",
+      REQWORKGROUP = "ReqWorkGroup",
+      ARTIFACT = "Artifact",
+      JOINCON = "Join",
+      BRANCHCON = "Branch",
+      ARTIFACTCON = "ArtifactCon",
+      FEEDBACK = "Feedback";
 
-  public XMLNode() {}
+  public XMLNode() {
+    this.width = 50;
+    this.height = 50;
+  }
 
-  public XMLNode(String nodeType, String label, String nodeId, String style, boolean isEdge, int x, int y, int width, int height) {
+  public XMLNode(
+      String nodeType, String label, String nodeId, String style, boolean isEdge, int x, int y) {
     this.nodeType = nodeType;
     this.label = label;
     this.nodeId = nodeId;
@@ -33,8 +37,8 @@ public class XMLNode {
     this.isEdge = isEdge;
     this.x = x;
     this.y = y;
-    this.width = width;
-    this.height = height;
+    this.width = 50;
+    this.height = 50;
   }
 
   public String getNodeType() {
@@ -159,14 +163,21 @@ public class XMLNode {
   }
 
   @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof XMLNode)) {
-            return false;
-        }
-        XMLNode xMLNode = (XMLNode) o;
-        return Objects.equals(nodeType, xMLNode.nodeType) && Objects.equals(label, xMLNode.label) && Objects.equals(nodeId, xMLNode.nodeId) && Objects.equals(style, xMLNode.style) && isEdge == xMLNode.isEdge && x == xMLNode.x && y == xMLNode.y && width == xMLNode.width && height == xMLNode.height;
+  public boolean equals(Object o) {
+    if (o == this) return true;
+    if (!(o instanceof XMLNode)) {
+      return false;
+    }
+    XMLNode xMLNode = (XMLNode) o;
+    return Objects.equals(nodeType, xMLNode.nodeType)
+        && Objects.equals(label, xMLNode.label)
+        && Objects.equals(nodeId, xMLNode.nodeId)
+        && Objects.equals(style, xMLNode.style)
+        && isEdge == xMLNode.isEdge
+        && x == xMLNode.x
+        && y == xMLNode.y
+        && width == xMLNode.width
+        && height == xMLNode.height;
   }
 
   @Override
@@ -176,17 +187,34 @@ public class XMLNode {
 
   @Override
   public String toString() {
-    return "{" +
-      " nodeType='" + getNodeType() + "'" +
-      ", label='" + getLabel() + "'" +
-      ", nodeId='" + getNodeId() + "'" +
-      ", style='" + getStyle() + "'" +
-      ", isEdge='" + isIsEdge() + "'" +
-      ", x='" + getX() + "'" +
-      ", y='" + getY() + "'" +
-      ", width='" + getWidth() + "'" +
-      ", height='" + getHeight() + "'" +
-      "}";
+    return "{"
+        + " nodeType='"
+        + getNodeType()
+        + "'"
+        + ", label='"
+        + getLabel()
+        + "'"
+        + ", nodeId='"
+        + getNodeId()
+        + "'"
+        + ", style='"
+        + getStyle()
+        + "'"
+        + ", isEdge='"
+        + isIsEdge()
+        + "'"
+        + ", x='"
+        + getX()
+        + "'"
+        + ", y='"
+        + getY()
+        + "'"
+        + ", width='"
+        + getWidth()
+        + "'"
+        + ", height='"
+        + getHeight()
+        + "'"
+        + "}";
   }
-
 }

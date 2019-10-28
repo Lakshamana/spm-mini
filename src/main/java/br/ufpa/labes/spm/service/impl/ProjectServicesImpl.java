@@ -178,7 +178,8 @@ public class ProjectServicesImpl implements ProjectServices {
     StringBuilder processXML = new StringBuilder();
     processXML.append("<mxGraphModel>\n");
     processXML.append(" <root>\n");
-    processXML.append("  " + String.format("<Diagram label=\"{0}\" href=\"\" id=\"0\">", process.getIdent()));
+    processXML.append(
+        "  " + String.format("<Diagram label=\"{0}\" href=\"\" id=\"0\">", process.getIdent()));
     processXML.append("   <mxCell/>");
     processXML.append("  </Diagram>");
     processXML.append("  <Layer label=\"Default Layer\" id=\"1\">");
@@ -201,9 +202,17 @@ public class ProjectServicesImpl implements ProjectServices {
 
   private void writeNodeToXML(XMLNode node, StringBuilder processXML) {
     String cellType = !node.getIsEdge() ? "vertex" : "edge";
-    processXML.append(String.format("<{0} label=\"{1}\" id=\"{2}\">", node.getNodeType(), node.getLabel(), node.getNodeId()));
-    processXML.append(String.format("  <mxCell style=\"{0}\" {1}=\"1\" parent=\"1\">", node.getStyle(), cellType));
-    processXML.append(String.format("    <mxGeometry x=\"{0}\" y=\"{1}\" width=\"{2}\" height=\"{3}\" as=\"geometry\"/>", node.getX(), node.getY(), node.getWidth(), node.getHeight()));
+    processXML.append(
+        String.format(
+            "<{0} label=\"{1}\" id=\"{2}\">",
+            node.getNodeType(), node.getLabel(), node.getNodeId()));
+    processXML.append(
+        String.format(
+            "  <mxCell style=\"{0}\" {1}=\"1\" parent=\"1\">", node.getStyle(), cellType));
+    processXML.append(
+        String.format(
+            "    <mxGeometry x=\"{0}\" y=\"{1}\" width=\"{2}\" height=\"{3}\" as=\"geometry\"/>",
+            node.getX(), node.getY(), node.getWidth(), node.getHeight()));
     processXML.append(" </mxCell>");
     processXML.append(String.format("</{0}>", node.getNodeType()));
   }
@@ -216,27 +225,33 @@ public class ProjectServicesImpl implements ProjectServices {
     Collection<Normal> theNormal = new ArrayList<Normal>();
     for (Iterator<Activity> iterator = activities.iterator(); iterator.hasNext(); ) {
       Activity activity = (Activity) iterator.next();
-      XMLNode node = new XMLNode();
+      XMLNode node =
+          new XMLNode(XMLNode.NORMAL, activity.getName(), activity.getIdent(), "", false, 0, 0);
       if (activity instanceof Normal) {
-      writeNodeToXML(node, processXML);
-      //   Normal normal = (Normal) activity;
-      //   theNormal.add(normal);
-      //   // ActivityType actType = normal.getTheActivityType();
-      //   // String actTypeElem = (actType!=null ? actType.getIdent() : "");
-      //   // String state = normal.getTheEnactionDescription().getState().toUpperCase();
-      //   // processXML.append("<NORMAL ID=\"" + normal.getIdent() + "\" IDENT=\"" + normal.getName()
-      //   // + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
-      //   processXML.append(getPositionTag(normal.getId(), normal.getClass().getSimpleName()));
+        Normal normal = (Normal) activity;
+        theNormal.add(normal);
+        String className = Normal.class.getSimpleName();
+        GraphicCoordinate gc = getObjectPosition(activity.getId(), className);
+        node = node.x(gc.getX()).y(gc.getY()).style(className.toLowerCase());
+        //   // ActivityType actType = normal.getTheActivityType();
+        //   // String actTypeElem = (actType!=null ? actType.getIdent() : "");
+        //   // String state = normal.getTheEnactionDescription().getState().toUpperCase();
+        //   // processXML.append("<NORMAL ID=\"" + normal.getIdent() + "\" IDENT=\"" +
+        // normal.getName()
+        //   // + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
+        String normalClassName = Normal.class.getSimpleName().toLowerCase();
+        writeNodeToXML(node, processXML);
       } else if (activity instanceof Decomposed) {
-      //   Decomposed decomposed = (Decomposed) activity;
-      //   // ActivityType actType = decomposed.getTheActivityType();
-      //   // String actTypeElem = (actType!=null ? actType.getIdent() : "");
-      //   // String state = decomposed.getTheProcessModel().getPmState().toUpperCase();
-      //   // processXML.append("<DECOMPOSED ID=\"" + decomposed.getIdent() + "\" IDENT=\"" +
-      //   // decomposed.getName() + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
-      //   processXML.append(
-      //       getPositionTag(decomposed.getId(), decomposed.getClass().getSimpleName()));
-      //   processXML.append("</DECOMPOSED>\n");
+        //   Decomposed decomposed = (Decomposed) activity;
+        //   // ActivityType actType = decomposed.getTheActivityType();
+        //   // String actTypeElem = (actType!=null ? actType.getIdent() : "");
+        //   // String state = decomposed.getTheProcessModel().getPmState().toUpperCase();
+        //   // processXML.append("<DECOMPOSED ID=\"" + decomposed.getIdent() + "\" IDENT=\"" +
+        //   // decomposed.getName() + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state +
+        // "\">\n");
+        //   processXML.append(
+        //       getPositionTag(decomposed.getId(), decomposed.getClass().getSimpleName()));
+        //   processXML.append("</DECOMPOSED>\n");
       }
     }
     processXML.append("</ACTIVITIES>\n");
@@ -538,6 +553,15 @@ public class ProjectServicesImpl implements ProjectServices {
     artConXML.append("</ARTIFACTCON>\n");
 
     return artConXML.toString();
+  }
+
+  private GraphicCoordinate getObjectPosition(Long oid, String className)
+      throws RepositoryQueryException {
+    WebAPSEEObject webAPSEEObject = webAPSEEObjRepository.retrieveWebAPSEEObject(oid, className);
+    if (webAPSEEObject != null) {
+      return webAPSEEObject.getTheGraphicCoordinate();
+    }
+    return new GraphicCoordinate().x(0).y(0);
   }
 
   private String getPositionTag(Long oid, String className) throws RepositoryQueryException {
