@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-        <property name="autoIncrement" value="true"/>
+    <property name="autoIncrement" value="true"/>
 
     <!--
         Added the entity JoinCon.
@@ -19,14 +19,18 @@
             <column name="kind_join" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
             <column name="to_multiple_con_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+
             <column name="to_activity_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+
     </changeSet>
 
     <changeSet id="20191024134428-1-relations" author="jhipster">

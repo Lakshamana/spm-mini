@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-        <property name="autoIncrement" value="true"/>
+    <property name="autoIncrement" value="true"/>
 
     <!--
         Added the entity Process.
@@ -17,8 +17,9 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="ident" type="varchar(255)">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_process_ident" />
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_process_ident" />
             </column>
+
             <column name="p_state" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -27,6 +28,7 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+
     </changeSet>
 
     <changeSet id="20191024134441-1-relations" author="jhipster">

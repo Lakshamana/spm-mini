@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-        <property name="autoIncrement" value="true"/>
+    <property name="autoIncrement" value="true"/>
 
     <!--
         Added the entity InvolvedArtifact.
@@ -19,14 +19,18 @@
             <column name="in_involved_artifacts_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+
             <column name="out_involved_artifacts_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+
             <column name="the_artifact_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+
     </changeSet>
 
     <changeSet id="20191025131123-1-relations" author="jhipster">

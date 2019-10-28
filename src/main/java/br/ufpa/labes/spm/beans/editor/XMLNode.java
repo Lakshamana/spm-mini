@@ -13,6 +13,16 @@ public class XMLNode {
   private int width;
   private int height;
 
+  public static final String
+    NORMAL = "Normal",
+    DECOMPOSED = "Decomposed",
+    REQAGENT = "ReqAgent",
+    REQWORKGROUP = "ReqWorkGroup",
+    ARTIFACT = "Artifact",
+    JOINCON = "Join",
+    BRANCHCON = "Branch",
+    ARTIFACTCON = "ArtifactCon";
+
   public XMLNode() {}
 
   public XMLNode(String nodeType, String label, String nodeId, String style, boolean isEdge, int x, int y, int width, int height) {

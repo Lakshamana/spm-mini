@@ -1,7 +1,7 @@
 // 22.09.2019 - OK
 //package activities ------------------------------------------- OK
 entity Activity {
-    ident String unique
+    ident String unique required
     name String
     isVersion Boolean
 }
@@ -50,13 +50,13 @@ relationship OneToOne {
 //package agent ------------------------------------------- OK
 
 // entity Ability {
-//     ident String unique
+//     ident String unique required
 //     name String
 //     description TextBlob
 // }
 
 entity Agent {
-    ident String unique
+    ident String unique required
     name String
     email String
     costHour Float
@@ -119,7 +119,7 @@ entity Agent {
 // }
 
 entity WorkGroup {
-    ident String unique
+    ident String unique required
     name String
     description TextBlob
     isActive Boolean
@@ -132,7 +132,7 @@ entity WorkGroup {
 // }
 
 // entity Role {
-//     ident String unique
+//     ident String unique required
 //     name String
 //     description TextBlob
 // }
@@ -202,7 +202,7 @@ relationship ManyToMany {
 //package artifacts ------------------------------------------- OK
 
 entity Artifact {
-    ident String unique
+    ident String unique required
     name String
     description TextBlob
     pathName String
@@ -292,7 +292,7 @@ relationship OneToMany {
 // }
 
 // entity Tag {
-//     ident String unique
+//     ident String unique required
 // }
 
 // entity TagStats {
@@ -375,7 +375,7 @@ relationship OneToMany {
 //package connections ------------------------------------------- OK
 
 entity Connection {
-    ident String unique
+    ident String unique required
 }
 
 entity ArtifactCon {} //extends Connection
@@ -547,7 +547,7 @@ relationship OneToOne {
 //package organizationPolicies ------------------------------------------- OK
 
 // entity Company {
-//     ident String unique
+//     ident String unique required
 //     cnpj String
 //     fantasyName String
 //     socialReason String
@@ -561,19 +561,19 @@ relationship OneToOne {
 // }
 
 // entity CompanyUnit {
-//     ident String unique
+//     ident String unique required
 //     name String
 //     description TextBlob
 // }
 
 // entity Node {
-//     ident String unique
+//     ident String unique required
 //     data String
 //     serviceFileId String unique
 // }
 
 entity Project {
-    ident String unique
+    ident String unique required
     name String
     description TextBlob
     beginDate LocalDate
@@ -582,7 +582,7 @@ entity Project {
 }
 
 // entity VCSRepository {
-//     ident String unique
+//     ident String unique required
 //     controlVersionSystem String
 //     server String
 //     port String
@@ -596,7 +596,7 @@ entity Project {
 // entity Structure {}
 
 // entity DevelopingSystem {
-//     ident String unique
+//     ident String unique required
 //     name String
 //     description TextBlob
 // }
@@ -913,7 +913,7 @@ relationship OneToOne {
 // }
 
 entity Process {
-    ident String unique
+    ident String unique required
     pState String
 }
 
@@ -1012,7 +1012,7 @@ relationship OneToOne {
 // }
 
 // entity Resource {
-//     ident String unique
+//     ident String unique required
 //     name String
 //     description TextBlob
 //     mtbfTime Float
@@ -1102,18 +1102,18 @@ relationship OneToOne {
 //package tools ------------------------------------------- OK
 
 // entity ClassMethodCall {
-//     ident String unique
+//     ident String unique required
 //     className String
 //     methodName String
 //     description TextBlob
 // }
 
 // entity PrimitiveType {
-//     ident String unique
+//     ident String unique required
 // }
 
 // entity Script {
-//     ident String unique
+//     ident String unique required
 //     fileName String
 //     description TextBlob
 // }
@@ -1121,7 +1121,7 @@ relationship OneToOne {
 // entity Subroutine {}
 
 // entity ToolDefinition {
-//     ident String unique
+//     ident String unique required
 //     name String
 //     description TextBlob
 // }
@@ -1148,7 +1148,7 @@ relationship OneToOne {
 //package types -------------------------------------------
 
 // entity Type {
-//     ident String unique
+//     ident String unique required
 //     description TextBlob
 //     userDefined Boolean
 // }

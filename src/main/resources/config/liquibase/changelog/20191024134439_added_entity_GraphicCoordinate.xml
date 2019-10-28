@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-        <property name="autoIncrement" value="true"/>
+    <property name="autoIncrement" value="true"/>
 
     <!--
         Added the entity GraphicCoordinate.
@@ -19,17 +19,22 @@
             <column name="x" type="integer">
                 <constraints nullable="true" />
             </column>
+
             <column name="y" type="integer">
                 <constraints nullable="true" />
             </column>
+
             <column name="visible" type="boolean">
                 <constraints nullable="true" />
             </column>
+
             <column name="the_process" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+
     </changeSet>
 
     <changeSet id="20191024134439-1-relations" author="jhipster">

@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-        <property name="autoIncrement" value="true"/>
+    <property name="autoIncrement" value="true"/>
 
     <!--
         Added the entity Agent.
@@ -17,40 +17,52 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="ident" type="varchar(255)">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_agent_ident" />
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_agent_ident" />
             </column>
+
             <column name="name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
             <column name="email" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
             <column name="cost_hour" type="${floatType}">
                 <constraints nullable="true" />
             </column>
+
             <column name="password_hash" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
             <column name="tipo_user" type="integer">
                 <constraints nullable="true" />
             </column>
+
             <column name="is_active" type="boolean">
                 <constraints nullable="true" />
             </column>
+
             <column name="online" type="boolean">
                 <constraints nullable="true" />
             </column>
+
             <column name="photo_url" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
             <column name="upload" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
             <column name="description" type="${clobType}">
                 <constraints nullable="true" />
             </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+
     </changeSet>
 
     <changeSet id="20191024134422-1-relations" author="jhipster">

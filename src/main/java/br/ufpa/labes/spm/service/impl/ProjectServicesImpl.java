@@ -216,27 +216,27 @@ public class ProjectServicesImpl implements ProjectServices {
     Collection<Normal> theNormal = new ArrayList<Normal>();
     for (Iterator<Activity> iterator = activities.iterator(); iterator.hasNext(); ) {
       Activity activity = (Activity) iterator.next();
+      XMLNode node = new XMLNode();
       if (activity instanceof Normal) {
-        Normal normal = (Normal) activity;
-        theNormal.add(normal);
-        // ActivityType actType = normal.getTheActivityType();
-        // String actTypeElem = (actType!=null ? actType.getIdent() : "");
-        // String state = normal.getTheEnactionDescription().getState().toUpperCase();
-        // processXML.append("<NORMAL ID=\"" + normal.getIdent() + "\" IDENT=\"" + normal.getName()
-        // + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
-        processXML.append(getPositionTag(normal.getId(), normal.getClass().getSimpleName()));
-        processXML.append("</NORMAL>\n");
-
+      writeNodeToXML(node, processXML);
+      //   Normal normal = (Normal) activity;
+      //   theNormal.add(normal);
+      //   // ActivityType actType = normal.getTheActivityType();
+      //   // String actTypeElem = (actType!=null ? actType.getIdent() : "");
+      //   // String state = normal.getTheEnactionDescription().getState().toUpperCase();
+      //   // processXML.append("<NORMAL ID=\"" + normal.getIdent() + "\" IDENT=\"" + normal.getName()
+      //   // + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
+      //   processXML.append(getPositionTag(normal.getId(), normal.getClass().getSimpleName()));
       } else if (activity instanceof Decomposed) {
-        Decomposed decomposed = (Decomposed) activity;
-        // ActivityType actType = decomposed.getTheActivityType();
-        // String actTypeElem = (actType!=null ? actType.getIdent() : "");
-        // String state = decomposed.getTheProcessModel().getPmState().toUpperCase();
-        // processXML.append("<DECOMPOSED ID=\"" + decomposed.getIdent() + "\" IDENT=\"" +
-        // decomposed.getName() + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
-        processXML.append(
-            getPositionTag(decomposed.getId(), decomposed.getClass().getSimpleName()));
-        processXML.append("</DECOMPOSED>\n");
+      //   Decomposed decomposed = (Decomposed) activity;
+      //   // ActivityType actType = decomposed.getTheActivityType();
+      //   // String actTypeElem = (actType!=null ? actType.getIdent() : "");
+      //   // String state = decomposed.getTheProcessModel().getPmState().toUpperCase();
+      //   // processXML.append("<DECOMPOSED ID=\"" + decomposed.getIdent() + "\" IDENT=\"" +
+      //   // decomposed.getName() + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
+      //   processXML.append(
+      //       getPositionTag(decomposed.getId(), decomposed.getClass().getSimpleName()));
+      //   processXML.append("</DECOMPOSED>\n");
       }
     }
     processXML.append("</ACTIVITIES>\n");
