@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.ufpa.labes.spm.beans.editor.XMLNode;
 import br.ufpa.labes.spm.converter.Converter;
 import br.ufpa.labes.spm.converter.ConverterImpl;
 import br.ufpa.labes.spm.exceptions.ImplementationException;
@@ -198,11 +199,19 @@ public class ProjectServicesImpl implements ProjectServices {
     return xml;
   }
 
+  private void writeNodeToXML(XMLNode node, StringBuilder processXML) {
+    String cellType = !node.getIsEdge() ? "vertex" : "edge";
+    processXML.append(String.format("<{0} label=\"{1}\" id=\"{2}\">", node.getNodeType(), node.getLabel(), node.getNodeId()));
+    processXML.append(String.format("  <mxCell style=\"{0}\" {1}=\"1\" parent=\"1\">", node.getStyle(), cellType));
+    processXML.append(String.format("    <mxGeometry x=\"{0}\" y=\"{1}\" width=\"{2}\" height=\"{3}\" as=\"geometry\"/>", node.getX(), node.getY(), node.getWidth(), node.getHeight()));
+    processXML.append(" </mxCell>");
+    processXML.append(String.format("</{0}>", node.getNodeType()));
+  }
+
   private void loadObjectsFromProcessModel(ProcessModel pModel, StringBuilder processXML)
       throws RepositoryQueryException {
 
     // Load activities
-    processXML.append("<ACTIVITIES>\n");
     Collection<Activity> activities = pModel.getTheActivities();
     Collection<Normal> theNormal = new ArrayList<Normal>();
     for (Iterator<Activity> iterator = activities.iterator(); iterator.hasNext(); ) {
@@ -217,17 +226,6 @@ public class ProjectServicesImpl implements ProjectServices {
         // + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
         processXML.append(getPositionTag(normal.getId(), normal.getClass().getSimpleName()));
         processXML.append("</NORMAL>\n");
-
-        //				java.lang.System.out.println("------------ Normal -----------");
-        //				java.lang.System.out.println(normal.getIdent());
-        //				java.lang.System.out.println("------------ To Artifacts -----------");
-        //				for (ArtifactCon artcon : normal.getToArtifactCon()) {
-        //					java.lang.System.out.println(artcon.getTheArtifact().getIdent());
-        //				}
-        //				java.lang.System.out.println("------------ From Artifacts -----------");
-        //				for (ArtifactCon artcon : normal.getFromArtifactCon()) {
-        //					java.lang.System.out.println(artcon.getTheArtifact().getIdent());
-        //				}
 
       } else if (activity instanceof Decomposed) {
         Decomposed decomposed = (Decomposed) activity;

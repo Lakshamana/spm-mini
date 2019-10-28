@@ -34,7 +34,7 @@ public class GraphicCoordinate implements Serializable {
 
   @OneToOne(mappedBy = "theGraphicCoordinate")
   @JsonIgnore
-  private WebAPSEEObject theObjectReference;
+  private WebAPSE EObject theObjectReference;
 
   // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
   public Long getId() {
