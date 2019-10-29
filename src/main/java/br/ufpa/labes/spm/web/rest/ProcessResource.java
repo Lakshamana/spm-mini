@@ -1,6 +1,8 @@
 package br.ufpa.labes.spm.web.rest;
 
 import br.ufpa.labes.spm.domain.Process;
+import br.ufpa.labes.spm.domain.ProcessModel;
+import br.ufpa.labes.spm.repository.ProcessModelRepository;
 import br.ufpa.labes.spm.repository.ProcessRepository;
 import br.ufpa.labes.spm.service.dto.ActivitysDTO;
 import br.ufpa.labes.spm.service.dto.ProcessesDTO;
@@ -37,6 +39,8 @@ public class ProcessResource {
 
   @Autowired private ProcessServices processServices;
 
+  @Autowired private ProcessModelRepository processModelRepository;
+
   private final ProcessRepository processRepository;
 
   public ProcessResource(ProcessRepository processRepository) {
@@ -59,7 +63,11 @@ public class ProcessResource {
       throw new BadRequestAlertException(
           "A new process cannot already have an ID", ENTITY_NAME, "idexists");
     }
-    Process result = processRepository.save(process);
+    ProcessModel pm = process.getTheProcessModel();
+    if (pm == null) {
+      pm = processModelRepository.save(new ProcessModel());
+    }
+    Process result = processRepository.save(process.theProcessModel(pm));
     return ResponseEntity.created(new URI("/api/processes/" + result.getId()))
         .headers(
             HeaderUtil.createEntityCreationAlert(

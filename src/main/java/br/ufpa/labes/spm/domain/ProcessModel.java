@@ -19,15 +19,14 @@ public class ProcessModel implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  public static final transient String
-    REQUIREMENTS = "Requirements",
-    ABSTRACT = "Abstract",
-    INSTANTIATED = "Instantiated",
-    ENACTING = "Enacting",
-    FAILED = "Failed",
-    CANCELED = "Canceled",
-    MIXED = "Mixed",
-    FINISHED = "Finished";
+  public static final transient String REQUIREMENTS = "Requirements",
+      ABSTRACT = "Abstract",
+      INSTANTIATED = "Instantiated",
+      ENACTING = "Enacting",
+      FAILED = "Failed",
+      CANCELED = "Canceled",
+      MIXED = "Mixed",
+      FINISHED = "Finished";
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,14 +59,14 @@ public class ProcessModel implements Serializable {
   private Set<Connection> theConnections = new HashSet<>();
 
   public ProcessModel() {
-		this.pmState = ProcessModel.REQUIREMENTS;
-		this.requirements = "";
-		this.theProcess = null; // should be set explicitely
-		this.theConnections = new HashSet<Connection>();
-		this.theActivities = new HashSet<Activity>();
-		this.theDecomposed = null; // for root process model should be null
-		this.theOrigin = null;
-	}
+    this.pmState = ProcessModel.REQUIREMENTS;
+    this.requirements = "";
+    this.theProcess = null; // should be set explicitely
+    this.theConnections = new HashSet<Connection>();
+    this.theActivities = new HashSet<Activity>();
+    this.theDecomposed = null; // for root process model should be null
+    this.theOrigin = null;
+  }
 
   // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
   public Long getId() {
