@@ -23,9 +23,10 @@ public class Process implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  public static final transient String NOT_STARTED = "Not_Started",
-      ENACTING = "Enacting",
-      FINISHED = "Finished";
+  public static final transient String
+    NOT_STARTED = "Not_Started",
+    ENACTING = "Enacting",
+    FINISHED = "Finished";
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +51,13 @@ public class Process implements Serializable {
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
   @JsonIgnore
   private Set<Agent> theAgents = new HashSet<>();
+
+  public Process() {
+		this.pState = Process.NOT_STARTED;
+		this.theProcessModel = new ProcessModel();
+		this.theProcessModel.setTheProcess(this);
+		this.theAgents = new HashSet<Agent>();
+	}
 
   // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
   public Long getId() {

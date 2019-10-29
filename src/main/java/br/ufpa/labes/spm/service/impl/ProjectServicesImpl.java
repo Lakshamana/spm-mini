@@ -31,6 +31,8 @@ import org.jdom2.Text;
 import org.jdom2.filter.AbstractFilter;
 import org.jdom2.filter.ElementFilter;
 import org.jdom2.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,6 +95,8 @@ import br.ufpa.labes.spm.util.UtilReflection;
 @Transactional
 public class ProjectServicesImpl implements ProjectServices {
 
+  private final Logger log = LoggerFactory.getLogger(ProjectServicesImpl.class);
+
   private static final int SINGLE_RESULT = 1;
 
   private static final String AGENT_CLASSNAME = Agent.class.getSimpleName();
@@ -148,8 +152,8 @@ public class ProjectServicesImpl implements ProjectServices {
 
   @Override
   public String getProcessModelXML(String level) {
-    java.lang.System.out.println("chamada ao getProcessModelXML");
-    java.lang.System.out.println("Level: " + level);
+    log.debug("chamada ao getProcessModelXML");
+    log.debug("Level: " + level);
 
     ProcessModel pModel = null;
     if (!level.contains(".")) {
@@ -163,7 +167,9 @@ public class ProjectServicesImpl implements ProjectServices {
       //			}
 
       Process process = processRepository.retrieveBySecondaryKey(level);
-      pModel = process.getTheProcessModel();
+      log.debug("Process: {}", process);
+      if (process != null) pModel = process.getTheProcessModel();
+      else log.warn("NULL PROCESS");
     } else {
       String hql =
           "select o from " + Decomposed.class.getName() + " o where o.ident = '" + level + "'";
@@ -196,22 +202,21 @@ public class ProjectServicesImpl implements ProjectServices {
     processXML.append("</mxGraphModel>\n");
 
     String xml = processXML.toString();
-    java.lang.System.out.println(xml);
+    log.debug(xml);
     return xml;
   }
 
-  private void writeNodeToXML(XMLNode node, StringBuilder processXML) throws RepositoryQueryException {
+  private void writeNodeToXML(XMLNode node, StringBuilder processXML)
+      throws RepositoryQueryException {
     GraphicCoordinate gc = getObjectPosition(node.getobjectId(), node.getNodeType());
     String cellType = !node.getIsEdge() ? "vertex" : "edge";
     String nodeId = node.getNodeType() + "#" + node.getobjectId();
     String style = node.getNodeType().toLowerCase();
     processXML.append(
         String.format(
-            "<{0} label=\"{1}\" id=\"{2}\">\n",
-            node.getNodeType(), node.getLabel(), nodeId));
+            "<{0} label=\"{1}\" id=\"{2}\">\n", node.getNodeType(), node.getLabel(), nodeId));
     processXML.append(
-        String.format(
-            "  <mxCell style=\"{0}\" {1}=\"1\" parent=\"1\">\n", style, cellType));
+        String.format("  <mxCell style=\"{0}\" {1}=\"1\" parent=\"1\">\n", style, cellType));
     processXML.append(
         String.format(
             "    <mxGeometry x=\"{0}\" y=\"{1}\" width=\"{2}\" height=\"{3}\" as=\"geometry\"/>\n",
@@ -240,7 +245,8 @@ public class ProjectServicesImpl implements ProjectServices {
         // normal.getName()
         //   // + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
       } else if (activity instanceof Decomposed) {
-        XMLNode node = new XMLNode(XMLNode.DECOMPOSED, activity.getIdent(), activity.getId(), false);
+        XMLNode node =
+            new XMLNode(XMLNode.DECOMPOSED, activity.getIdent(), activity.getId(), false);
         writeNodeToXML(node, processXML);
       }
     }
@@ -274,7 +280,8 @@ public class ProjectServicesImpl implements ProjectServices {
                 reqWorkGroup.getTheWorkGroup() != null
                     ? reqWorkGroup.getTheWorkGroup().getName()
                     : "";
-            XMLNode node = new XMLNode(XMLNode.REQWORKGROUP, workGroupName, reqWorkGroup.getId(), false);
+            XMLNode node =
+                new XMLNode(XMLNode.REQWORKGROUP, workGroupName, reqWorkGroup.getId(), false);
             writeNodeToXML(node, processXML);
             // String WorkGroupType = reqWorkGroup.getTheWorkGroupType()!=null ?
             // reqWorkGroup.getTheWorkGroupType().getIdent() : "";
@@ -342,8 +349,7 @@ public class ProjectServicesImpl implements ProjectServices {
         if (simpleCon instanceof Sequence) {
           XMLNode node = new XMLNode(XMLNode.SEQUENCE, "", simpleCon.getId(), true);
           writeNodeToXML(node, processXML);
-        }
-        else if (simpleCon instanceof Feedback) {
+        } else if (simpleCon instanceof Feedback) {
           XMLNode node = new XMLNode(XMLNode.SEQUENCE, "", simpleCon.getId(), true);
           writeNodeToXML(node, processXML);
         }

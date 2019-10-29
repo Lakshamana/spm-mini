@@ -115,9 +115,13 @@ public class ProjectResource {
     return ResponseUtil.wrapOrNotFound(project);
   }
 
-  @GetMapping("/projects/xml/{projectIdent}")
-  public ResponseEntity<String> getProcessModelXML(@PathVariable String projectIdent) {
-    return ResponseEntity.ok().body(projectServices.getProcessModelXML(projectIdent));
+  @GetMapping("/projects/xml/{id}")
+  public ResponseEntity<String> getProcessModelXML(@PathVariable Long id) {
+    Optional<Project> project = projectRepository.findById(id);
+    if (!project.isPresent()) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok().body(projectServices.getProcessModelXML(project.get().getIdent()));
   }
 
   /**

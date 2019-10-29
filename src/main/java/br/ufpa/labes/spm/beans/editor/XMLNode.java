@@ -86,14 +86,16 @@ public class XMLNode {
   }
 
   @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof XMLNode)) {
-            return false;
-        }
-        XMLNode xMLNode = (XMLNode) o;
-        return Objects.equals(nodeType, xMLNode.nodeType) && Objects.equals(label, xMLNode.label) && Objects.equals(objectId, xMLNode.objectId) && isEdge == xMLNode.isEdge;
+  public boolean equals(Object o) {
+    if (o == this) return true;
+    if (!(o instanceof XMLNode)) {
+      return false;
+    }
+    XMLNode xMLNode = (XMLNode) o;
+    return Objects.equals(nodeType, xMLNode.nodeType)
+        && Objects.equals(label, xMLNode.label)
+        && Objects.equals(objectId, xMLNode.objectId)
+        && isEdge == xMLNode.isEdge;
   }
 
   @Override
@@ -103,12 +105,19 @@ public class XMLNode {
 
   @Override
   public String toString() {
-    return "{" +
-      " nodeType='" + getNodeType() + "'" +
-      ", label='" + getLabel() + "'" +
-      ", objectId='" + getobjectId() + "'" +
-      ", isEdge='" + isIsEdge() + "'" +
-      "}";
+    return "{"
+        + " nodeType='"
+        + getNodeType()
+        + "'"
+        + ", label='"
+        + getLabel()
+        + "'"
+        + ", objectId='"
+        + getobjectId()
+        + "'"
+        + ", isEdge='"
+        + isIsEdge()
+        + "'"
+        + "}";
   }
-
 }
