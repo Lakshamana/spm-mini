@@ -5,13 +5,8 @@ import java.util.Objects;
 public class XMLNode {
   private String nodeType;
   private String label;
-  private String nodeId;
-  private String style;
+  private Long objectId;
   private boolean isEdge = false;
-  private int x;
-  private int y;
-  private int width;
-  private int height;
 
   public static final String NORMAL = "Normal",
       DECOMPOSED = "Decomposed",
@@ -20,25 +15,18 @@ public class XMLNode {
       ARTIFACT = "Artifact",
       JOINCON = "Join",
       BRANCHCON = "Branch",
+      BRANCHANDCON = "BranchAND",
       ARTIFACTCON = "ArtifactCon",
-      FEEDBACK = "Feedback";
+      FEEDBACK = "Feedback",
+      SEQUENCE = "Sequence";
 
-  public XMLNode() {
-    this.width = 50;
-    this.height = 50;
-  }
+  public XMLNode() {}
 
-  public XMLNode(
-      String nodeType, String label, String nodeId, String style, boolean isEdge, int x, int y) {
+  public XMLNode(String nodeType, String label, Long objectId, boolean isEdge) {
     this.nodeType = nodeType;
     this.label = label;
-    this.nodeId = nodeId;
-    this.style = style;
+    this.objectId = objectId;
     this.isEdge = isEdge;
-    this.x = x;
-    this.y = y;
-    this.width = 50;
-    this.height = 50;
   }
 
   public String getNodeType() {
@@ -57,20 +45,12 @@ public class XMLNode {
     this.label = label;
   }
 
-  public String getNodeId() {
-    return this.nodeId;
+  public Long getobjectId() {
+    return this.objectId;
   }
 
-  public void setNodeId(String nodeId) {
-    this.nodeId = nodeId;
-  }
-
-  public String getStyle() {
-    return this.style;
-  }
-
-  public void setStyle(String style) {
-    this.style = style;
+  public void setobjectId(Long objectId) {
+    this.objectId = objectId;
   }
 
   public boolean isIsEdge() {
@@ -85,38 +65,6 @@ public class XMLNode {
     this.isEdge = isEdge;
   }
 
-  public int getX() {
-    return this.x;
-  }
-
-  public void setX(int x) {
-    this.x = x;
-  }
-
-  public int getY() {
-    return this.y;
-  }
-
-  public void setY(int y) {
-    this.y = y;
-  }
-
-  public int getWidth() {
-    return this.width;
-  }
-
-  public void setWidth(int width) {
-    this.width = width;
-  }
-
-  public int getHeight() {
-    return this.height;
-  }
-
-  public void setHeight(int height) {
-    this.height = height;
-  }
-
   public XMLNode nodeType(String nodeType) {
     this.nodeType = nodeType;
     return this;
@@ -127,13 +75,8 @@ public class XMLNode {
     return this;
   }
 
-  public XMLNode nodeId(String nodeId) {
-    this.nodeId = nodeId;
-    return this;
-  }
-
-  public XMLNode style(String style) {
-    this.style = style;
+  public XMLNode objectId(Long objectId) {
+    this.objectId = objectId;
     return this;
   }
 
@@ -142,79 +85,30 @@ public class XMLNode {
     return this;
   }
 
-  public XMLNode x(int x) {
-    this.x = x;
-    return this;
-  }
-
-  public XMLNode y(int y) {
-    this.y = y;
-    return this;
-  }
-
-  public XMLNode width(int width) {
-    this.width = width;
-    return this;
-  }
-
-  public XMLNode height(int height) {
-    this.height = height;
-    return this;
-  }
-
   @Override
-  public boolean equals(Object o) {
-    if (o == this) return true;
-    if (!(o instanceof XMLNode)) {
-      return false;
-    }
-    XMLNode xMLNode = (XMLNode) o;
-    return Objects.equals(nodeType, xMLNode.nodeType)
-        && Objects.equals(label, xMLNode.label)
-        && Objects.equals(nodeId, xMLNode.nodeId)
-        && Objects.equals(style, xMLNode.style)
-        && isEdge == xMLNode.isEdge
-        && x == xMLNode.x
-        && y == xMLNode.y
-        && width == xMLNode.width
-        && height == xMLNode.height;
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof XMLNode)) {
+            return false;
+        }
+        XMLNode xMLNode = (XMLNode) o;
+        return Objects.equals(nodeType, xMLNode.nodeType) && Objects.equals(label, xMLNode.label) && Objects.equals(objectId, xMLNode.objectId) && isEdge == xMLNode.isEdge;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nodeType, label, nodeId, style, isEdge, x, y, width, height);
+    return Objects.hash(nodeType, label, objectId, isEdge);
   }
 
   @Override
   public String toString() {
-    return "{"
-        + " nodeType='"
-        + getNodeType()
-        + "'"
-        + ", label='"
-        + getLabel()
-        + "'"
-        + ", nodeId='"
-        + getNodeId()
-        + "'"
-        + ", style='"
-        + getStyle()
-        + "'"
-        + ", isEdge='"
-        + isIsEdge()
-        + "'"
-        + ", x='"
-        + getX()
-        + "'"
-        + ", y='"
-        + getY()
-        + "'"
-        + ", width='"
-        + getWidth()
-        + "'"
-        + ", height='"
-        + getHeight()
-        + "'"
-        + "}";
+    return "{" +
+      " nodeType='" + getNodeType() + "'" +
+      ", label='" + getLabel() + "'" +
+      ", objectId='" + getobjectId() + "'" +
+      ", isEdge='" + isIsEdge() + "'" +
+      "}";
   }
+
 }

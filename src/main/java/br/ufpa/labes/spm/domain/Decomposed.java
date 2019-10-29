@@ -11,13 +11,10 @@ import java.io.Serializable;
 @Entity
 @Table(name = "decomposed")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@PrimaryKeyJoinColumn(name = "id")
 public class Decomposed extends Activity implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
 
   @OneToOne
   @JoinColumn(unique = true)

@@ -179,12 +179,12 @@ public class ProjectServicesImpl implements ProjectServices {
     processXML.append("<mxGraphModel>\n");
     processXML.append(" <root>\n");
     processXML.append(
-        "  " + String.format("<Diagram label=\"{0}\" href=\"\" id=\"0\">", process.getIdent()));
-    processXML.append("   <mxCell/>");
-    processXML.append("  </Diagram>");
-    processXML.append("  <Layer label=\"Default Layer\" id=\"1\">");
-    processXML.append("   <mxCell/>");
-    processXML.append("  </Layer>");
+        "  " + String.format("<Diagram label=\"{0}\" href=\"\" id=\"0\">\n", process.getIdent()));
+    processXML.append("   <mxCell/>\n");
+    processXML.append("  </Diagram>\n");
+    processXML.append("  <Layer label=\"Default Layer\" id=\"1\">\n");
+    processXML.append("   <mxCell/>\n");
+    processXML.append("  </Layer>\n");
 
     try {
       if (pModel != null) loadObjectsFromProcessModel(pModel, processXML);
@@ -192,29 +192,32 @@ public class ProjectServicesImpl implements ProjectServices {
       e.printStackTrace();
     }
 
-    processXML.append(" </root>");
-    processXML.append("</mxGraphModel>");
+    processXML.append(" </root>\n");
+    processXML.append("</mxGraphModel>\n");
 
     String xml = processXML.toString();
     java.lang.System.out.println(xml);
     return xml;
   }
 
-  private void writeNodeToXML(XMLNode node, StringBuilder processXML) {
+  private void writeNodeToXML(XMLNode node, StringBuilder processXML) throws RepositoryQueryException {
+    GraphicCoordinate gc = getObjectPosition(node.getobjectId(), node.getNodeType());
     String cellType = !node.getIsEdge() ? "vertex" : "edge";
+    String nodeId = node.getNodeType() + "#" + node.getobjectId();
+    String style = node.getNodeType().toLowerCase();
     processXML.append(
         String.format(
-            "<{0} label=\"{1}\" id=\"{2}\">",
-            node.getNodeType(), node.getLabel(), node.getNodeId()));
+            "<{0} label=\"{1}\" id=\"{2}\">\n",
+            node.getNodeType(), node.getLabel(), nodeId));
     processXML.append(
         String.format(
-            "  <mxCell style=\"{0}\" {1}=\"1\" parent=\"1\">", node.getStyle(), cellType));
+            "  <mxCell style=\"{0}\" {1}=\"1\" parent=\"1\">\n", style, cellType));
     processXML.append(
         String.format(
-            "    <mxGeometry x=\"{0}\" y=\"{1}\" width=\"{2}\" height=\"{3}\" as=\"geometry\"/>",
-            node.getX(), node.getY(), node.getWidth(), node.getHeight()));
-    processXML.append(" </mxCell>");
-    processXML.append(String.format("</{0}>", node.getNodeType()));
+            "    <mxGeometry x=\"{0}\" y=\"{1}\" width=\"{2}\" height=\"{3}\" as=\"geometry\"/>\n",
+            gc.getX(), gc.getY(), 60, 60));
+    processXML.append(" </mxCell>\n");
+    processXML.append(String.format("</{0}>\n", node.getNodeType()));
   }
 
   private void loadObjectsFromProcessModel(ProcessModel pModel, StringBuilder processXML)
@@ -225,96 +228,60 @@ public class ProjectServicesImpl implements ProjectServices {
     Collection<Normal> theNormal = new ArrayList<Normal>();
     for (Iterator<Activity> iterator = activities.iterator(); iterator.hasNext(); ) {
       Activity activity = (Activity) iterator.next();
-      XMLNode node =
-          new XMLNode(XMLNode.NORMAL, activity.getName(), activity.getIdent(), "", false, 0, 0);
       if (activity instanceof Normal) {
         Normal normal = (Normal) activity;
         theNormal.add(normal);
-        String className = Normal.class.getSimpleName();
-        GraphicCoordinate gc = getObjectPosition(activity.getId(), className);
-        node = node.x(gc.getX()).y(gc.getY()).style(className.toLowerCase());
+        XMLNode node = new XMLNode(XMLNode.NORMAL, normal.getIdent(), normal.getId(), false);
+        writeNodeToXML(node, processXML);
         //   // ActivityType actType = normal.getTheActivityType();
         //   // String actTypeElem = (actType!=null ? actType.getIdent() : "");
         //   // String state = normal.getTheEnactionDescription().getState().toUpperCase();
         //   // processXML.append("<NORMAL ID=\"" + normal.getIdent() + "\" IDENT=\"" +
         // normal.getName()
         //   // + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
-        String normalClassName = Normal.class.getSimpleName().toLowerCase();
-        writeNodeToXML(node, processXML);
       } else if (activity instanceof Decomposed) {
-        //   Decomposed decomposed = (Decomposed) activity;
-        //   // ActivityType actType = decomposed.getTheActivityType();
-        //   // String actTypeElem = (actType!=null ? actType.getIdent() : "");
-        //   // String state = decomposed.getTheProcessModel().getPmState().toUpperCase();
-        //   // processXML.append("<DECOMPOSED ID=\"" + decomposed.getIdent() + "\" IDENT=\"" +
-        //   // decomposed.getName() + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state +
-        // "\">\n");
-        //   processXML.append(
-        //       getPositionTag(decomposed.getId(), decomposed.getClass().getSimpleName()));
-        //   processXML.append("</DECOMPOSED>\n");
+        XMLNode node = new XMLNode(XMLNode.DECOMPOSED, activity.getIdent(), activity.getId(), false);
+        writeNodeToXML(node, processXML);
       }
     }
-    processXML.append("</ACTIVITIES>\n");
 
     // Load People
-    processXML.append("<PEOPLE>\n");
     for (Iterator<Normal> iterator = theNormal.iterator(); iterator.hasNext(); ) {
       Normal normal = (Normal) iterator.next();
 
       Collection<RequiredPeople> people = normal.getTheRequiredPeople();
       for (Iterator<RequiredPeople> iterator2 = people.iterator(); iterator2.hasNext(); ) {
         RequiredPeople requiredPeople = (RequiredPeople) iterator2.next();
-
         if (requiredPeople instanceof ReqAgent) {
-
           ReqAgent reqAgent = (ReqAgent) requiredPeople;
           java.lang.System.out.println("agentes" + reqAgent.getTheAgent());
 
           if (reqAgent.getTheAgent() != null) {
-            processXML.append("<REQAGENT ID=\"" + reqAgent.getId() + "\">\n");
-            processXML.append(
-                "<AGENT>"
-                    + (reqAgent.getTheAgent() != null ? reqAgent.getTheAgent().getIdent() : "")
-                    + "</AGENT>\n");
-            processXML.append(
-                "<NAME>"
-                    + (reqAgent.getTheAgent() != null ? reqAgent.getTheAgent().getName() : "")
-                    + "</NAME>\n");
+            XMLNode node = new XMLNode(XMLNode.REQAGENT, "role", reqAgent.getId(), false);
+            writeNodeToXML(node, processXML);
             // processXML.append("<ROLE>" + (reqAgent.getTheRole()!=null ?
             // reqAgent.getTheRole().getIdent() : "") + "</ROLE>\n");
-            processXML.append("<NORMAL>" + reqAgent.getTheNormal().getIdent() + "</NORMAL>\n");
-            processXML.append(
-                getPositionTag(reqAgent.getId(), reqAgent.getClass().getSimpleName()));
-            processXML.append("</REQAGENT>\n");
           }
 
         } else if (requiredPeople instanceof ReqWorkGroup) {
           ReqWorkGroup reqWorkGroup = (ReqWorkGroup) requiredPeople;
           if (reqWorkGroup.getTheWorkGroup() != null) {
-            String WorkGroup =
+            String workGroup =
                 reqWorkGroup.getTheWorkGroup() != null
                     ? reqWorkGroup.getTheWorkGroup().getIdent()
                     : "";
-            String WorkGroupName =
+            String workGroupName =
                 reqWorkGroup.getTheWorkGroup() != null
                     ? reqWorkGroup.getTheWorkGroup().getName()
                     : "";
+            XMLNode node = new XMLNode(XMLNode.REQWORKGROUP, workGroupName, reqWorkGroup.getId(), false);
+            writeNodeToXML(node, processXML);
             // String WorkGroupType = reqWorkGroup.getTheWorkGroupType()!=null ?
             // reqWorkGroup.getTheWorkGroupType().getIdent() : "";
-            processXML.append("<REQWorkGroup ID=\"" + reqWorkGroup.getId() + "\">\n");
-            processXML.append("<WorkGroup>" + WorkGroup + "</WorkGroup>\n");
-            processXML.append("<NAME>" + WorkGroupName + "</NAME>\n");
-            // processXML.append("<WorkGroupTYPE>" + WorkGroupType + "</WorkGroupTYPE>\n");
-            processXML.append("<NORMAL>" + reqWorkGroup.getTheNormal().getIdent() + "</NORMAL>\n");
-            processXML.append(
-                getPositionTag(reqWorkGroup.getId(), reqWorkGroup.getClass().getSimpleName()));
-            processXML.append("</REQWorkGroup>\n");
           }
         }
       }
     }
-    processXML.append("</PEOPLE>\n");
-
     // Load Resource
     // processXML.append("<RESOURCES>\n");
     // for (Iterator<Normal> iterator = theNormal.iterator(); iterator.hasNext();) {
@@ -344,60 +311,73 @@ public class ProjectServicesImpl implements ProjectServices {
     // processXML.append("</RESOURCES>\n");
 
     // Load Connections
-    processXML.append("<CONNECTIONS>\n");
+    // processXML.append("<CONNECTIONS>\n");
     for (Iterator<Activity> iterator = activities.iterator(); iterator.hasNext(); ) {
       Activity activity = (Activity) iterator.next();
 
       Collection<ArtifactCon> fromArtCon = activity.getFromArtifactCons();
       for (Iterator<ArtifactCon> iterator2 = fromArtCon.iterator(); iterator2.hasNext(); ) {
         ArtifactCon artifactCon = (ArtifactCon) iterator2.next();
-        processXML.append(getArtifactConTag(artifactCon));
+        XMLNode node = new XMLNode(XMLNode.ARTIFACTCON, "", artifactCon.getId(), true);
+        writeNodeToXML(node, processXML);
       }
 
       Collection<BranchANDCon> fromBranch = activity.getFromBranchANDCons();
       for (Iterator<BranchANDCon> iterator2 = fromBranch.iterator(); iterator2.hasNext(); ) {
         BranchANDCon branchAND = (BranchANDCon) iterator2.next();
-        processXML.append(getBranchTag(branchAND));
+        XMLNode node = new XMLNode(XMLNode.BRANCHANDCON, "", branchAND.getId(), true);
+        writeNodeToXML(node, processXML);
       }
 
       Collection<JoinCon> fromJoin = activity.getFromJoinCons();
       for (Iterator<JoinCon> iterator2 = fromJoin.iterator(); iterator2.hasNext(); ) {
         JoinCon join = (JoinCon) iterator2.next();
-        processXML.append(getJoinTag(join));
+        XMLNode node = new XMLNode(XMLNode.JOINCON, "", join.getId(), true);
+        writeNodeToXML(node, processXML);
       }
 
       Collection<SimpleCon> fromSimpleCon = activity.getFromSimpleCons();
       for (Iterator<SimpleCon> iterator2 = fromSimpleCon.iterator(); iterator2.hasNext(); ) {
         SimpleCon simpleCon = (SimpleCon) iterator2.next();
-        if (simpleCon instanceof Sequence) processXML.append(getSequenceTag(simpleCon));
-        else if (simpleCon instanceof Feedback) processXML.append(getFeedbackTag(simpleCon));
+        if (simpleCon instanceof Sequence) {
+          XMLNode node = new XMLNode(XMLNode.SEQUENCE, "", simpleCon.getId(), true);
+          writeNodeToXML(node, processXML);
+        }
+        else if (simpleCon instanceof Feedback) {
+          XMLNode node = new XMLNode(XMLNode.SEQUENCE, "", simpleCon.getId(), true);
+          writeNodeToXML(node, processXML);
+        }
       }
 
       Collection<ArtifactCon> toArtCon = activity.getToArtifactCons();
       for (Iterator<ArtifactCon> iterator2 = toArtCon.iterator(); iterator2.hasNext(); ) {
         ArtifactCon artifactCon2 = (ArtifactCon) iterator2.next();
-        processXML.append(getArtifactConTag(artifactCon2));
+        XMLNode node = new XMLNode(XMLNode.ARTIFACTCON, "", artifactCon2.getId(), true);
+        writeNodeToXML(node, processXML);
       }
 
       Collection<BranchCon> toBranch = activity.getToBranchCons();
       for (Iterator<BranchCon> iterator2 = toBranch.iterator(); iterator2.hasNext(); ) {
         BranchCon branch = (BranchCon) iterator2.next();
-        processXML.append(getBranchTag((BranchANDCon) branch));
+        XMLNode node = new XMLNode(XMLNode.BRANCHCON, "", branch.getId(), true);
+        writeNodeToXML(node, processXML);
       }
 
       Collection<JoinCon> toJoin = activity.getToJoinCons();
       for (Iterator<JoinCon> iterator2 = toJoin.iterator(); iterator2.hasNext(); ) {
         JoinCon join = (JoinCon) iterator2.next();
-        processXML.append(getJoinTag(join));
+        XMLNode node = new XMLNode(XMLNode.JOINCON, "", join.getId(), true);
+        writeNodeToXML(node, processXML);
       }
 
       Collection<SimpleCon> toSimpleCon = activity.getToSimpleCons();
       for (Iterator<SimpleCon> iterator2 = toSimpleCon.iterator(); iterator2.hasNext(); ) {
         SimpleCon simpleCon = (SimpleCon) iterator2.next();
-        processXML.append(getSequenceTag(simpleCon));
+        XMLNode node = new XMLNode(XMLNode.SEQUENCE, "", simpleCon.getId(), true);
+        writeNodeToXML(node, processXML);
       }
     }
-    processXML.append("</CONNECTIONS>\n");
+    // processXML.append("</CONNECTIONS>\n");
   }
 
   private String getSequenceTag(SimpleCon simpleCon) throws RepositoryQueryException {
