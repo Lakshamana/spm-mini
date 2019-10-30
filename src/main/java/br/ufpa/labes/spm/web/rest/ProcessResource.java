@@ -59,15 +59,7 @@ public class ProcessResource {
   public ResponseEntity<Process> createProcess(@Valid @RequestBody Process process)
       throws URISyntaxException {
     log.debug("REST request to save Process : {}", process);
-    if (process.getId() != null) {
-      throw new BadRequestAlertException(
-          "A new process cannot already have an ID", ENTITY_NAME, "idexists");
-    }
-    ProcessModel pm = process.getTheProcessModel();
-    if (pm == null) {
-      pm = processModelRepository.save(new ProcessModel());
-    }
-    Process result = processRepository.save(process.theProcessModel(pm));
+    Process result = processServices.saveProcess(process);
     return ResponseEntity.created(new URI("/api/processes/" + result.getId()))
         .headers(
             HeaderUtil.createEntityCreationAlert(

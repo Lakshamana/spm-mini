@@ -15,6 +15,7 @@ import br.ufpa.labes.spm.converter.Converter;
 import br.ufpa.labes.spm.converter.ConverterImpl;
 import br.ufpa.labes.spm.exceptions.ImplementationException;
 import br.ufpa.labes.spm.repository.AgentRepository;
+import br.ufpa.labes.spm.repository.ProcessModelRepository;
 import br.ufpa.labes.spm.repository.ProcessRepository;
 import br.ufpa.labes.spm.service.dto.ActivityDTO;
 import br.ufpa.labes.spm.service.dto.ActivitysDTO;
@@ -30,6 +31,7 @@ import br.ufpa.labes.spm.domain.Project;
 import br.ufpa.labes.spm.domain.Process;
 import br.ufpa.labes.spm.domain.ProcessModel;
 import br.ufpa.labes.spm.service.interfaces.ProcessServices;
+import br.ufpa.labes.spm.web.rest.errors.BadRequestAlertException;
 
 @Service
 @Transactional
@@ -40,6 +42,8 @@ public class ProcessServicesImpl implements ProcessServices {
   private static final String PROCESS_CLASSNAME = Process.class.getSimpleName();
 
   @Autowired private ProcessRepository processRepository;
+
+  @Autowired private ProcessModelRepository processModelRepository;
 
   @Autowired private AgentRepository agentRepository;
 
@@ -118,6 +122,19 @@ public class ProcessServicesImpl implements ProcessServices {
   // private boolean isProcessFinished(Process process) {
   // 	return process.getpState().equals(Process.FINISHED);
   // }
+
+  @Override
+  public Process saveProcess(Process process) {
+    if (process.getId() != null) {
+      throw new BadRequestAlertException(
+          "A new process cannot already have an ID", PROCESS_CLASSNAME, "idexists");
+    }
+    ProcessModel pm = process.getTheProcessModel();
+    if (pm == null) {
+      pm = processModelRepository.save(new ProcessModel());
+    }
+    return processRepository.save(process.theProcessModel(pm));
+  }
 
   @Override
   public ActivitysDTO getActivitiesFromProcess(String processIdent) {
