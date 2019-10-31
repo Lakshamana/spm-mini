@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import br.ufpa.labes.spm.converter.Converter;
 import br.ufpa.labes.spm.converter.ConverterImpl;
 import br.ufpa.labes.spm.exceptions.ImplementationException;
+import br.ufpa.labes.spm.exceptions.RepositoryQueryException;
 import br.ufpa.labes.spm.repository.AgentRepository;
 import br.ufpa.labes.spm.repository.ProcessModelRepository;
 import br.ufpa.labes.spm.repository.ProcessRepository;
@@ -124,11 +125,16 @@ public class ProcessServicesImpl implements ProcessServices {
   // }
 
   @Override
-  public Process saveProcess(Process process) {
+  public Process saveProcess(Process process) throws RepositoryQueryException {
     if (process.getId() != null) {
       throw new BadRequestAlertException(
           "A new process cannot already have an ID", PROCESS_CLASSNAME, "idexists");
     }
+
+    if (process.getIdent().equals("")) {
+      throw new RepositoryQueryException("Ident must not be null!");
+    }
+
     ProcessModel pm = process.getTheProcessModel();
     if (pm == null) {
       pm = processModelRepository.save(new ProcessModel());

@@ -3,8 +3,6 @@ package br.ufpa.labes.spm.exceptions.exceptionhandler;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.ConstraintViolationException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import br.ufpa.labes.spm.exceptions.RepositoryQueryException;
 
 @ControllerAdvice
 public class SPMExceptionHandler extends ResponseEntityExceptionHandler {
@@ -38,8 +38,9 @@ public class SPMExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(ex, errors, headers, status, request);
   }
 
-  @ExceptionHandler({ DataIntegrityViolationException.class })
-  protected ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
+  @ExceptionHandler({DataIntegrityViolationException.class})
+  protected ResponseEntity<Object> handleDataIntegrityViolationException(
+      DataIntegrityViolationException ex, WebRequest request) {
     String userMessage =
         messageSource.getMessage("resource.must-be-unique", null, LocaleContextHolder.getLocale());
     String devMessage = ex.getMessage();
@@ -47,13 +48,24 @@ public class SPMExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
   }
 
+  @ExceptionHandler({RepositoryQueryException.class})
+  protected ResponseEntity<Object> handleRepositoryQueryException(
+      RepositoryQueryException ex, WebRequest request) {
+    String userMessage =
+        messageSource.getMessage("resource.not-empty", null, LocaleContextHolder.getLocale());
+    String devMessage = ex.getMessage();
+    Error error = new Error(userMessage, devMessage);
+    return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+  }
+
   private List<Error> getErrorList(BindingResult result) {
     return result.getFieldErrors().stream()
-      .map(field ->
-        new Error(
-          messageSource.getMessage(field, LocaleContextHolder.getLocale()),
-          field.getField()))
-      .collect(Collectors.toList());
+        .map(
+            field ->
+                new Error(
+                    messageSource.getMessage(field, LocaleContextHolder.getLocale()),
+                    field.getField()))
+        .collect(Collectors.toList());
   }
 
   private class Error {

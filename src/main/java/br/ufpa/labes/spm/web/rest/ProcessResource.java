@@ -1,7 +1,7 @@
 package br.ufpa.labes.spm.web.rest;
 
 import br.ufpa.labes.spm.domain.Process;
-import br.ufpa.labes.spm.domain.ProcessModel;
+import br.ufpa.labes.spm.exceptions.RepositoryQueryException;
 import br.ufpa.labes.spm.repository.ProcessModelRepository;
 import br.ufpa.labes.spm.repository.ProcessRepository;
 import br.ufpa.labes.spm.service.dto.ActivitysDTO;
@@ -57,7 +57,7 @@ public class ProcessResource {
    */
   @PostMapping("/processes")
   public ResponseEntity<Process> createProcess(@Valid @RequestBody Process process)
-      throws URISyntaxException {
+      throws URISyntaxException, RepositoryQueryException {
     log.debug("REST request to save Process : {}", process);
     Process result = processServices.saveProcess(process);
     return ResponseEntity.created(new URI("/api/processes/" + result.getId()))
