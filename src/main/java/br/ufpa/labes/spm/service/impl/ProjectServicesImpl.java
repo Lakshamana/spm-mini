@@ -169,6 +169,7 @@ public class ProjectServicesImpl implements ProjectServices {
 
       process = processRepository.retrieveBySecondaryKey(level);
       log.debug("PM ID: " + process.getTheProcessModel().getId());
+      processModelRepository.getPersistenceContext().clear();
       pModel = processModelRepository.findOneWithEagerRelationshipsById(process.getTheProcessModel().getId());
       log.debug("PMODEL {}", pModel);
     } else {

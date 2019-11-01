@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface ProcessModelRepository extends GenericRepository<ProcessModel, Long> {
-  @Query("select pm from ProcessModel pm left join fetch pm.theActivities left join fetch pm.theConnections where pm.id = :id")
+  @Query(
+      "select pm from ProcessModel pm left join fetch pm.theActivities left join fetch pm.theConnections where pm.id = :id")
   ProcessModel findOneWithEagerRelationshipsById(@Param("id") Long id);
 }
