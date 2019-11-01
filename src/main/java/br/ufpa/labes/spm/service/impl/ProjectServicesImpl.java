@@ -168,6 +168,9 @@ public class ProjectServicesImpl implements ProjectServices {
       //			}
 
       process = processRepository.retrieveBySecondaryKey(level);
+      log.debug("PM ID: " + process.getTheProcessModel().getId());
+      pModel = processModelRepository.findOneWithEagerRelationshipsById(process.getTheProcessModel().getId());
+      log.debug("PMODEL {}", pModel);
     } else {
       String hql =
           "select o from " + Decomposed.class.getName() + " o where o.ident = '" + level + "'";
@@ -226,12 +229,15 @@ public class ProjectServicesImpl implements ProjectServices {
   private void loadObjectsFromProcessModel(ProcessModel pModel, StringBuilder processXML)
       throws RepositoryQueryException {
 
+    log.debug("Enter loadObjectsFromProcessModel");
     // Load activities
     Collection<Activity> activities = pModel.getTheActivities();
     Collection<Normal> theNormal = new ArrayList<Normal>();
     for (Iterator<Activity> iterator = activities.iterator(); iterator.hasNext(); ) {
       Activity activity = (Activity) iterator.next();
+      log.debug("Activity: {}", activity);
       if (activity instanceof Normal) {
+        log.debug("falled in normal");
         Normal normal = (Normal) activity;
         theNormal.add(normal);
         XMLNode node = new XMLNode(XMLNode.NORMAL, normal.getIdent(), normal.getId(), false);
@@ -243,6 +249,7 @@ public class ProjectServicesImpl implements ProjectServices {
         // normal.getName()
         //   // + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
       } else if (activity instanceof Decomposed) {
+        log.debug("falled in decomposed");
         XMLNode node =
             new XMLNode(XMLNode.DECOMPOSED, activity.getIdent(), activity.getId(), false);
         writeNodeToXML(node, processXML);
