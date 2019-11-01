@@ -155,6 +155,7 @@ public class ProjectServicesImpl implements ProjectServices {
     log.debug("chamada ao getProcessModelXML");
     log.debug("Level: " + level);
 
+    Process process = null;
     ProcessModel pModel = null;
     if (!level.contains(".")) {
       //			String hql = "select o from " + PROJECT_CLASSNAME + " o where o.ident = '" + level + "'";
@@ -166,10 +167,7 @@ public class ProjectServicesImpl implements ProjectServices {
       //				pModel = process.getTheProcessModel();
       //			}
 
-      Process process = processRepository.retrieveBySecondaryKey(level);
-      log.debug("Process: {}", process);
-      if (process != null) pModel = process.getTheProcessModel();
-      else log.warn("NULL PROCESS");
+      process = processRepository.retrieveBySecondaryKey(level);
     } else {
       String hql =
           "select o from " + Decomposed.class.getName() + " o where o.ident = '" + level + "'";
@@ -185,11 +183,11 @@ public class ProjectServicesImpl implements ProjectServices {
     processXML.append("<mxGraphModel>\n");
     processXML.append(" <root>\n");
     processXML.append(
-        "  " + String.format("<Diagram label=\"{0}\" href=\"\" id=\"0\">\n", process.getIdent()));
+        "  " + String.format("<Diagram label=\"%s\" href=\"\" id=\"0\">\n", process.getIdent()));
     processXML.append("   <mxCell/>\n");
     processXML.append("  </Diagram>\n");
     processXML.append("  <Layer label=\"Default Layer\" id=\"1\">\n");
-    processXML.append("   <mxCell/>\n");
+    processXML.append("   <mxCell parent=\"0\"/>\n");
     processXML.append("  </Layer>\n");
 
     try {
@@ -214,15 +212,15 @@ public class ProjectServicesImpl implements ProjectServices {
     String style = node.getNodeType().toLowerCase();
     processXML.append(
         String.format(
-            "<{0} label=\"{1}\" id=\"{2}\">\n", node.getNodeType(), node.getLabel(), nodeId));
+            "<%s label=\"%s\" id=\"%s\">\n", node.getNodeType(), node.getLabel(), nodeId));
     processXML.append(
-        String.format("  <mxCell style=\"{0}\" {1}=\"1\" parent=\"1\">\n", style, cellType));
+        String.format("  <mxCell style=\"%s\" %s=\"1\" parent=\"1\">\n", style, cellType));
     processXML.append(
         String.format(
-            "    <mxGeometry x=\"{0}\" y=\"{1}\" width=\"{2}\" height=\"{3}\" as=\"geometry\"/>\n",
+            "    <mxGeometry x=\"%s\" y=\"%s\" width=\"%s\" height=\"%s\" as=\"geometry\"/>\n",
             gc.getX(), gc.getY(), 60, 60));
     processXML.append(" </mxCell>\n");
-    processXML.append(String.format("</{0}>\n", node.getNodeType()));
+    processXML.append(String.format("</%s>\n", node.getNodeType()));
   }
 
   private void loadObjectsFromProcessModel(ProcessModel pModel, StringBuilder processXML)

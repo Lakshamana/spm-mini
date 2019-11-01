@@ -7,6 +7,7 @@ import br.ufpa.labes.spm.repository.ProcessRepository;
 import br.ufpa.labes.spm.service.dto.ActivitysDTO;
 import br.ufpa.labes.spm.service.dto.ProcessesDTO;
 import br.ufpa.labes.spm.service.interfaces.ProcessServices;
+import br.ufpa.labes.spm.service.interfaces.ProjectServices;
 import br.ufpa.labes.spm.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -40,6 +41,8 @@ public class ProcessResource {
   @Autowired private ProcessServices processServices;
 
   @Autowired private ProcessModelRepository processModelRepository;
+
+  @Autowired private ProjectServices projectServices;
 
   private final ProcessRepository processRepository;
 
@@ -115,6 +118,15 @@ public class ProcessResource {
     log.debug("REST request to get Process : {}", id);
     Optional<Process> process = processRepository.findById(id);
     return ResponseUtil.wrapOrNotFound(process);
+  }
+
+  @GetMapping("/processes/xml/{id}")
+  public ResponseEntity<String> getProcessModelXML(@PathVariable Long id) {
+    Optional<Process> project = processRepository.findById(id);
+    if (!project.isPresent()) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok().body(projectServices.getProcessModelXML(project.get().getIdent()));
   }
 
   // @GetMapping("/processes/projectsForAgent/{agentIdent}")

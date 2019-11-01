@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -172,16 +173,11 @@ public class GenericRepositoryImpl<T, PK extends Serializable> extends SimpleJpa
 
   @Override
   public T retrieveBySecondaryKey(String ident) {
-    log.debug("RETRIEVE IDENT: {}", ident);
-    log.debug("CLAZZ: " + clazz.getSimpleName() + " " + clazz.getName());
-    log.debug("Entity manager is null? " + String.valueOf(this.getPersistenceContext() == null));
-    Query query =
-        this.getPersistenceContext()
-            .createQuery("FROM " + clazz.getName() + " as obj WHERE obj.ident = :ident");
-    log.debug("QUERY: {}", query);
+    final String jpql =
+        "SELECT c FROM " + clazz.getSimpleName() + " c WHERE LOWER(c.ident) = LOWER(:ident)";
+    TypedQuery<T> query = this.getPersistenceContext().createQuery(jpql, clazz);
     query.setParameter("ident", ident);
     List retorno = (List) query.getResultList();
-    log.debug("RETRIEVE RESULT: {}", retorno);
     if (retorno != null) {
       if (!retorno.isEmpty()) {
         // System.out.println("caiu na consulta"+retorno.get(0));
