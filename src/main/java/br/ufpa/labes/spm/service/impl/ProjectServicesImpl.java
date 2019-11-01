@@ -169,8 +169,9 @@ public class ProjectServicesImpl implements ProjectServices {
 
       process = processRepository.retrieveBySecondaryKey(level);
       log.debug("PM ID: " + process.getTheProcessModel().getId());
-      processModelRepository.getPersistenceContext().clear();
-      pModel = processModelRepository.findOneWithEagerRelationshipsById(process.getTheProcessModel().getId());
+      pModel =
+          processModelRepository.findOneWithEagerRelationshipsById(
+              process.getTheProcessModel().getId()).get();
       log.debug("PMODEL {}", pModel);
     } else {
       String hql =
@@ -216,15 +217,15 @@ public class ProjectServicesImpl implements ProjectServices {
     String style = node.getNodeType().toLowerCase();
     processXML.append(
         String.format(
-            "<%s label=\"%s\" id=\"%s\">\n", node.getNodeType(), node.getLabel(), nodeId));
+            "  <%s label=\"%s\" id=\"%s\">\n", node.getNodeType(), node.getLabel(), nodeId));
     processXML.append(
-        String.format("  <mxCell style=\"%s\" %s=\"1\" parent=\"1\">\n", style, cellType));
+        String.format("   <mxCell style=\"%s\" %s=\"1\" parent=\"1\">\n", style, cellType));
     processXML.append(
         String.format(
             "    <mxGeometry x=\"%s\" y=\"%s\" width=\"%s\" height=\"%s\" as=\"geometry\"/>\n",
             gc.getX(), gc.getY(), 60, 60));
-    processXML.append(" </mxCell>\n");
-    processXML.append(String.format("</%s>\n", node.getNodeType()));
+    processXML.append("   </mxCell>\n");
+    processXML.append(String.format("  </%s>\n", node.getNodeType()));
   }
 
   private void loadObjectsFromProcessModel(ProcessModel pModel, StringBuilder processXML)

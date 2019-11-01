@@ -8,6 +8,7 @@ import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -77,7 +78,9 @@ public class ActivityResource {
     if (activity.getId() == null) {
       throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
     }
-    Activity result = activityRepository.save(activity);
+    Activity savedActivity = activityRepository.findById(activity.getId()).get();
+    BeanUtils.copyProperties(activity, savedActivity, "id");
+    Activity result = activityRepository.save(savedActivity);
     return ResponseEntity.ok()
         .headers(
             HeaderUtil.createEntityUpdateAlert(

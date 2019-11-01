@@ -3,6 +3,8 @@ package br.ufpa.labes.spm.repository;
 import br.ufpa.labes.spm.domain.ProcessModel;
 import br.ufpa.labes.spm.repository.interfaces.GenericRepository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -13,5 +15,5 @@ import org.springframework.stereotype.Repository;
 public interface ProcessModelRepository extends GenericRepository<ProcessModel, Long> {
   @Query(
       "select pm from ProcessModel pm left join fetch pm.theActivities left join fetch pm.theConnections where pm.id = :id")
-  ProcessModel findOneWithEagerRelationshipsById(@Param("id") Long id);
+  Optional<ProcessModel> findOneWithEagerRelationshipsById(@Param("id") Long id);
 }
