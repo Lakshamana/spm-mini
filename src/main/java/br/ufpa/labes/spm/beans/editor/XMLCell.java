@@ -45,7 +45,14 @@ public class XMLCell {
     this.targetNode = null;
   }
 
-  public XMLCell(String nodeType, String label, Long objectId, String style, boolean isEdge, String sourceNode, String targetNode) {
+  public XMLCell(
+      String nodeType,
+      String label,
+      Long objectId,
+      String style,
+      boolean isEdge,
+      String sourceNode,
+      String targetNode) {
     this.nodeType = nodeType;
     this.label = label;
     this.objectId = objectId;
@@ -134,7 +141,6 @@ public class XMLCell {
     this.isEdge = isEdge;
     return this;
   }
-
 
   public XMLCell style(String style) {
     this.style = style;

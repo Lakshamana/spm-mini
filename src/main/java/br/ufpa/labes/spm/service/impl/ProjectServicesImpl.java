@@ -220,11 +220,12 @@ public class ProjectServicesImpl implements ProjectServices {
             "  <%s label=\"%s\" id=\"%s\">\n", node.getNodeType(), node.getLabel(), nodeId));
     if (!node.getIsEdge()) {
       processXML.append(
-        String.format("   <mxCell style=\"%s\" vertex=\"1\" parent=\"1\">\n", style));
+          String.format("   <mxCell style=\"%s\" vertex=\"1\" parent=\"1\">\n", style));
     } else {
       processXML.append(
-        String.format("   <mxCell style=\"%s\" edge=\"1\" parent=\"1\"> source=\"%s\" target=\"%s\"\n",
-          style, node.getSourceNode(), node.getTargetNode()));
+          String.format(
+              "   <mxCell style=\"%s\" edge=\"1\" parent=\"1\"> source=\"%s\" target=\"%s\"\n",
+              style, node.getSourceNode(), node.getTargetNode()));
     }
     processXML.append(
         String.format(
