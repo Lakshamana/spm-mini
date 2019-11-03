@@ -2,11 +2,14 @@ package br.ufpa.labes.spm.beans.editor;
 
 import java.util.Objects;
 
-public class XMLNode {
+public class XMLCell {
   private String nodeType;
   private String label;
   private Long objectId;
   private boolean isEdge = false;
+  private String style;
+  private String sourceNode;
+  private String targetNode;
 
   public static final String NORMAL = "Normal",
       DECOMPOSED = "Decomposed",
@@ -20,13 +23,36 @@ public class XMLNode {
       FEEDBACK = "Feedback",
       SEQUENCE = "Sequence";
 
-  public XMLNode() {}
+  public XMLCell() {}
 
-  public XMLNode(String nodeType, String label, Long objectId, boolean isEdge) {
+  public XMLCell(String nodeType, String label, Long objectId, boolean isEdge) {
     this.nodeType = nodeType;
     this.label = label;
     this.objectId = objectId;
+    this.style = "";
     this.isEdge = isEdge;
+    this.sourceNode = null;
+    this.targetNode = null;
+  }
+
+  public XMLCell(String nodeType, String label, Long objectId, String style, boolean isEdge) {
+    this.nodeType = nodeType;
+    this.label = label;
+    this.objectId = objectId;
+    this.style = style;
+    this.isEdge = isEdge;
+    this.sourceNode = null;
+    this.targetNode = null;
+  }
+
+  public XMLCell(String nodeType, String label, Long objectId, String style, boolean isEdge, String sourceNode, String targetNode) {
+    this.nodeType = nodeType;
+    this.label = label;
+    this.objectId = objectId;
+    this.style = style;
+    this.isEdge = true;
+    this.sourceNode = null;
+    this.targetNode = null;
   }
 
   public String getNodeType() {
@@ -61,37 +87,77 @@ public class XMLNode {
     return this.isEdge;
   }
 
+  public String getStyle() {
+    return this.style;
+  }
+
+  public void setStyle(String style) {
+    this.style = style;
+  }
+
+  public String getSourceNode() {
+    return this.sourceNode;
+  }
+
+  public void setSourceNode(String sourceNode) {
+    this.sourceNode = sourceNode;
+  }
+
+  public String getTargetNode() {
+    return this.targetNode;
+  }
+
+  public void setTargetNode(String targetNode) {
+    this.targetNode = targetNode;
+  }
+
   public void setIsEdge(boolean isEdge) {
     this.isEdge = isEdge;
   }
 
-  public XMLNode nodeType(String nodeType) {
+  public XMLCell nodeType(String nodeType) {
     this.nodeType = nodeType;
     return this;
   }
 
-  public XMLNode label(String label) {
+  public XMLCell label(String label) {
     this.label = label;
     return this;
   }
 
-  public XMLNode objectId(Long objectId) {
+  public XMLCell objectId(Long objectId) {
     this.objectId = objectId;
     return this;
   }
 
-  public XMLNode isEdge(boolean isEdge) {
+  public XMLCell isEdge(boolean isEdge) {
     this.isEdge = isEdge;
+    return this;
+  }
+
+
+  public XMLCell style(String style) {
+    this.style = style;
+    return this;
+  }
+
+  public XMLCell sourceNode(String sourceNode) {
+    this.sourceNode = sourceNode;
+    return this;
+  }
+
+  public XMLCell targetNode(String targetNode) {
+    this.targetNode = targetNode;
     return this;
   }
 
   @Override
   public boolean equals(Object o) {
     if (o == this) return true;
-    if (!(o instanceof XMLNode)) {
+    if (!(o instanceof XMLCell)) {
       return false;
     }
-    XMLNode xMLNode = (XMLNode) o;
+    XMLCell xMLNode = (XMLCell) o;
     return Objects.equals(nodeType, xMLNode.nodeType)
         && Objects.equals(label, xMLNode.label)
         && Objects.equals(objectId, xMLNode.objectId)

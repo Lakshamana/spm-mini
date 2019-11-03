@@ -122,7 +122,8 @@ public class ProcessModelResource {
   @GetMapping("/process-models/{id}")
   public ResponseEntity<ProcessModel> getProcessModel(@PathVariable Long id) {
     log.debug("REST request to get ProcessModel : {}", id);
-    Optional<ProcessModel> processModel = processModelRepository.findOneWithEagerRelationshipsById(id);
+    Optional<ProcessModel> processModel =
+        processModelRepository.findOneWithEagerRelationshipsById(id);
     return ResponseUtil.wrapOrNotFound(processModel);
   }
 

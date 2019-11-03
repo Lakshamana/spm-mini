@@ -37,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.ufpa.labes.spm.beans.editor.XMLNode;
+import br.ufpa.labes.spm.beans.editor.XMLCell;
 import br.ufpa.labes.spm.converter.Converter;
 import br.ufpa.labes.spm.converter.ConverterImpl;
 import br.ufpa.labes.spm.exceptions.ImplementationException;
@@ -170,8 +170,9 @@ public class ProjectServicesImpl implements ProjectServices {
       process = processRepository.retrieveBySecondaryKey(level);
       log.debug("PM ID: " + process.getTheProcessModel().getId());
       pModel =
-          processModelRepository.findOneWithEagerRelationshipsById(
-              process.getTheProcessModel().getId()).get();
+          processModelRepository
+              .findOneWithEagerRelationshipsById(process.getTheProcessModel().getId())
+              .get();
       log.debug("PMODEL {}", pModel);
     } else {
       String hql =
@@ -209,17 +210,22 @@ public class ProjectServicesImpl implements ProjectServices {
     return xml;
   }
 
-  private void writeNodeToXML(XMLNode node, StringBuilder processXML)
+  private void writeCellToXML(XMLCell node, StringBuilder processXML)
       throws RepositoryQueryException {
     GraphicCoordinate gc = getObjectPosition(node.getobjectId(), node.getNodeType());
-    String cellType = !node.getIsEdge() ? "vertex" : "edge";
     String nodeId = node.getNodeType() + "#" + node.getobjectId();
-    String style = node.getNodeType().toLowerCase();
+    String style = node.getStyle();
     processXML.append(
         String.format(
             "  <%s label=\"%s\" id=\"%s\">\n", node.getNodeType(), node.getLabel(), nodeId));
-    processXML.append(
-        String.format("   <mxCell style=\"%s\" %s=\"1\" parent=\"1\">\n", style, cellType));
+    if (!node.getIsEdge()) {
+      processXML.append(
+        String.format("   <mxCell style=\"%s\" vertex=\"1\" parent=\"1\">\n", style));
+    } else {
+      processXML.append(
+        String.format("   <mxCell style=\"%s\" edge=\"1\" parent=\"1\"> source=\"%s\" target=\"%s\"\n",
+          style, node.getSourceNode(), node.getTargetNode()));
+    }
     processXML.append(
         String.format(
             "    <mxGeometry x=\"%s\" y=\"%s\" width=\"%s\" height=\"%s\" as=\"geometry\"/>\n",
@@ -242,8 +248,8 @@ public class ProjectServicesImpl implements ProjectServices {
         log.debug("falled in normal");
         Normal normal = (Normal) activity;
         theNormal.add(normal);
-        XMLNode node = new XMLNode(XMLNode.NORMAL, normal.getIdent(), normal.getId(), false);
-        writeNodeToXML(node, processXML);
+        XMLCell node = new XMLCell(XMLCell.NORMAL, normal.getIdent(), normal.getId(), false);
+        writeCellToXML(node, processXML);
         //   // ActivityType actType = normal.getTheActivityType();
         //   // String actTypeElem = (actType!=null ? actType.getIdent() : "");
         //   // String state = normal.getTheEnactionDescription().getState().toUpperCase();
@@ -252,9 +258,9 @@ public class ProjectServicesImpl implements ProjectServices {
         //   // + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
       } else if (activity instanceof Decomposed) {
         log.debug("falled in decomposed");
-        XMLNode node =
-            new XMLNode(XMLNode.DECOMPOSED, activity.getIdent(), activity.getId(), false);
-        writeNodeToXML(node, processXML);
+        XMLCell node =
+            new XMLCell(XMLCell.DECOMPOSED, activity.getIdent(), activity.getId(), false);
+        writeCellToXML(node, processXML);
       }
     }
 
@@ -270,8 +276,8 @@ public class ProjectServicesImpl implements ProjectServices {
           java.lang.System.out.println("agentes" + reqAgent.getTheAgent());
 
           if (reqAgent.getTheAgent() != null) {
-            XMLNode node = new XMLNode(XMLNode.REQAGENT, "role", reqAgent.getId(), false);
-            writeNodeToXML(node, processXML);
+            XMLCell node = new XMLCell(XMLCell.REQAGENT, "role", reqAgent.getId(), false);
+            writeCellToXML(node, processXML);
             // processXML.append("<ROLE>" + (reqAgent.getTheRole()!=null ?
             // reqAgent.getTheRole().getIdent() : "") + "</ROLE>\n");
           }
@@ -287,9 +293,9 @@ public class ProjectServicesImpl implements ProjectServices {
                 reqWorkGroup.getTheWorkGroup() != null
                     ? reqWorkGroup.getTheWorkGroup().getName()
                     : "";
-            XMLNode node =
-                new XMLNode(XMLNode.REQWORKGROUP, workGroupName, reqWorkGroup.getId(), false);
-            writeNodeToXML(node, processXML);
+            XMLCell node =
+                new XMLCell(XMLCell.REQWORKGROUP, workGroupName, reqWorkGroup.getId(), false);
+            writeCellToXML(node, processXML);
             // String WorkGroupType = reqWorkGroup.getTheWorkGroupType()!=null ?
             // reqWorkGroup.getTheWorkGroupType().getIdent() : "";
           }
@@ -332,62 +338,62 @@ public class ProjectServicesImpl implements ProjectServices {
       Collection<ArtifactCon> fromArtCon = activity.getFromArtifactCons();
       for (Iterator<ArtifactCon> iterator2 = fromArtCon.iterator(); iterator2.hasNext(); ) {
         ArtifactCon artifactCon = (ArtifactCon) iterator2.next();
-        XMLNode node = new XMLNode(XMLNode.ARTIFACTCON, "", artifactCon.getId(), true);
-        writeNodeToXML(node, processXML);
+        XMLCell node = new XMLCell(XMLCell.ARTIFACTCON, "", artifactCon.getId(), true);
+        writeCellToXML(node, processXML);
       }
 
       Collection<BranchANDCon> fromBranch = activity.getFromBranchANDCons();
       for (Iterator<BranchANDCon> iterator2 = fromBranch.iterator(); iterator2.hasNext(); ) {
         BranchANDCon branchAND = (BranchANDCon) iterator2.next();
-        XMLNode node = new XMLNode(XMLNode.BRANCHANDCON, "", branchAND.getId(), true);
-        writeNodeToXML(node, processXML);
+        XMLCell node = new XMLCell(XMLCell.BRANCHANDCON, "", branchAND.getId(), true);
+        writeCellToXML(node, processXML);
       }
 
       Collection<JoinCon> fromJoin = activity.getFromJoinCons();
       for (Iterator<JoinCon> iterator2 = fromJoin.iterator(); iterator2.hasNext(); ) {
         JoinCon join = (JoinCon) iterator2.next();
-        XMLNode node = new XMLNode(XMLNode.JOINCON, "", join.getId(), true);
-        writeNodeToXML(node, processXML);
+        XMLCell node = new XMLCell(XMLCell.JOINCON, "", join.getId(), true);
+        writeCellToXML(node, processXML);
       }
 
       Collection<SimpleCon> fromSimpleCon = activity.getFromSimpleCons();
       for (Iterator<SimpleCon> iterator2 = fromSimpleCon.iterator(); iterator2.hasNext(); ) {
         SimpleCon simpleCon = (SimpleCon) iterator2.next();
         if (simpleCon instanceof Sequence) {
-          XMLNode node = new XMLNode(XMLNode.SEQUENCE, "", simpleCon.getId(), true);
-          writeNodeToXML(node, processXML);
+          XMLCell node = new XMLCell(XMLCell.SEQUENCE, "", simpleCon.getId(), true);
+          writeCellToXML(node, processXML);
         } else if (simpleCon instanceof Feedback) {
-          XMLNode node = new XMLNode(XMLNode.SEQUENCE, "", simpleCon.getId(), true);
-          writeNodeToXML(node, processXML);
+          XMLCell node = new XMLCell(XMLCell.FEEDBACK, "", simpleCon.getId(), "feedback", true);
+          writeCellToXML(node, processXML);
         }
       }
 
       Collection<ArtifactCon> toArtCon = activity.getToArtifactCons();
       for (Iterator<ArtifactCon> iterator2 = toArtCon.iterator(); iterator2.hasNext(); ) {
         ArtifactCon artifactCon2 = (ArtifactCon) iterator2.next();
-        XMLNode node = new XMLNode(XMLNode.ARTIFACTCON, "", artifactCon2.getId(), true);
-        writeNodeToXML(node, processXML);
+        XMLCell node = new XMLCell(XMLCell.ARTIFACTCON, "", artifactCon2.getId(), true);
+        writeCellToXML(node, processXML);
       }
 
       Collection<BranchCon> toBranch = activity.getToBranchCons();
       for (Iterator<BranchCon> iterator2 = toBranch.iterator(); iterator2.hasNext(); ) {
         BranchCon branch = (BranchCon) iterator2.next();
-        XMLNode node = new XMLNode(XMLNode.BRANCHCON, "", branch.getId(), true);
-        writeNodeToXML(node, processXML);
+        XMLCell node = new XMLCell(XMLCell.BRANCHCON, "", branch.getId(), true);
+        writeCellToXML(node, processXML);
       }
 
       Collection<JoinCon> toJoin = activity.getToJoinCons();
       for (Iterator<JoinCon> iterator2 = toJoin.iterator(); iterator2.hasNext(); ) {
         JoinCon join = (JoinCon) iterator2.next();
-        XMLNode node = new XMLNode(XMLNode.JOINCON, "", join.getId(), true);
-        writeNodeToXML(node, processXML);
+        XMLCell node = new XMLCell(XMLCell.JOINCON, "", join.getId(), true);
+        writeCellToXML(node, processXML);
       }
 
       Collection<SimpleCon> toSimpleCon = activity.getToSimpleCons();
       for (Iterator<SimpleCon> iterator2 = toSimpleCon.iterator(); iterator2.hasNext(); ) {
         SimpleCon simpleCon = (SimpleCon) iterator2.next();
-        XMLNode node = new XMLNode(XMLNode.SEQUENCE, "", simpleCon.getId(), true);
-        writeNodeToXML(node, processXML);
+        XMLCell node = new XMLCell(XMLCell.SEQUENCE, "", simpleCon.getId(), true);
+        writeCellToXML(node, processXML);
       }
     }
     // processXML.append("</CONNECTIONS>\n");
