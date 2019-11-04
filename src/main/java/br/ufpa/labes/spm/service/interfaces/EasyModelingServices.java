@@ -5,6 +5,7 @@ import java.util.Map;
 
 // import br.ufpa.labes.spm.service.dto.CalendarDTO;
 import br.ufpa.labes.spm.domain.ProcessModel;
+import br.ufpa.labes.spm.domain.WebAPSEEObject;
 
 public interface EasyModelingServices {
 
@@ -16,7 +17,7 @@ public interface EasyModelingServices {
 
   public Map<String, String> mapToFlex();
 
-  public void getCoordinatesResponse(
+  public WebAPSEEObject getCoordinatesResponse(
       String processId,
       String[] idents,
       String[] xs,

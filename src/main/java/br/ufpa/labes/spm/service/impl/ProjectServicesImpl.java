@@ -213,6 +213,8 @@ public class ProjectServicesImpl implements ProjectServices {
   private void writeCellToXML(XMLCell node, StringBuilder processXML)
       throws RepositoryQueryException {
     GraphicCoordinate gc = getObjectPosition(node.getobjectId(), node.getNodeType());
+    // WebAPSEEObject obj = webAPSEEObjRepository.findOneByTheReferredOid(node.getobjectId());
+    // String nodeId = String.valueOf(obj.getId());
     String nodeId = node.getNodeType() + "#" + node.getobjectId();
     String style = node.getStyle();
     processXML.append(
@@ -222,10 +224,11 @@ public class ProjectServicesImpl implements ProjectServices {
       processXML.append(
           String.format("   <mxCell style=\"%s\" vertex=\"1\" parent=\"1\">\n", style));
     } else {
+      String styleAttr = !style.equals("") ? String.format("style=\"%s\" ", style) : "";
       processXML.append(
           String.format(
-              "   <mxCell style=\"%s\" edge=\"1\" parent=\"1\"> source=\"%s\" target=\"%s\"\n",
-              style, node.getSourceNode(), node.getTargetNode()));
+              "   <mxCell %sedge=\"1\" parent=\"1\" source=\"%s\" target=\"%s\">\n",
+              styleAttr, node.getSourceNode(), node.getTargetNode()));
     }
     processXML.append(
         String.format(
@@ -364,7 +367,7 @@ public class ProjectServicesImpl implements ProjectServices {
           XMLCell node = new XMLCell(XMLCell.SEQUENCE, "", simpleCon.getId(), true);
           writeCellToXML(node, processXML);
         } else if (simpleCon instanceof Feedback) {
-          XMLCell node = new XMLCell(XMLCell.FEEDBACK, "", simpleCon.getId(), "feedback", true);
+          XMLCell node = new XMLCell(XMLCell.FEEDBACK, "", simpleCon.getId(), true);
           writeCellToXML(node, processXML);
         }
       }

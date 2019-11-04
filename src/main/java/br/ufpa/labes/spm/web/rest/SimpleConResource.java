@@ -1,6 +1,7 @@
 package br.ufpa.labes.spm.web.rest;
 
 import br.ufpa.labes.spm.domain.SimpleCon;
+import br.ufpa.labes.spm.repository.ActivityRepository;
 import br.ufpa.labes.spm.repository.SimpleConRepository;
 import br.ufpa.labes.spm.web.rest.errors.BadRequestAlertException;
 
@@ -8,6 +9,7 @@ import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 /** REST controller for managing {@link br.ufpa.labes.spm.domain.SimpleCon}. */
 @RestController
@@ -29,6 +33,8 @@ public class SimpleConResource {
 
   @Value("${jhipster.clientApp.name}")
   private String applicationName;
+
+  @Autowired private ActivityRepository activityRepository;
 
   private final SimpleConRepository simpleConRepository;
 
@@ -45,7 +51,7 @@ public class SimpleConResource {
    * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @PostMapping("/simple-cons")
-  public ResponseEntity<SimpleCon> createSimpleCon(@RequestBody SimpleCon simpleCon)
+  public ResponseEntity<SimpleCon> createSimpleCon(@Valid @RequestBody SimpleCon simpleCon)
       throws URISyntaxException {
     log.debug("REST request to save SimpleCon : {}", simpleCon);
     if (simpleCon.getId() != null) {

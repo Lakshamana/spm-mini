@@ -29,7 +29,7 @@ public class XMLCell {
     this.nodeType = nodeType;
     this.label = label;
     this.objectId = objectId;
-    this.style = "";
+    this.style = nodeType.toLowerCase();
     this.isEdge = isEdge;
     this.sourceNode = null;
     this.targetNode = null;

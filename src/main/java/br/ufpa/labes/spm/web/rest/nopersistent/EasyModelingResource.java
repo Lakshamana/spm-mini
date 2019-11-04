@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpa.labes.spm.beans.editor.CoordinateRequestBean;
+import br.ufpa.labes.spm.domain.WebAPSEEObject;
 import br.ufpa.labes.spm.service.interfaces.EasyModelingServices;
 
 @RestController
@@ -18,7 +19,7 @@ public class EasyModelingResource {
 
   @PostMapping
   public ResponseEntity<?> getCoordinatesResponse(@RequestBody CoordinateRequestBean bean) {
-    easyModelingServices.getCoordinatesResponse(
+    WebAPSEEObject obj =  easyModelingServices.getCoordinatesResponse(
         bean.getProcessId(),
         bean.getIdents(),
         bean.getXs(),
@@ -26,6 +27,6 @@ public class EasyModelingResource {
         bean.getTypes(),
         bean.getNodeTypes(),
         bean.getReferredObjs());
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(obj);
   }
 }

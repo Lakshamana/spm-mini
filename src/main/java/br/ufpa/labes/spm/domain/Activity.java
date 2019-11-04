@@ -94,7 +94,7 @@ public class Activity implements Serializable {
   private Activity isVersionOf;
 
   @ManyToOne
-  @JsonIgnoreProperties("theActivities")
+  @JsonIgnoreProperties(value = "theActivities", allowSetters = true)
   private ProcessModel theProcessModel;
 
   @OneToMany(mappedBy = "theActivity")

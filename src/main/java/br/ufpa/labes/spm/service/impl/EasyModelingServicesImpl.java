@@ -417,7 +417,7 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
             graphicCoord = (GraphicCoordinate) coordRepository.save(graphicCoord);
             webAPSEEObj = new WebAPSEEObject(theReferredOid, className, graphicCoord);
             System.out.println("caiu no ok" + webAPSEEObj.getTheReferredOid());
-            webAPSEEObjRepository.save(webAPSEEObj);
+            return webAPSEEObjRepository.save(webAPSEEObj);
 
           } else {
             System.out.print("caiu no else: ");
@@ -432,6 +432,7 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
                 updateGraphicCoordinate(
                     webAPSEENodePosition, webAPSEEObj.getTheGraphicCoordinate(), processIdent);
             coordRepository.update(graphicCoord);
+            return webAPSEEObj;
           }
         }
       }
