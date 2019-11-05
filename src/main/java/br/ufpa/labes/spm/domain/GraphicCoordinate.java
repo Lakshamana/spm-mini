@@ -32,7 +32,7 @@ public class GraphicCoordinate implements Serializable {
   @Column(name = "the_process")
   private String theProcess;
 
-  @OneToOne(mappedBy = "theGraphicCoordinate")
+  @OneToOne(mappedBy = "theGraphicCoordinate", cascade = CascadeType.PERSIST)
   @JsonIgnore
   private WebAPSEEObject theObjectReference;
 

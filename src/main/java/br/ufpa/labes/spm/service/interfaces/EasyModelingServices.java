@@ -3,6 +3,7 @@ package br.ufpa.labes.spm.service.interfaces;
 import java.util.Hashtable;
 import java.util.Map;
 
+import br.ufpa.labes.spm.beans.editor.CoordinateRequestBean;
 // import br.ufpa.labes.spm.service.dto.CalendarDTO;
 import br.ufpa.labes.spm.domain.ProcessModel;
 import br.ufpa.labes.spm.domain.WebAPSEEObject;
@@ -17,14 +18,7 @@ public interface EasyModelingServices {
 
   public Map<String, String> mapToFlex();
 
-  public WebAPSEEObject getCoordinatesResponse(
-      String processIdent,
-      String[] idents,
-      String[] xs,
-      String[] ys,
-      String[] types,
-      String[] nodeTypes,
-      Long[] referredObjs);
+  public WebAPSEEObject getCoordinatesResponse(CoordinateRequestBean nodeData);
 
   //	public void flexMap(Map<String, String> obj);
 

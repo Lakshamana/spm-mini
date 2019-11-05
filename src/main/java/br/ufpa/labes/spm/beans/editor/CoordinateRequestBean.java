@@ -1,74 +1,129 @@
 package br.ufpa.labes.spm.beans.editor;
 
+import java.util.Objects;
+
+/** Applied to editor vertexes only */
 public class CoordinateRequestBean {
 
-  private String processIdent;
+  private Long processId;
+  private Long referedObjectId;
+  private String nodeType; // will be mapped to WebAPSEEObject.className property!
+  private int x;
+  private int y;
 
-  private String[] idents;
+  public CoordinateRequestBean() {}
 
-  private String[] xs;
-
-  private String[] ys;
-
-  private String[] types;
-
-  private String[] nodeTypes;
-
-  private Long[] referredObjs;
-
-  public String getProcessIdent() {
-    return processIdent;
+  public CoordinateRequestBean(
+      Long processId, Long referedObjectId, String nodeType, int x, int y) {
+    this.processId = processId;
+    this.referedObjectId = referedObjectId;
+    this.nodeType = nodeType;
+    this.x = x;
+    this.y = y;
   }
 
-  public void setProcessId(String processIdent) {
-    this.processIdent = processIdent;
+  public Long getProcessId() {
+    return this.processId;
   }
 
-  public String[] getIdents() {
-    return idents;
+  public void setProcessId(Long ProcessId) {
+    this.processId = ProcessId;
   }
 
-  public void setIdents(String[] idents) {
-    this.idents = idents;
+  public Long getReferedObjectId() {
+    return this.referedObjectId;
   }
 
-  public String[] getXs() {
-    return xs;
+  public void setReferedObjectId(Long referedObjectId) {
+    this.referedObjectId = referedObjectId;
   }
 
-  public void setXs(String[] xs) {
-    this.xs = xs;
+  public String getNodeType() {
+    return this.nodeType;
   }
 
-  public String[] getYs() {
-    return ys;
+  public void setNodeType(String nodeType) {
+    this.nodeType = nodeType;
   }
 
-  public void setYs(String[] ys) {
-    this.ys = ys;
+  public int getX() {
+    return this.x;
   }
 
-  public String[] getTypes() {
-    return types;
+  public void setX(int x) {
+    this.x = x;
   }
 
-  public void setTypes(String[] types) {
-    this.types = types;
+  public int getY() {
+    return this.y;
   }
 
-  public String[] getNodeTypes() {
-    return nodeTypes;
+  public void setY(int y) {
+    this.y = y;
   }
 
-  public void setNodeTypes(String[] nodeTypes) {
-    this.nodeTypes = nodeTypes;
+  public CoordinateRequestBean ProcessId(Long ProcessId) {
+    this.processId = ProcessId;
+    return this;
   }
 
-  public Long[] getReferredObjs() {
-    return referredObjs;
+  public CoordinateRequestBean referedObjectId(Long referedObjectId) {
+    this.referedObjectId = referedObjectId;
+    return this;
   }
 
-  public void setReferredObjs(Long[] referredObjs) {
-    this.referredObjs = referredObjs;
+  public CoordinateRequestBean nodeType(String nodeType) {
+    this.nodeType = nodeType;
+    return this;
+  }
+
+  public CoordinateRequestBean x(int x) {
+    this.x = x;
+    return this;
+  }
+
+  public CoordinateRequestBean y(int y) {
+    this.y = y;
+    return this;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == this) return true;
+    if (!(o instanceof CoordinateRequestBean)) {
+      return false;
+    }
+    CoordinateRequestBean coordinateRequestBean = (CoordinateRequestBean) o;
+    return Objects.equals(processId, coordinateRequestBean.processId)
+        && Objects.equals(referedObjectId, coordinateRequestBean.referedObjectId)
+        && Objects.equals(nodeType, coordinateRequestBean.nodeType)
+        && x == coordinateRequestBean.x
+        && y == coordinateRequestBean.y;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(processId, referedObjectId, nodeType, x, y);
+  }
+
+  @Override
+  public String toString() {
+    return "{"
+        + " ProcessId='"
+        + getProcessId()
+        + "'"
+        + ", referedObjectId='"
+        + getReferedObjectId()
+        + "'"
+        + ", nodeType='"
+        + getNodeType()
+        + "'"
+        + ", x='"
+        + getX()
+        + "'"
+        + ", y='"
+        + getY()
+        + "'"
+        + "}";
   }
 }

@@ -8,8 +8,8 @@ public class XMLCell {
   private Long objectId;
   private boolean isEdge = false;
   private String style;
-  private String sourceNode;
-  private String targetNode;
+  private Long sourceNode;
+  private Long targetNode;
 
   public static final String NORMAL = "Normal",
       DECOMPOSED = "Decomposed",
@@ -49,17 +49,16 @@ public class XMLCell {
       String nodeType,
       String label,
       Long objectId,
-      String style,
       boolean isEdge,
-      String sourceNode,
-      String targetNode) {
+      Long sourceNode,
+      Long targetNode) {
     this.nodeType = nodeType;
     this.label = label;
     this.objectId = objectId;
-    this.style = style;
+    this.style = nodeType.toLowerCase();
     this.isEdge = true;
-    this.sourceNode = null;
-    this.targetNode = null;
+    this.sourceNode = sourceNode;
+    this.targetNode = targetNode;
   }
 
   public String getNodeType() {
@@ -102,19 +101,19 @@ public class XMLCell {
     this.style = style;
   }
 
-  public String getSourceNode() {
+  public Long getSourceNode() {
     return this.sourceNode;
   }
 
-  public void setSourceNode(String sourceNode) {
+  public void setSourceNode(Long sourceNode) {
     this.sourceNode = sourceNode;
   }
 
-  public String getTargetNode() {
+  public Long getTargetNode() {
     return this.targetNode;
   }
 
-  public void setTargetNode(String targetNode) {
+  public void setTargetNode(Long targetNode) {
     this.targetNode = targetNode;
   }
 
@@ -147,12 +146,12 @@ public class XMLCell {
     return this;
   }
 
-  public XMLCell sourceNode(String sourceNode) {
+  public XMLCell sourceNode(Long sourceNode) {
     this.sourceNode = sourceNode;
     return this;
   }
 
-  public XMLCell targetNode(String targetNode) {
+  public XMLCell targetNode(Long targetNode) {
     this.targetNode = targetNode;
     return this;
   }

@@ -46,7 +46,7 @@ public class WebAPSEEObject implements Serializable {
   @Column(name = "class_name", nullable = false)
   private String className;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(unique = true)
   private GraphicCoordinate theGraphicCoordinate;
 

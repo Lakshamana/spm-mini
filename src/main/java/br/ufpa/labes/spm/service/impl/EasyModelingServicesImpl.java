@@ -1,8 +1,6 @@
 package br.ufpa.labes.spm.service.impl;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -23,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.ufpa.labes.spm.beans.editor.CoordinateRequestBean;
 import br.ufpa.labes.spm.beans.editor.WebAPSEENodePosition;
 import br.ufpa.labes.spm.repository.ActivityRepository;
 import br.ufpa.labes.spm.repository.AgentRepository;
@@ -235,55 +234,76 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
     System.out.println(obj.getClass());
   }
 
+  // @Override
+  // public WebAPSEEObject getCoordinatesResponse(
+  //     String processIdent,
+  //     String[] idents,
+  //     String[] xs,
+  //     String[] ys,
+  //     String[] types,
+  //     String[] nodeTypes,
+  //     Long[] referredObjs) {
+  //   //		Map<String, String> coordenadas = new HashMap<String, String>();
+
+  //   List<WebAPSEENodePosition> webAPSEENodes = new ArrayList<WebAPSEENodePosition>();
+  //   for (int i = 0; i < idents.length; i++) {
+  //     Double x = new Double(xs[i]);
+  //     Double y = new Double(ys[i]);
+  //     Double nodeType = new Double(nodeTypes[i]);
+  //     int nodePositionType = this.nodePositionType(nodeType.intValue());
+  //     System.out.println(
+  //         "posi: "
+  //             + x.intValue()
+  //             + " "
+  //             + y.intValue()
+  //             + " "
+  //             + idents[i]
+  //             + " "
+  //             + types[i]
+  //             + " "
+  //             + nodePositionType);
+
+  //     WebAPSEENodePosition position =
+  //         new WebAPSEENodePosition(
+  //             x.intValue(), y.intValue(), idents[i], types[i], nodePositionType);
+
+  //     List<String> objects =
+  //         Arrays.asList(referredObjs).stream()
+  //             .map(v -> String.valueOf(v))
+  //             .collect(Collectors.toList());
+  //     position.setTheReferredObjects(objects);
+  //     webAPSEENodes.add(position);
+
+  //     //			prints
+  //     System.out.println("Ident: " + idents[i] + "Referred: " + referredObjs[i]);
+  //     System.out.println("ReferredObjects");
+  //     for (String obj : objects) {
+  //       System.out.println("Obj: " + obj);
+  //     }
+  //   }
+
+  //   return saveWebAPSEENodePositions(processIdent, webAPSEENodes);
+  // }
+
   @Override
-  public WebAPSEEObject getCoordinatesResponse(
-      String processIdent,
-      String[] idents,
-      String[] xs,
-      String[] ys,
-      String[] types,
-      String[] nodeTypes,
-      Long[] referredObjs) {
-    //		Map<String, String> coordenadas = new HashMap<String, String>();
-
-    List<WebAPSEENodePosition> webAPSEENodes = new ArrayList<WebAPSEENodePosition>();
-    for (int i = 0; i < idents.length; i++) {
-      Double x = new Double(xs[i]);
-      Double y = new Double(ys[i]);
-      Double nodeType = new Double(nodeTypes[i]);
-      int nodePositionType = this.nodePositionType(nodeType.intValue());
-      System.out.println(
-          "posi: "
-              + x.intValue()
-              + " "
-              + y.intValue()
-              + " "
-              + idents[i]
-              + " "
-              + types[i]
-              + " "
-              + nodePositionType);
-
-      WebAPSEENodePosition position =
-          new WebAPSEENodePosition(
-              x.intValue(), y.intValue(), idents[i], types[i], nodePositionType);
-
-      List<String> objects =
-          Arrays.asList(referredObjs).stream()
-              .map(v -> String.valueOf(v))
-              .collect(Collectors.toList());
-      position.setTheReferredObjects(objects);
-      webAPSEENodes.add(position);
-
-      //			prints
-      System.out.println("Ident: " + idents[i] + "Referred: " + referredObjs[i]);
-      System.out.println("ReferredObjects");
-      for (String obj : objects) {
-        System.out.println("Obj: " + obj);
-      }
+  public WebAPSEEObject getCoordinatesResponse(CoordinateRequestBean nodeData) {
+    Process process = procRepository.findById(nodeData.getProcessId()).get();
+    if (process == null) {
+      return null;
     }
 
-    return saveWebAPSEENodePositions(processIdent, webAPSEENodes);
+    WebAPSEEObject object =
+        webAPSEEObjRepository.save(
+            new WebAPSEEObject(nodeData.getReferedObjectId(), nodeData.getNodeType(), null));
+    GraphicCoordinate gc =
+        new GraphicCoordinate()
+            .x(nodeData.getX())
+            .y(nodeData.getY())
+            .theProcess(process.getIdent())
+            .theObjectReference(object);
+    GraphicCoordinate savedGc = coordRepository.save(gc);
+    object.setTheGraphicCoordinate(savedGc);
+    return webAPSEEObjRepository.save(object);
   }
 
   public WebAPSEEObject saveWebAPSEENodePositions(

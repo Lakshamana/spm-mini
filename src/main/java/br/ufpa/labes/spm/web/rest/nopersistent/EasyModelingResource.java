@@ -19,15 +19,7 @@ public class EasyModelingResource {
 
   @PostMapping("/easy-modeling")
   public ResponseEntity<?> getCoordinatesResponse(@RequestBody CoordinateRequestBean bean) {
-    WebAPSEEObject obj =
-        easyModelingServices.getCoordinatesResponse(
-            bean.getProcessIdent(),
-            bean.getIdents(),
-            bean.getXs(),
-            bean.getYs(),
-            bean.getTypes(),
-            bean.getNodeTypes(),
-            bean.getReferredObjs());
-    return ResponseEntity.ok(obj);
+    WebAPSEEObject obj = easyModelingServices.getCoordinatesResponse(bean);
+    return obj != null ? ResponseEntity.ok(obj) : ResponseEntity.badRequest().build();
   }
 }

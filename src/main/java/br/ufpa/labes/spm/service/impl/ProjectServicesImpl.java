@@ -215,7 +215,9 @@ public class ProjectServicesImpl implements ProjectServices {
     GraphicCoordinate gc = getObjectPosition(node.getobjectId(), node.getNodeType());
     // WebAPSEEObject obj = webAPSEEObjRepository.findOneByTheReferredOid(node.getobjectId());
     // String nodeId = String.valueOf(obj.getId());
-    String nodeId = node.getNodeType() + "#" + node.getobjectId();
+    log.debug("GC: {}", gc);
+    log.debug("WebAPSEEObject: {}", gc.getTheObjectReference());
+    String nodeId = String.valueOf(gc.getTheObjectReference().getId());
     String style = node.getStyle();
     processXML.append(
         String.format(
@@ -224,11 +226,21 @@ public class ProjectServicesImpl implements ProjectServices {
       processXML.append(
           String.format("   <mxCell style=\"%s\" vertex=\"1\" parent=\"1\">\n", style));
     } else {
+      String sourceId =
+          String.valueOf(
+              webAPSEEObjRepository
+                  .retrieveWebAPSEEObject(node.getSourceNode(), node.getNodeType())
+                  .getId());
+      String targetId =
+          String.valueOf(
+              webAPSEEObjRepository
+                  .retrieveWebAPSEEObject(node.getTargetNode(), node.getNodeType())
+                  .getId());
       String styleAttr = !style.equals("") ? String.format("style=\"%s\" ", style) : "";
       processXML.append(
           String.format(
               "   <mxCell %sedge=\"1\" parent=\"1\" source=\"%s\" target=\"%s\">\n",
-              styleAttr, node.getSourceNode(), node.getTargetNode()));
+              styleAttr, sourceId, targetId));
     }
     processXML.append(
         String.format(
@@ -363,11 +375,13 @@ public class ProjectServicesImpl implements ProjectServices {
       Collection<SimpleCon> fromSimpleCon = activity.getFromSimpleCons();
       for (Iterator<SimpleCon> iterator2 = fromSimpleCon.iterator(); iterator2.hasNext(); ) {
         SimpleCon simpleCon = (SimpleCon) iterator2.next();
+        Long fromId = simpleCon.getFromActivity().getId();
+        Long toId = simpleCon.getToActivity().getId();
         if (simpleCon instanceof Sequence) {
-          XMLCell node = new XMLCell(XMLCell.SEQUENCE, "", simpleCon.getId(), true);
+          XMLCell node = new XMLCell(XMLCell.SEQUENCE, "", simpleCon.getId(), true, fromId, toId);
           writeCellToXML(node, processXML);
         } else if (simpleCon instanceof Feedback) {
-          XMLCell node = new XMLCell(XMLCell.FEEDBACK, "", simpleCon.getId(), true);
+          XMLCell node = new XMLCell(XMLCell.FEEDBACK, "", simpleCon.getId(), true, fromId, toId);
           writeCellToXML(node, processXML);
         }
       }

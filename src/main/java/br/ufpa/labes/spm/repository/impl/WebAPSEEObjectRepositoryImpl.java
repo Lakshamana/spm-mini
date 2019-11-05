@@ -7,6 +7,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.ufpa.labes.spm.repository.interfaces.WebAPSEEObjectRepositoryQuery;
 import br.ufpa.labes.spm.exceptions.RepositoryQueryException;
 import br.ufpa.labes.spm.domain.GraphicCoordinate;
@@ -18,19 +22,21 @@ public class WebAPSEEObjectRepositoryImpl implements WebAPSEEObjectRepositoryQue
 
   public Class<WebAPSEEObject> clazz = WebAPSEEObject.class;
 
+  Logger log = LoggerFactory.getLogger(this.getClass());
+
   public WebAPSEEObject retrieveWebAPSEEObject(Long theReferredOid, String className)
       throws RepositoryQueryException {
 
+    log.debug("PARAMETERS: {}, {}", theReferredOid, className);
     Query query =
         this.em.createQuery(
-            "FROM "
-                + clazz.getName()
-                + " as obj WHERE obj.theReferredOid = :oid AND obj.className like :className");
+            "SELECT obj from WebAPSEEObject obj WHERE obj.theReferredOid = :oid AND obj.className like :className");
 
     query.setParameter("oid", theReferredOid);
     query.setParameter("className", className);
 
     List retorno = query.getResultList();
+    log.debug("QUERY RESULT: {}", retorno);
 
     if (retorno != null) {
       if (!retorno.isEmpty()) {
