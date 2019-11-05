@@ -214,10 +214,10 @@ public class ProjectServicesImpl implements ProjectServices {
       throws RepositoryQueryException {
     GraphicCoordinate gc = getObjectPosition(node.getobjectId(), node.getNodeType());
     // WebAPSEEObject obj = webAPSEEObjRepository.findOneByTheReferredOid(node.getobjectId());
-    // String nodeId = String.valueOf(obj.getId());
+    String nodeId = node.getNodeType() + "#" + String.valueOf(node.getobjectId());
     log.debug("GC: {}", gc);
     log.debug("WebAPSEEObject: {}", gc.getTheObjectReference());
-    String nodeId = String.valueOf(gc.getTheObjectReference().getId());
+    // String nodeId = String.valueOf(gc.getTheObjectReference().getId());
     String style = node.getStyle();
     processXML.append(
         String.format(
@@ -378,6 +378,7 @@ public class ProjectServicesImpl implements ProjectServices {
         Long fromId = simpleCon.getFromActivity().getId();
         Long toId = simpleCon.getToActivity().getId();
         if (simpleCon instanceof Sequence) {
+          log.debug("falled in sequence");
           XMLCell node = new XMLCell(XMLCell.SEQUENCE, "", simpleCon.getId(), true, fromId, toId);
           writeCellToXML(node, processXML);
         } else if (simpleCon instanceof Feedback) {
