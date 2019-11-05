@@ -14,7 +14,7 @@ public class CoordinateRequestBean {
 
   private String[] nodeTypes;
 
-  private String[] referredObjs;
+  private Long[] referredObjs;
 
   public String getProcessId() {
     return processId;
@@ -64,11 +64,11 @@ public class CoordinateRequestBean {
     this.nodeTypes = nodeTypes;
   }
 
-  public String[] getReferredObjs() {
+  public Long[] getReferredObjs() {
     return referredObjs;
   }
 
-  public void setReferredObjs(String[] referredObjs) {
+  public void setReferredObjs(Long[] referredObjs) {
     this.referredObjs = referredObjs;
   }
 }

@@ -236,14 +236,14 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
   }
 
   @Override
-  public void getCoordinatesResponse(
+  public WebAPSEEObject getCoordinatesResponse(
       String processId,
       String[] idents,
       String[] xs,
       String[] ys,
       String[] types,
       String[] nodeTypes,
-      String[] referredObjs) {
+      Long[] referredObjs) {
     //		Map<String, String> coordenadas = new HashMap<String, String>();
 
     List<WebAPSEENodePosition> webAPSEENodes = new ArrayList<WebAPSEENodePosition>();
@@ -268,8 +268,11 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
           new WebAPSEENodePosition(
               x.intValue(), y.intValue(), idents[i], types[i], nodePositionType);
 
-      String[] objects = referredObjs[i].split(";");
-      position.setTheReferredObjects(Arrays.asList(objects));
+      List<String> objects = Arrays.asList(referredObjs)
+        .stream()
+        .map(v -> String.valueOf(v))
+        .collect(Collectors.toList());
+      position.setTheReferredObjects(objects);
       webAPSEENodes.add(position);
 
       //			prints
@@ -280,10 +283,10 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
       }
     }
 
-    saveWebAPSEENodePositions(processId, webAPSEENodes);
+    return saveWebAPSEENodePositions(processId, webAPSEENodes);
   }
 
-  public void saveWebAPSEENodePositions(
+  public WebAPSEEObject saveWebAPSEENodePositions(
       String processIdent, Collection<WebAPSEENodePosition> positions) {
 
     try {
@@ -432,14 +435,14 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
                 updateGraphicCoordinate(
                     webAPSEENodePosition, webAPSEEObj.getTheGraphicCoordinate(), processIdent);
             coordRepository.update(graphicCoord);
-            return webAPSEEObj;
           }
         }
       }
-
+      return webAPSEEObj;
     } catch (WebapseeException e) {
       e.printStackTrace();
     }
+    return null;
   }
 
   private GraphicCoordinate updateGraphicCoordinate(

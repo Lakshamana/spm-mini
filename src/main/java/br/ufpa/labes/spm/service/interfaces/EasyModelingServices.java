@@ -24,7 +24,7 @@ public interface EasyModelingServices {
       String[] ys,
       String[] types,
       String[] nodeTypes,
-      String[] referredObjs);
+      Long[] referredObjs);
 
   //	public void flexMap(Map<String, String> obj);
 
