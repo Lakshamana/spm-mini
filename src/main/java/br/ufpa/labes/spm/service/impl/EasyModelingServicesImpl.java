@@ -237,7 +237,7 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
 
   @Override
   public WebAPSEEObject getCoordinatesResponse(
-      String processId,
+      String processIdent,
       String[] idents,
       String[] xs,
       String[] ys,
@@ -268,10 +268,10 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
           new WebAPSEENodePosition(
               x.intValue(), y.intValue(), idents[i], types[i], nodePositionType);
 
-      List<String> objects = Arrays.asList(referredObjs)
-        .stream()
-        .map(v -> String.valueOf(v))
-        .collect(Collectors.toList());
+      List<String> objects =
+          Arrays.asList(referredObjs).stream()
+              .map(v -> String.valueOf(v))
+              .collect(Collectors.toList());
       position.setTheReferredObjects(objects);
       webAPSEENodes.add(position);
 
@@ -283,7 +283,7 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
       }
     }
 
-    return saveWebAPSEENodePositions(processId, webAPSEENodes);
+    return saveWebAPSEENodePositions(processIdent, webAPSEENodes);
   }
 
   public WebAPSEEObject saveWebAPSEENodePositions(

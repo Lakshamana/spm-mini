@@ -18,7 +18,7 @@ public interface EasyModelingServices {
   public Map<String, String> mapToFlex();
 
   public WebAPSEEObject getCoordinatesResponse(
-      String processId,
+      String processIdent,
       String[] idents,
       String[] xs,
       String[] ys,

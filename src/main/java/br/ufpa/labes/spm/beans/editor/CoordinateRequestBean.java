@@ -2,7 +2,7 @@ package br.ufpa.labes.spm.beans.editor;
 
 public class CoordinateRequestBean {
 
-  private String processId;
+  private String processIdent;
 
   private String[] idents;
 
@@ -16,12 +16,12 @@ public class CoordinateRequestBean {
 
   private Long[] referredObjs;
 
-  public String getProcessId() {
-    return processId;
+  public String getProcessIdent() {
+    return processIdent;
   }
 
-  public void setProcessId(String processId) {
-    this.processId = processId;
+  public void setProcessId(String processIdent) {
+    this.processIdent = processIdent;
   }
 
   public String[] getIdents() {

@@ -17,11 +17,11 @@ public class EasyModelingResource {
 
   @Autowired private EasyModelingServices easyModelingServices;
 
-  @PostMapping("/easyModeling")
+  @PostMapping("/easy-modeling")
   public ResponseEntity<?> getCoordinatesResponse(@RequestBody CoordinateRequestBean bean) {
     WebAPSEEObject obj =
         easyModelingServices.getCoordinatesResponse(
-            bean.getProcessId(),
+            bean.getProcessIdent(),
             bean.getIdents(),
             bean.getXs(),
             bean.getYs(),
