@@ -437,32 +437,13 @@ public class ProjectServicesImpl implements ProjectServices {
     // processXML.append("</CONNECTIONS>\n");
   }
 
-  private String getSequenceTag(SimpleCon simpleCon) throws RepositoryQueryException {
-    StringBuffer seqXML = new StringBuffer();
-    seqXML.append("<SEQUENCE ID=\"" + simpleCon.getId() + "\">\n");
-    seqXML.append(
-        "<DEPENDENCY>"
-            + ((Sequence) simpleCon).getTheDependency().getKindDep()
-            + "</DEPENDENCY>\n");
-    seqXML.append("<TO ID=\"" + simpleCon.getToActivity().getIdent() + "\"/>\n");
-    seqXML.append("<FROM ID=\"" + simpleCon.getFromActivity().getIdent() + "\"/>\n");
-    seqXML.append(getPositionTag(simpleCon.getId(), simpleCon.getClass().getSimpleName()));
-    seqXML.append("</SEQUENCE>\n");
-
-    return seqXML.toString();
-  }
-
-  private String getFeedbackTag(SimpleCon simpleCon) throws RepositoryQueryException {
-    StringBuffer seqXML = new StringBuffer();
-    seqXML.append("<FEEDBACK ID=\"" + simpleCon.getId() + "\">\n");
-    // seqXML.append("<CONDITION>" +
-    // ((Feedback)simpleCon).getTheCondition().getThePolExpression().toString() + "</CONDITION>\n");
-    seqXML.append("<TO ID=\"" + simpleCon.getToActivity().getIdent() + "\"/>\n");
-    seqXML.append("<FROM ID=\"" + simpleCon.getFromActivity().getIdent() + "\"/>\n");
-    seqXML.append(getPositionTag(simpleCon.getId(), simpleCon.getClass().getSimpleName()));
-    seqXML.append("</FEEDBACK>\n");
-
-    return seqXML.toString();
+  private String getSimpleConTag(SimpleCon simpleCon) throws RepositoryQueryException {
+    StringBuilder simpleConXML = new StringBuilder();
+    Activity from = simpleCon.getFromActivity();
+    Activity to = simpleCon.getToActivity();
+    XMLCell node = new XMLCell(XMLCell.SEQUENCE, "", simpleCon.getId(), true, from, to);
+    writeCellToXML(node, simpleConXML);
+    return simpleConXML.toString();
   }
 
   private String getJoinTag(JoinCon joinCon) throws RepositoryQueryException {
@@ -551,11 +532,8 @@ public class ProjectServicesImpl implements ProjectServices {
   }
 
   private String getArtifactConTag(ArtifactCon artifactCon) throws RepositoryQueryException {
-    StringBuffer artConXML = new StringBuffer();
-    artConXML.append("<ARTIFACTCON ID=\"" + artifactCon.getId() + "\">\n");
+    StringBuilder artConXML = new StringBuilder();
     Artifact artifact = artifactCon.getTheArtifact();
-    if (artifact != null) artConXML.append("<ARTIFACT>" + artifact.getIdent() + "</ARTIFACT>\n");
-    else artConXML.append("<ARTIFACT></ARTIFACT>\n");
     // ArtifactType artType = artifactCon.getTheArtifactType();
     // if(artType!=null)
     // 	artConXML.append("<ARTIFACTTYPE>" + artType.getIdent() + "</ARTIFACTTYPE>\n");
@@ -564,31 +542,24 @@ public class ProjectServicesImpl implements ProjectServices {
     // FROM
     Collection<Activity> fromActivities = artifactCon.getFromActivities();
     if (fromActivities != null) {
-      artConXML.append("<FROM>\n");
       for (Iterator<Activity> iterator3 = fromActivities.iterator(); iterator3.hasNext(); ) {
         Activity activity2 = (Activity) iterator3.next();
-        artConXML.append("<ACTIVITY ID=\"" + activity2.getIdent() + "\"/>\n");
+        XMLCell cell =
+            new XMLCell(XMLCell.ARTIFACTCON, "", artifactCon.getId(), true, activity2, artifact);
+        writeCellToXML(cell, artConXML);
       }
-      artConXML.append("</FROM>\n");
     }
 
     // TO
-
     Collection<Activity> toActivities = artifactCon.getToActivities();
     if (toActivities != null) {
-      artConXML.append("<TO>\n");
       for (Iterator<Activity> iterator3 = toActivities.iterator(); iterator3.hasNext(); ) {
         Activity activity2 = (Activity) iterator3.next();
-
-        artConXML.append("<ACTIVITY ID=\"" + activity2.getIdent() + "\"/>\n");
+        XMLCell cell =
+            new XMLCell(XMLCell.ARTIFACTCON, "", artifactCon.getId(), true, activity2, artifact);
+        writeCellToXML(cell, artConXML);
       }
-      artConXML.append("</TO>\n");
     }
-
-    // POSITION
-    artConXML.append(getPositionTag(artifactCon.getId(), artifactCon.getClass().getSimpleName()));
-    artConXML.append("</ARTIFACTCON>\n");
-
     return artConXML.toString();
   }
 

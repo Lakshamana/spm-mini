@@ -50,6 +50,10 @@ public class ProcessModel implements Serializable {
   @JsonIgnore
   private Process theProcess;
 
+  @OneToOne(mappedBy = "theProcessModel")
+  @JsonIgnore
+  private GraphicDescription graphicDescription;
+
   @ManyToOne
   @JsonIgnoreProperties("theInstances")
   private Template theOrigin;
@@ -57,16 +61,6 @@ public class ProcessModel implements Serializable {
   @OneToMany(mappedBy = "theProcessModel")
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
   private Set<Connection> theConnections = new HashSet<>();
-
-  public ProcessModel() {
-    this.pmState = ProcessModel.REQUIREMENTS;
-    this.requirements = "";
-    this.theProcess = null; // should be set explicitely
-    this.theConnections = new HashSet<Connection>();
-    this.theActivities = new HashSet<Activity>();
-    this.theDecomposed = null; // for root process model should be null
-    this.theOrigin = null;
-  }
 
   // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
   public Long getId() {
@@ -152,6 +146,19 @@ public class ProcessModel implements Serializable {
 
   public void setTheProcess(Process process) {
     this.theProcess = process;
+  }
+
+  public GraphicDescription getGraphicDescription() {
+    return graphicDescription;
+  }
+
+  public ProcessModel graphicDescription(GraphicDescription graphicDescription) {
+    this.graphicDescription = graphicDescription;
+    return this;
+  }
+
+  public void setGraphicDescription(GraphicDescription graphicDescription) {
+    this.graphicDescription = graphicDescription;
   }
 
   public Template getTheOrigin() {

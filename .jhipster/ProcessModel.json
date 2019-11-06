@@ -32,6 +32,13 @@
             "ownerSide": false
         },
         {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "graphicDescription",
+            "otherEntityRelationshipName": "theProcessModel",
+            "relationshipName": "graphicDescription",
+            "ownerSide": false
+        },
+        {
             "relationshipType": "many-to-one",
             "otherEntityName": "template",
             "otherEntityRelationshipName": "theInstances",

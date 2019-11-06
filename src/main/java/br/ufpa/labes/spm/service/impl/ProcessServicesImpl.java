@@ -16,6 +16,7 @@ import br.ufpa.labes.spm.converter.ConverterImpl;
 import br.ufpa.labes.spm.exceptions.ImplementationException;
 import br.ufpa.labes.spm.exceptions.RepositoryQueryException;
 import br.ufpa.labes.spm.repository.AgentRepository;
+import br.ufpa.labes.spm.repository.GraphicDescriptionRepository;
 import br.ufpa.labes.spm.repository.ProcessModelRepository;
 import br.ufpa.labes.spm.repository.ProcessRepository;
 import br.ufpa.labes.spm.service.dto.ActivityDTO;
@@ -27,6 +28,7 @@ import br.ufpa.labes.spm.service.dto.ProcessDTO;
 import br.ufpa.labes.spm.service.dto.ProcessesDTO;
 import br.ufpa.labes.spm.domain.Activity;
 import br.ufpa.labes.spm.domain.Decomposed;
+import br.ufpa.labes.spm.domain.GraphicDescription;
 import br.ufpa.labes.spm.domain.Agent;
 import br.ufpa.labes.spm.domain.Project;
 import br.ufpa.labes.spm.domain.Process;
@@ -47,6 +49,8 @@ public class ProcessServicesImpl implements ProcessServices {
   @Autowired private ProcessModelRepository processModelRepository;
 
   @Autowired private AgentRepository agentRepository;
+
+  @Autowired private GraphicDescriptionRepository graphicDescriptionRepository;
 
   private Query query;
 
@@ -138,6 +142,8 @@ public class ProcessServicesImpl implements ProcessServices {
     ProcessModel pm = process.getTheProcessModel();
     if (pm == null) {
       pm = processModelRepository.save(new ProcessModel());
+      GraphicDescription gd = new GraphicDescription().theProcessModel(pm);
+      graphicDescriptionRepository.save(gd);
     }
     return processRepository.save(process.theProcessModel(pm));
   }

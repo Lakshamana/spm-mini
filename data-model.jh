@@ -934,6 +934,10 @@ entity ProcessModel {
     pmState String
 }
 
+entity GraphicDescription {
+  description TextBlob
+}
+
 // //Template enum
 // enum TemplateStatus{
 //     DRAFT,
@@ -964,7 +968,9 @@ relationship OneToMany {
 }
 
 relationship OneToOne {
-    Process{theProcessModel} to ProcessModel{theProcess}
+    Process{theProcessModel} to ProcessModel{theProcess},
+
+    GraphicDescription{theProcessModel} to ProcessModel{graphicDescription}
 }
 
 //package resources ------------------------------------------- OK
