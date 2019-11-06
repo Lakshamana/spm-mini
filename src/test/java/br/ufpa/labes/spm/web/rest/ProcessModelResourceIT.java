@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +28,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /** Integration tests for the {@link ProcessModelResource} REST controller. */
-@EmbeddedKafka
 @SpringBootTest(classes = SpmApp.class)
 public class ProcessModelResourceIT {
 
@@ -152,8 +150,8 @@ public class ProcessModelResourceIT {
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         .andExpect(jsonPath("$.[*].id").value(hasItem(processModel.getId().intValue())))
-        .andExpect(jsonPath("$.[*].requirements").value(hasItem(DEFAULT_REQUIREMENTS.toString())))
-        .andExpect(jsonPath("$.[*].pmState").value(hasItem(DEFAULT_PM_STATE.toString())));
+        .andExpect(jsonPath("$.[*].requirements").value(hasItem(DEFAULT_REQUIREMENTS)))
+        .andExpect(jsonPath("$.[*].pmState").value(hasItem(DEFAULT_PM_STATE)));
   }
 
   @Test
@@ -168,8 +166,8 @@ public class ProcessModelResourceIT {
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         .andExpect(jsonPath("$.id").value(processModel.getId().intValue()))
-        .andExpect(jsonPath("$.requirements").value(DEFAULT_REQUIREMENTS.toString()))
-        .andExpect(jsonPath("$.pmState").value(DEFAULT_PM_STATE.toString()));
+        .andExpect(jsonPath("$.requirements").value(DEFAULT_REQUIREMENTS))
+        .andExpect(jsonPath("$.pmState").value(DEFAULT_PM_STATE));
   }
 
   @Test

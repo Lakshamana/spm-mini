@@ -160,6 +160,7 @@ public class CacheConfiguration {
           cm, br.ufpa.labes.spm.domain.Normal.class.getName() + ".involvedArtifactToNormals");
       createCache(
           cm, br.ufpa.labes.spm.domain.Normal.class.getName() + ".involvedArtifactFromNormals");
+      createCache(cm, br.ufpa.labes.spm.domain.GraphicDescription.class.getName());
       // jhipster-needle-ehcache-add-entry
     };
   }

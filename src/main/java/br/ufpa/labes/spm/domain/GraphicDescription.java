@@ -1,5 +1,6 @@
 package br.ufpa.labes.spm.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -23,8 +24,8 @@ public class GraphicDescription implements Serializable {
   @Column(name = "description")
   private String description;
 
-  @OneToOne
-  @JoinColumn(unique = true)
+  @OneToOne(mappedBy = "graphicDescription")
+  @JsonIgnore
   private ProcessModel theProcessModel;
 
   // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -55,7 +56,6 @@ public class GraphicDescription implements Serializable {
 
   public GraphicDescription theProcessModel(ProcessModel processModel) {
     this.theProcessModel = processModel;
-    this.theProcessModel.setGraphicDescription(this);
     return this;
   }
 

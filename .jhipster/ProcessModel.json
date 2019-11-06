@@ -12,6 +12,14 @@
     ],
     "relationships": [
         {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "graphicDescription",
+            "otherEntityRelationshipName": "theProcessModel",
+            "relationshipName": "graphicDescription",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
             "relationshipType": "one-to-many",
             "otherEntityName": "activity",
             "otherEntityRelationshipName": "theProcessModel",
@@ -29,13 +37,6 @@
             "otherEntityName": "process",
             "otherEntityRelationshipName": "theProcessModel",
             "relationshipName": "theProcess",
-            "ownerSide": false
-        },
-        {
-            "relationshipType": "one-to-one",
-            "otherEntityName": "graphicDescription",
-            "otherEntityRelationshipName": "theProcessModel",
-            "relationshipName": "graphicDescription",
             "ownerSide": false
         },
         {

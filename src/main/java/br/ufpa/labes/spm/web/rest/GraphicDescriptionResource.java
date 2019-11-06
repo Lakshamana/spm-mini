@@ -17,6 +17,8 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /** REST controller for managing {@link br.ufpa.labes.spm.domain.GraphicDescription}. */
 @RestController
@@ -89,11 +91,19 @@ public class GraphicDescriptionResource {
   /**
    * {@code GET /graphic-descriptions} : get all the graphicDescriptions.
    *
+   * @param filter the filter of the request.
    * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of
    *     graphicDescriptions in body.
    */
   @GetMapping("/graphic-descriptions")
-  public List<GraphicDescription> getAllGraphicDescriptions() {
+  public List<GraphicDescription> getAllGraphicDescriptions(
+      @RequestParam(required = false) String filter) {
+    if ("theprocessmodel-is-null".equals(filter)) {
+      log.debug("REST request to get all GraphicDescriptions where theProcessModel is null");
+      return StreamSupport.stream(graphicDescriptionRepository.findAll().spliterator(), false)
+          .filter(graphicDescription -> graphicDescription.getTheProcessModel() == null)
+          .collect(Collectors.toList());
+    }
     log.debug("REST request to get all GraphicDescriptions");
     return graphicDescriptionRepository.findAll();
   }

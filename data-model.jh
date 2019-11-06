@@ -970,7 +970,7 @@ relationship OneToMany {
 relationship OneToOne {
     Process{theProcessModel} to ProcessModel{theProcess},
 
-    GraphicDescription{theProcessModel} to ProcessModel{graphicDescription}
+    ProcessModel{graphicDescription} to GraphicDescription{theProcessModel}
 }
 
 //package resources ------------------------------------------- OK

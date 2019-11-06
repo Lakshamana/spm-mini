@@ -8,6 +8,12 @@
     -->
     <changeSet id="20191024134442-2" author="jhipster">
         
+        <addForeignKeyConstraint baseColumnNames="graphic_description_id"
+                                 baseTableName="process_model"
+                                 constraintName="fk_process_model_graphic_description_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="graphic_description"/>
+
         <addForeignKeyConstraint baseColumnNames="the_origin_id"
                                  baseTableName="process_model"
                                  constraintName="fk_process_model_the_origin_id"

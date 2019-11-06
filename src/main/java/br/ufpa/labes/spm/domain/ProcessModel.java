@@ -38,6 +38,10 @@ public class ProcessModel implements Serializable {
   @Column(name = "pm_state")
   private String pmState;
 
+  @OneToOne
+  @JoinColumn(unique = true)
+  private GraphicDescription graphicDescription;
+
   @OneToMany(mappedBy = "theProcessModel")
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
   private Set<Activity> theActivities = new HashSet<>();
@@ -49,10 +53,6 @@ public class ProcessModel implements Serializable {
   @OneToOne(mappedBy = "theProcessModel")
   @JsonIgnore
   private Process theProcess;
-
-  @OneToOne(mappedBy = "theProcessModel")
-  @JsonIgnore
-  private GraphicDescription graphicDescription;
 
   @ManyToOne
   @JsonIgnoreProperties("theInstances")
@@ -95,6 +95,19 @@ public class ProcessModel implements Serializable {
 
   public void setPmState(String pmState) {
     this.pmState = pmState;
+  }
+
+  public GraphicDescription getGraphicDescription() {
+    return graphicDescription;
+  }
+
+  public ProcessModel graphicDescription(GraphicDescription graphicDescription) {
+    this.graphicDescription = graphicDescription;
+    return this;
+  }
+
+  public void setGraphicDescription(GraphicDescription graphicDescription) {
+    this.graphicDescription = graphicDescription;
   }
 
   public Set<Activity> getTheActivities() {
@@ -146,19 +159,6 @@ public class ProcessModel implements Serializable {
 
   public void setTheProcess(Process process) {
     this.theProcess = process;
-  }
-
-  public GraphicDescription getGraphicDescription() {
-    return graphicDescription;
-  }
-
-  public ProcessModel graphicDescription(GraphicDescription graphicDescription) {
-    this.graphicDescription = graphicDescription;
-    return this;
-  }
-
-  public void setGraphicDescription(GraphicDescription graphicDescription) {
-    this.graphicDescription = graphicDescription;
   }
 
   public Template getTheOrigin() {
