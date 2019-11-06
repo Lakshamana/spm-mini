@@ -242,7 +242,7 @@ public class ProjectServicesImpl implements ProjectServices {
         String.format(
             "  <%s label=\"%s\" id=\"%s\">\n", node.getNodeType(), node.getLabel(), nodeId));
     if (!node.getIsEdge()) {
-      GraphicCoordinate gc = getObjectPosition(node.getobjectId(), node.getNodeType());
+      GraphicCoordinate gc = getObjectPosition(Long.valueOf(node.getobjectId()), node.getNodeType());
       processXML.append(
           String.format("   <mxCell style=\"%s\" vertex=\"1\" parent=\"1\">\n", style));
       processXML.append(
@@ -437,125 +437,103 @@ public class ProjectServicesImpl implements ProjectServices {
     // processXML.append("</CONNECTIONS>\n");
   }
 
-  private String getSequenceTag(SimpleCon simpleCon) throws RepositoryQueryException {
-    StringBuffer seqXML = new StringBuffer();
-    seqXML.append("<SEQUENCE ID=\"" + simpleCon.getId() + "\">\n");
-    seqXML.append(
-        "<DEPENDENCY>"
-            + ((Sequence) simpleCon).getTheDependency().getKindDep()
-            + "</DEPENDENCY>\n");
-    seqXML.append("<TO ID=\"" + simpleCon.getToActivity().getIdent() + "\"/>\n");
-    seqXML.append("<FROM ID=\"" + simpleCon.getFromActivity().getIdent() + "\"/>\n");
-    seqXML.append(getPositionTag(simpleCon.getId(), simpleCon.getClass().getSimpleName()));
-    seqXML.append("</SEQUENCE>\n");
-
-    return seqXML.toString();
-  }
-
-  private String getFeedbackTag(SimpleCon simpleCon) throws RepositoryQueryException {
-    StringBuffer seqXML = new StringBuffer();
-    seqXML.append("<FEEDBACK ID=\"" + simpleCon.getId() + "\">\n");
-    // seqXML.append("<CONDITION>" +
-    // ((Feedback)simpleCon).getTheCondition().getThePolExpression().toString() + "</CONDITION>\n");
-    seqXML.append("<TO ID=\"" + simpleCon.getToActivity().getIdent() + "\"/>\n");
-    seqXML.append("<FROM ID=\"" + simpleCon.getFromActivity().getIdent() + "\"/>\n");
-    seqXML.append(getPositionTag(simpleCon.getId(), simpleCon.getClass().getSimpleName()));
-    seqXML.append("</FEEDBACK>\n");
-
-    return seqXML.toString();
+  private String getSimpleConTag(SimpleCon simpleCon) throws RepositoryQueryException {
+    StringBuilder simpleConXML = new StringBuilder();
+    Activity from = simpleCon.getFromActivity();
+    Activity to = simpleCon.getToActivity();
+    XMLCell node = new XMLCell(XMLCell.SEQUENCE, "", simpleCon.getId(), true, from, to);
+    writeCellToXML(node, simpleConXML);
+    return simpleConXML.toString();
   }
 
   private String getJoinTag(JoinCon joinCon) throws RepositoryQueryException {
-    StringBuffer joinConXML = new StringBuffer();
-    joinConXML.append("<JOIN ID=\"" + joinCon.getId() + "\">\n");
-    joinConXML.append("<DEPENDENCY>" + joinCon.getTheDependency().getKindDep() + "</DEPENDENCY>\n");
-
+    StringBuilder joinConXML = new StringBuilder();
+    String initialId = String.valueOf(joinCon.getId()) + "to";
+    XMLCell toCell = new XMLCell(XMLCell.CONNECTOR, "", null, true, joinCon, null);
     // TO
     Activity toActivity = joinCon.getToActivity();
     if (toActivity != null) {
-      joinConXML.append("<TO_ACTIVITY ID=\"" + toActivity.getIdent() + "\"/>\n");
+      toCell.setTargetNode(toActivity);
+      toCell.setobjectId(initialId + toActivity.getId());
+      writeCellToXML(toCell, joinConXML);
     } else {
       MultipleCon multCon = joinCon.getToMultipleCon();
-      joinConXML.append("<TO_MULTIPLECON ID=\"" + multCon.getIdent() + "\"/>\n");
+      if (multCon != null) {
+        toCell.setTargetNode(multCon);
+        toCell.setobjectId(initialId + multCon.getId());
+        writeCellToXML(toCell, joinConXML);
+      }
     }
 
     // FROM
     Collection<Activity> fromActivities = joinCon.getFromActivities();
     if (fromActivities != null) {
-      joinConXML.append("<FROM_ACTIVITY>\n");
       for (Iterator<Activity> iterator3 = fromActivities.iterator(); iterator3.hasNext(); ) {
         Activity activity2 = (Activity) iterator3.next();
-        joinConXML.append("<ACTIVITY ID=\"" + activity2.getIdent() + "\"/>\n");
+        XMLCell fromCell =
+            new XMLCell(XMLCell.CONNECTOR, "", initialId + activity2.getId(), true, activity2, joinCon);
+        writeCellToXML(fromCell, joinConXML);
       }
-      joinConXML.append("</FROM_ACTIVITY>\n");
     }
 
     Collection<MultipleCon> fromMultipleCon = joinCon.getFromMultipleCons();
     if (fromMultipleCon != null) {
-      joinConXML.append("<FROM_MULTIPLECON>\n");
       for (Iterator<MultipleCon> iterator3 = fromMultipleCon.iterator(); iterator3.hasNext(); ) {
         MultipleCon multCon2 = (MultipleCon) iterator3.next();
-        joinConXML.append("<MULTIPLECON ID=\"" + multCon2.getIdent() + "\"/>\n");
+        XMLCell fromCell =
+            new XMLCell(XMLCell.CONNECTOR, "", initialId + multCon2.getId(), true, multCon2, joinCon);
+        writeCellToXML(fromCell, joinConXML);
       }
-      joinConXML.append("</FROM_MULTIPLECON>\n");
     }
-
-    // POSITION
-    joinConXML.append(getPositionTag(joinCon.getId(), joinCon.getClass().getSimpleName()));
-    joinConXML.append("</JOINCon>\n");
-
     return joinConXML.toString();
   }
 
   private String getBranchTag(BranchANDCon branchCon) throws RepositoryQueryException {
-    StringBuffer branchConXML = new StringBuffer();
-    branchConXML.append("<BRANCH ID=\"" + branchCon.getId() + "\">\n");
-    branchConXML.append(
-        "<DEPENDENCY>" + branchCon.getTheDependency().getKindDep() + "</DEPENDENCY>\n");
+    StringBuilder branchConXML = new StringBuilder();
+    String initialId = String.valueOf(branchCon.getId()) + "to";
+    XMLCell fromCell = new XMLCell(XMLCell.CONNECTOR, "", null, true, null, branchCon);
 
     // FROM
     Activity fromActivity = branchCon.getFromActivity();
     if (fromActivity != null) {
-      branchConXML.append("<FROM_ACTIVITY ID=\"" + fromActivity.getIdent() + "\"/>\n");
+      fromCell.setTargetNode(fromActivity);
+      fromCell.setobjectId(initialId + fromActivity.getId());
+      writeCellToXML(fromCell, branchConXML);
     } else {
       MultipleCon multCon = branchCon.getFromMultipleConnection();
-      // branchConXML.append("<FROM_MULTIPLECON ID=\""+ multCon.getIdent() + "\"/>\n");
+      if (multCon != null) {
+        fromCell.setTargetNode(multCon);
+        fromCell.setobjectId(initialId + multCon.getId());
+        writeCellToXML(fromCell, branchConXML);
+      }
     }
 
     // TO
     Collection<Activity> toActivities = branchCon.getToActivities();
     if (toActivities != null) {
-      branchConXML.append("<TO_ACTIVITY>\n");
       for (Iterator<Activity> iterator3 = toActivities.iterator(); iterator3.hasNext(); ) {
         Activity activity2 = (Activity) iterator3.next();
-        branchConXML.append("<ACTIVITY ID=\"" + activity2.getIdent() + "\"/>\n");
+        XMLCell toCell =
+            new XMLCell(XMLCell.CONNECTOR, "", initialId + activity2.getId(), true, branchCon, activity2);
+        writeCellToXML(toCell, branchConXML);
       }
-      branchConXML.append("</TO_ACTIVITY>\n");
     }
 
     Collection<MultipleCon> toMultipleCon = branchCon.getToMultipleCons();
     if (toMultipleCon != null) {
-      branchConXML.append("<TO_MULTIPLECON>\n");
       for (Iterator<MultipleCon> iterator3 = toMultipleCon.iterator(); iterator3.hasNext(); ) {
         MultipleCon multCon2 = (MultipleCon) iterator3.next();
-        branchConXML.append("<MULTIPLECON ID=\"" + multCon2.getIdent() + "\"/>\n");
+        XMLCell toCell =
+            new XMLCell(XMLCell.CONNECTOR, "", initialId + multCon2.getId(), true, branchCon, multCon2);
+        writeCellToXML(toCell, branchConXML);
       }
-      branchConXML.append("</TO_MULTIPLECON>\n");
     }
-
-    // POSITION
-    branchConXML.append(getPositionTag(branchCon.getId(), branchCon.getClass().getSimpleName()));
-    branchConXML.append("</BRANCHCon>\n");
-
     return branchConXML.toString();
   }
 
   private String getArtifactConTag(ArtifactCon artifactCon) throws RepositoryQueryException {
-    StringBuffer artConXML = new StringBuffer();
-    artConXML.append("<ARTIFACTCON ID=\"" + artifactCon.getId() + "\">\n");
+    StringBuilder artConXML = new StringBuilder();
     Artifact artifact = artifactCon.getTheArtifact();
-    if (artifact != null) artConXML.append("<ARTIFACT>" + artifact.getIdent() + "</ARTIFACT>\n");
-    else artConXML.append("<ARTIFACT></ARTIFACT>\n");
     // ArtifactType artType = artifactCon.getTheArtifactType();
     // if(artType!=null)
     // 	artConXML.append("<ARTIFACTTYPE>" + artType.getIdent() + "</ARTIFACTTYPE>\n");
@@ -564,31 +542,24 @@ public class ProjectServicesImpl implements ProjectServices {
     // FROM
     Collection<Activity> fromActivities = artifactCon.getFromActivities();
     if (fromActivities != null) {
-      artConXML.append("<FROM>\n");
       for (Iterator<Activity> iterator3 = fromActivities.iterator(); iterator3.hasNext(); ) {
         Activity activity2 = (Activity) iterator3.next();
-        artConXML.append("<ACTIVITY ID=\"" + activity2.getIdent() + "\"/>\n");
+        XMLCell cell =
+            new XMLCell(XMLCell.ARTIFACTCON, "", artifactCon.getId(), true, activity2, artifact);
+        writeCellToXML(cell, artConXML);
       }
-      artConXML.append("</FROM>\n");
     }
 
     // TO
-
     Collection<Activity> toActivities = artifactCon.getToActivities();
     if (toActivities != null) {
-      artConXML.append("<TO>\n");
       for (Iterator<Activity> iterator3 = toActivities.iterator(); iterator3.hasNext(); ) {
         Activity activity2 = (Activity) iterator3.next();
-
-        artConXML.append("<ACTIVITY ID=\"" + activity2.getIdent() + "\"/>\n");
+        XMLCell cell =
+            new XMLCell(XMLCell.ARTIFACTCON, "", artifactCon.getId(), true, activity2, artifact);
+        writeCellToXML(cell, artConXML);
       }
-      artConXML.append("</TO>\n");
     }
-
-    // POSITION
-    artConXML.append(getPositionTag(artifactCon.getId(), artifactCon.getClass().getSimpleName()));
-    artConXML.append("</ARTIFACTCON>\n");
-
     return artConXML.toString();
   }
 
@@ -599,18 +570,6 @@ public class ProjectServicesImpl implements ProjectServices {
       return webAPSEEObject.getTheGraphicCoordinate();
     }
     return new GraphicCoordinate().x(0).y(0);
-  }
-
-  private String getPositionTag(Long oid, String className) throws RepositoryQueryException {
-    WebAPSEEObject webAPSEEObject = null;
-    GraphicCoordinate graphicCoord = null;
-
-    webAPSEEObject = webAPSEEObjRepository.retrieveWebAPSEEObject(oid, className);
-    if (webAPSEEObject != null) {
-      graphicCoord = webAPSEEObject.getTheGraphicCoordinate();
-      return "<POSITION X=\"" + graphicCoord.getX() + "\" Y=\"" + graphicCoord.getY() + "\"/>\n";
-    }
-    return "<POSITION X=\"0\" Y=\"0\"/>\n";
   }
 
   @Override

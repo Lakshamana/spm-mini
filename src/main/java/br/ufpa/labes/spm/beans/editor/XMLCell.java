@@ -5,7 +5,7 @@ import java.util.Objects;
 public class XMLCell {
   private String nodeType;
   private String label;
-  private Long objectId;
+  private String objectId;
   private boolean isEdge = false;
   private String style;
   private Object sourceNode;
@@ -16,29 +16,30 @@ public class XMLCell {
       REQAGENT = "ReqAgent",
       REQWORKGROUP = "ReqWorkGroup",
       ARTIFACT = "Artifact",
-      JOINCON = "Join",
-      BRANCHCON = "Branch",
-      BRANCHANDCON = "BranchAND",
+      JOINCON = "JoinCon",
+      BRANCHCON = "BranchCon",
+      BRANCHANDCON = "BranchANDCon",
       ARTIFACTCON = "ArtifactCon",
       FEEDBACK = "Feedback",
-      SEQUENCE = "Sequence";
+      SEQUENCE = "Sequence",
+      CONNECTOR = "Connector";
 
   public XMLCell() {}
 
-  public XMLCell(String nodeType, String label, Long objectId, boolean isEdge) {
+  public XMLCell(String nodeType, String label, Object objectId, boolean isEdge) {
     this.nodeType = nodeType;
     this.label = label;
-    this.objectId = objectId;
+    this.objectId = String.valueOf(objectId);
     this.style = nodeType.toLowerCase();
     this.isEdge = isEdge;
     this.sourceNode = null;
     this.targetNode = null;
   }
 
-  public XMLCell(String nodeType, String label, Long objectId, String style, boolean isEdge) {
+  public XMLCell(String nodeType, String label, Object objectId, String style, boolean isEdge) {
     this.nodeType = nodeType;
     this.label = label;
-    this.objectId = objectId;
+    this.objectId = String.valueOf(objectId);
     this.style = style;
     this.isEdge = isEdge;
     this.sourceNode = null;
@@ -48,13 +49,13 @@ public class XMLCell {
   public XMLCell(
       String nodeType,
       String label,
-      Long objectId,
+      Object objectId,
       boolean isEdge,
       Object sourceNode,
       Object targetNode) {
     this.nodeType = nodeType;
     this.label = label;
-    this.objectId = objectId;
+    this.objectId = String.valueOf(objectId);
     this.style = nodeType.toLowerCase();
     this.isEdge = true;
     this.sourceNode = sourceNode;
@@ -77,11 +78,11 @@ public class XMLCell {
     this.label = label;
   }
 
-  public Long getobjectId() {
+  public String getobjectId() {
     return this.objectId;
   }
 
-  public void setobjectId(Long objectId) {
+  public void setobjectId(String objectId) {
     this.objectId = objectId;
   }
 
@@ -131,7 +132,7 @@ public class XMLCell {
     return this;
   }
 
-  public XMLCell objectId(Long objectId) {
+  public XMLCell objectId(String objectId) {
     this.objectId = objectId;
     return this;
   }
