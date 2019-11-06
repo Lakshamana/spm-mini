@@ -2,6 +2,7 @@ package br.ufpa.labes.spm.service.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.jdom2.Attribute;
 import org.jdom2.Content;
 import org.jdom2.Document;
@@ -210,42 +212,55 @@ public class ProjectServicesImpl implements ProjectServices {
     return xml;
   }
 
+  private String getVertexObjectId(Object node) throws RepositoryQueryException {
+    try {
+      log.debug("Enter getVertexObjectId");
+      log.debug("Get ID property from: {} with type: {}", node, node.getClass().getSimpleName());
+      Field field =
+          FieldUtils.getAllFieldsList(node.getClass()).stream()
+              .filter(filter -> filter.getName().equals("id"))
+              .findFirst()
+              .get();
+      log.debug("RESULT FROM FIELD {}", field);
+      field.setAccessible(true);
+      return node.getClass().getSimpleName() + "#" + field.get(node);
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
   private void writeCellToXML(XMLCell node, StringBuilder processXML)
       throws RepositoryQueryException {
-    GraphicCoordinate gc = getObjectPosition(node.getobjectId(), node.getNodeType());
     // WebAPSEEObject obj = webAPSEEObjRepository.findOneByTheReferredOid(node.getobjectId());
     String nodeId = node.getNodeType() + "#" + String.valueOf(node.getobjectId());
-    log.debug("GC: {}", gc);
-    log.debug("WebAPSEEObject: {}", gc.getTheObjectReference());
+    // log.debug("GC: {}", gc);
+    // log.debug("WebAPSEEObject: {}", gc.getTheObjectReference());
     // String nodeId = String.valueOf(gc.getTheObjectReference().getId());
     String style = node.getStyle();
     processXML.append(
         String.format(
             "  <%s label=\"%s\" id=\"%s\">\n", node.getNodeType(), node.getLabel(), nodeId));
     if (!node.getIsEdge()) {
+      GraphicCoordinate gc = getObjectPosition(node.getobjectId(), node.getNodeType());
       processXML.append(
           String.format("   <mxCell style=\"%s\" vertex=\"1\" parent=\"1\">\n", style));
+      processXML.append(
+          String.format(
+              "    <mxGeometry x=\"%s\" y=\"%s\" width=\"%s\" height=\"%s\" as=\"geometry\"/>\n",
+              gc.getX(), gc.getY(), 60, 60));
     } else {
-      String sourceId =
-          String.valueOf(
-              webAPSEEObjRepository
-                  .retrieveWebAPSEEObject(node.getSourceNode(), node.getNodeType())
-                  .getId());
-      String targetId =
-          String.valueOf(
-              webAPSEEObjRepository
-                  .retrieveWebAPSEEObject(node.getTargetNode(), node.getNodeType())
-                  .getId());
+      log.debug("SOURCE NODE: {}", node.getSourceNode());
+      log.debug("TARGET NODE: {}", node.getTargetNode());
+      String sourceId = getVertexObjectId(node.getSourceNode());
+      String targetId = getVertexObjectId(node.getTargetNode());
       String styleAttr = !style.equals("") ? String.format("style=\"%s\" ", style) : "";
       processXML.append(
           String.format(
               "   <mxCell %sedge=\"1\" parent=\"1\" source=\"%s\" target=\"%s\">\n",
               styleAttr, sourceId, targetId));
+      processXML.append("    <mxGeometry relative=\"1\" as=\"geometry\"/>\n");
     }
-    processXML.append(
-        String.format(
-            "    <mxGeometry x=\"%s\" y=\"%s\" width=\"%s\" height=\"%s\" as=\"geometry\"/>\n",
-            gc.getX(), gc.getY(), 60, 60));
     processXML.append("   </mxCell>\n");
     processXML.append(String.format("  </%s>\n", node.getNodeType()));
   }
@@ -375,14 +390,15 @@ public class ProjectServicesImpl implements ProjectServices {
       Collection<SimpleCon> fromSimpleCon = activity.getFromSimpleCons();
       for (Iterator<SimpleCon> iterator2 = fromSimpleCon.iterator(); iterator2.hasNext(); ) {
         SimpleCon simpleCon = (SimpleCon) iterator2.next();
-        Long fromId = simpleCon.getFromActivity().getId();
-        Long toId = simpleCon.getToActivity().getId();
+        Activity from = simpleCon.getFromActivity();
+        Activity to = simpleCon.getToActivity();
+        log.debug("PASSING fromActivity = {} & toActivity = {}", from, to);
         if (simpleCon instanceof Sequence) {
-          log.debug("falled in sequence");
-          XMLCell node = new XMLCell(XMLCell.SEQUENCE, "", simpleCon.getId(), true, fromId, toId);
+          log.debug("falled in from sequence");
+          XMLCell node = new XMLCell(XMLCell.SEQUENCE, "", simpleCon.getId(), true, from, to);
           writeCellToXML(node, processXML);
         } else if (simpleCon instanceof Feedback) {
-          XMLCell node = new XMLCell(XMLCell.FEEDBACK, "", simpleCon.getId(), true, fromId, toId);
+          XMLCell node = new XMLCell(XMLCell.FEEDBACK, "", simpleCon.getId(), true, from, to);
           writeCellToXML(node, processXML);
         }
       }
@@ -408,12 +424,15 @@ public class ProjectServicesImpl implements ProjectServices {
         writeCellToXML(node, processXML);
       }
 
-      Collection<SimpleCon> toSimpleCon = activity.getToSimpleCons();
-      for (Iterator<SimpleCon> iterator2 = toSimpleCon.iterator(); iterator2.hasNext(); ) {
-        SimpleCon simpleCon = (SimpleCon) iterator2.next();
-        XMLCell node = new XMLCell(XMLCell.SEQUENCE, "", simpleCon.getId(), true);
-        writeCellToXML(node, processXML);
-      }
+      // Collection<SimpleCon> toSimpleCon = activity.getToSimpleCons();
+      // for (Iterator<SimpleCon> iterator2 = toSimpleCon.iterator(); iterator2.hasNext(); ) {
+      //   SimpleCon simpleCon = (SimpleCon) iterator2.next();
+      //   log.debug("falled in to sequence");
+      //   Activity from = simpleCon.getFromActivity();
+      //   Activity to = simpleCon.getToActivity();
+      //   XMLCell node = new XMLCell(XMLCell.SEQUENCE, "", simpleCon.getId(), true, from, to);
+      //   writeCellToXML(node, processXML);
+      // }
     }
     // processXML.append("</CONNECTIONS>\n");
   }
