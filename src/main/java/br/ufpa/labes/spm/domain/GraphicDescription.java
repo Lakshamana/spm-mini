@@ -56,6 +56,7 @@ public class GraphicDescription implements Serializable {
 
   public GraphicDescription theProcessModel(ProcessModel processModel) {
     this.theProcessModel = processModel;
+    this.theProcessModel.setGraphicDescription(this);
     return this;
   }
 
