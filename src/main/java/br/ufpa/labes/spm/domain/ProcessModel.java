@@ -55,6 +55,9 @@ public class ProcessModel implements Serializable {
   private Template theOrigin;
 
   @OneToMany(mappedBy = "theProcessModel")
+  @JsonIgnoreProperties(
+      value = {"theProcessModel"},
+      allowSetters = true)
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
   private Set<Connection> theConnections = new HashSet<>();
 

@@ -238,17 +238,20 @@ public class ProjectServicesImpl implements ProjectServices {
     // log.debug("WebAPSEEObject: {}", gc.getTheObjectReference());
     // String nodeId = String.valueOf(gc.getTheObjectReference().getId());
     String style = node.getStyle();
-    processXML.append(
-        String.format(
-            "  <%s label=\"%s\" id=\"%s\">\n", node.getNodeType(), node.getLabel(), nodeId));
     if (!node.getIsEdge()) {
-      GraphicCoordinate gc = getObjectPosition(Long.valueOf(node.getobjectId()), node.getNodeType());
+      processXML.append(
+          String.format(
+              "  <%s label=\"%s\" id=\"%s\">\n", node.getNodeType(), node.getLabel(), nodeId));
+      GraphicCoordinate gc =
+          getObjectPosition(Long.valueOf(node.getobjectId()), node.getNodeType());
       processXML.append(
           String.format("   <mxCell style=\"%s\" vertex=\"1\" parent=\"1\">\n", style));
       processXML.append(
           String.format(
               "    <mxGeometry x=\"%s\" y=\"%s\" width=\"%s\" height=\"%s\" as=\"geometry\"/>\n",
               gc.getX(), gc.getY(), 60, 60));
+      processXML.append("   </mxCell>\n");
+      processXML.append(String.format("  </%s>\n", node.getNodeType()));
     } else {
       log.debug("SOURCE NODE: {}", node.getSourceNode());
       log.debug("TARGET NODE: {}", node.getTargetNode());
@@ -257,12 +260,15 @@ public class ProjectServicesImpl implements ProjectServices {
       String styleAttr = !style.equals("") ? String.format("style=\"%s\" ", style) : "";
       processXML.append(
           String.format(
+              "  <Connector type=\"%s\" label=\"%s\" id=\"%s\">\n", node.getNodeType(), node.getLabel(), nodeId));
+      processXML.append(
+          String.format(
               "   <mxCell %sedge=\"1\" parent=\"1\" source=\"%s\" target=\"%s\">\n",
               styleAttr, sourceId, targetId));
       processXML.append("    <mxGeometry relative=\"1\" as=\"geometry\"/>\n");
+      processXML.append("   </mxCell>\n");
+      processXML.append("  </Connector>\n");
     }
-    processXML.append("   </mxCell>\n");
-    processXML.append(String.format("  </%s>\n", node.getNodeType()));
   }
 
   private void loadObjectsFromProcessModel(ProcessModel pModel, StringBuilder processXML)
@@ -471,7 +477,8 @@ public class ProjectServicesImpl implements ProjectServices {
       for (Iterator<Activity> iterator3 = fromActivities.iterator(); iterator3.hasNext(); ) {
         Activity activity2 = (Activity) iterator3.next();
         XMLCell fromCell =
-            new XMLCell(XMLCell.CONNECTOR, "", initialId + activity2.getId(), true, activity2, joinCon);
+            new XMLCell(
+                XMLCell.CONNECTOR, "", initialId + activity2.getId(), true, activity2, joinCon);
         writeCellToXML(fromCell, joinConXML);
       }
     }
@@ -481,7 +488,8 @@ public class ProjectServicesImpl implements ProjectServices {
       for (Iterator<MultipleCon> iterator3 = fromMultipleCon.iterator(); iterator3.hasNext(); ) {
         MultipleCon multCon2 = (MultipleCon) iterator3.next();
         XMLCell fromCell =
-            new XMLCell(XMLCell.CONNECTOR, "", initialId + multCon2.getId(), true, multCon2, joinCon);
+            new XMLCell(
+                XMLCell.CONNECTOR, "", initialId + multCon2.getId(), true, multCon2, joinCon);
         writeCellToXML(fromCell, joinConXML);
       }
     }
@@ -514,7 +522,8 @@ public class ProjectServicesImpl implements ProjectServices {
       for (Iterator<Activity> iterator3 = toActivities.iterator(); iterator3.hasNext(); ) {
         Activity activity2 = (Activity) iterator3.next();
         XMLCell toCell =
-            new XMLCell(XMLCell.CONNECTOR, "", initialId + activity2.getId(), true, branchCon, activity2);
+            new XMLCell(
+                XMLCell.CONNECTOR, "", initialId + activity2.getId(), true, branchCon, activity2);
         writeCellToXML(toCell, branchConXML);
       }
     }
@@ -524,7 +533,8 @@ public class ProjectServicesImpl implements ProjectServices {
       for (Iterator<MultipleCon> iterator3 = toMultipleCon.iterator(); iterator3.hasNext(); ) {
         MultipleCon multCon2 = (MultipleCon) iterator3.next();
         XMLCell toCell =
-            new XMLCell(XMLCell.CONNECTOR, "", initialId + multCon2.getId(), true, branchCon, multCon2);
+            new XMLCell(
+                XMLCell.CONNECTOR, "", initialId + multCon2.getId(), true, branchCon, multCon2);
         writeCellToXML(toCell, branchConXML);
       }
     }
