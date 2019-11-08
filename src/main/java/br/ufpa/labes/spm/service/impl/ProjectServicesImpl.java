@@ -239,10 +239,11 @@ public class ProjectServicesImpl implements ProjectServices {
     // String nodeId = String.valueOf(gc.getTheObjectReference().getId());
     String style = node.getStyle();
     String typeLow = node.getNodeType().toLowerCase();
-    processXML.append(
-        String.format(
-            "  <%s type=\"%s\" label=\"%s\" id=\"%s\">\n", node.getNodeType(), typeLow, node.getLabel(), nodeId));
     if (!node.getIsEdge()) {
+      processXML.append(
+          String.format(
+              "  <%s type=\"%s\" label=\"%s\" id=\"%s\">\n",
+              node.getNodeType(), typeLow, node.getLabel(), nodeId));
       GraphicCoordinate gc =
           getObjectPosition(Long.valueOf(node.getobjectId()), node.getNodeType());
       processXML.append(
@@ -251,21 +252,26 @@ public class ProjectServicesImpl implements ProjectServices {
           String.format(
               "    <mxGeometry x=\"%s\" y=\"%s\" width=\"%s\" height=\"%s\" as=\"geometry\"/>\n",
               gc.getX(), gc.getY(), 60, 60));
+      processXML.append("   </mxCell>\n");
+      processXML.append(String.format("  </%s>\n", node.getNodeType()));
     } else {
-      log.debug("SOURCE NODE: {}", node.getSourceNode());
-      log.debug("TARGET NODE: {}", node.getTargetNode());
+      // log.debug("SOURCE NODE: {}", node.getSourceNode());
+      // log.debug("TARGET NODE: {}", node.getTargetNode());
       String sourceId = getVertexObjectId(node.getSourceNode());
       String targetId = getVertexObjectId(node.getTargetNode());
+      processXML.append(
+          String.format(
+              "  <Connector type=\"%s\" label=\"%s\" id=\"%s\">\n",
+              typeLow, node.getLabel(), nodeId));
       String styleAttr = !style.equals("") ? String.format("style=\"%s\" ", style) : "";
       processXML.append(
           String.format(
               "   <mxCell %sedge=\"1\" parent=\"1\" source=\"%s\" target=\"%s\">\n",
               styleAttr, sourceId, targetId));
       processXML.append("    <mxGeometry relative=\"1\" as=\"geometry\"/>\n");
+      processXML.append("   </mxCell>\n");
       processXML.append("  </Connector>\n");
     }
-    processXML.append("   </mxCell>\n");
-    processXML.append(String.format("  </%s>\n", node.getNodeType()));
   }
 
   private void loadObjectsFromProcessModel(ProcessModel pModel, StringBuilder processXML)
