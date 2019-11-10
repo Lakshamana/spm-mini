@@ -27,6 +27,6 @@ public interface BranchANDConRepository extends GenericRepository<BranchANDCon, 
   List<BranchANDCon> findAllWithEagerRelationships();
 
   @Query(
-      "select branchANDCon from BranchANDCon branchANDCon left join fetch branchANDCon.toMultipleCons where branchANDCon.id =:id")
+      "select branchANDCon from BranchANDCon branchANDCon left join fetch branchANDCon.toMultipleCons left join fetch branchANDCon.toActivities where branchANDCon.id =:id")
   Optional<BranchANDCon> findOneWithEagerRelationships(@Param("id") Long id);
 }

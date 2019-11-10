@@ -43,6 +43,7 @@ import br.ufpa.labes.spm.beans.editor.XMLCell;
 import br.ufpa.labes.spm.converter.Converter;
 import br.ufpa.labes.spm.converter.ConverterImpl;
 import br.ufpa.labes.spm.exceptions.ImplementationException;
+import br.ufpa.labes.spm.repository.ActivityRepository;
 import br.ufpa.labes.spm.repository.AgentRepository;
 import br.ufpa.labes.spm.repository.ArtifactRepository;
 import br.ufpa.labes.spm.repository.DecomposedRepository;
@@ -67,7 +68,6 @@ import br.ufpa.labes.spm.domain.Agent;
 import br.ufpa.labes.spm.domain.WorkGroup;
 import br.ufpa.labes.spm.domain.Artifact;
 import br.ufpa.labes.spm.domain.ArtifactCon;
-import br.ufpa.labes.spm.domain.BranchCon;
 import br.ufpa.labes.spm.domain.BranchANDCon;
 import br.ufpa.labes.spm.domain.BranchConCond;
 import br.ufpa.labes.spm.domain.Connection;
@@ -116,6 +116,8 @@ public class ProjectServicesImpl implements ProjectServices {
   @Autowired private ProjectRepository projectRepository;
 
   @Autowired ArtifactRepository artifactRepository;
+
+  @Autowired private ActivityRepository activityRepository;
 
   @Autowired AgentRepository agentRepository;
 
@@ -316,30 +318,40 @@ public class ProjectServicesImpl implements ProjectServices {
           java.lang.System.out.println("agentes" + reqAgent.getTheAgent());
 
           // if (reqAgent.getTheAgent() != null) {
-            XMLCell node = new XMLCell(XMLCell.REQAGENT, "role", reqAgent.getId(), false);
-            writeCellToXML(node, processXML);
-            // processXML.append("<ROLE>" + (reqAgent.getTheRole()!=null ?
-            // reqAgent.getTheRole().getIdent() : "") + "</ROLE>\n");
+          XMLCell node = new XMLCell(XMLCell.REQAGENT, "role", reqAgent.getId(), false);
+          writeCellToXML(node, processXML);
+          // processXML.append("<ROLE>" + (reqAgent.getTheRole()!=null ?
+          // reqAgent.getTheRole().getIdent() : "") + "</ROLE>\n");
           // }
 
         } else if (requiredPeople instanceof ReqWorkGroup) {
           ReqWorkGroup reqWorkGroup = (ReqWorkGroup) requiredPeople;
           // if (reqWorkGroup.getTheWorkGroup() != null) {
-            String workGroup =
-                reqWorkGroup.getTheWorkGroup() != null
-                    ? reqWorkGroup.getTheWorkGroup().getIdent()
-                    : "";
-            String workGroupName =
-                reqWorkGroup.getTheWorkGroup() != null
-                    ? reqWorkGroup.getTheWorkGroup().getName()
-                    : "";
-            XMLCell node =
-                new XMLCell(XMLCell.REQWORKGROUP, workGroupName, reqWorkGroup.getId(), false);
-            writeCellToXML(node, processXML);
-            // String WorkGroupType = reqWorkGroup.getTheWorkGroupType()!=null ?
-            // reqWorkGroup.getTheWorkGroupType().getIdent() : "";
+          String workGroup =
+              reqWorkGroup.getTheWorkGroup() != null
+                  ? reqWorkGroup.getTheWorkGroup().getIdent()
+                  : "";
+          String workGroupName =
+              reqWorkGroup.getTheWorkGroup() != null
+                  ? reqWorkGroup.getTheWorkGroup().getName()
+                  : "";
+          XMLCell node =
+              new XMLCell(XMLCell.REQWORKGROUP, workGroupName, reqWorkGroup.getId(), false);
+          writeCellToXML(node, processXML);
+          // String WorkGroupType = reqWorkGroup.getTheWorkGroupType()!=null ?
+          // reqWorkGroup.getTheWorkGroupType().getIdent() : "";
           // }
         }
+        String initialId = String.valueOf(requiredPeople.getId()) + "to";
+        XMLCell cell =
+            new XMLCell(
+                XMLCell.CONNECTOR,
+                "",
+                initialId + requiredPeople.getId(),
+                true,
+                requiredPeople,
+                normal);
+        writeCellToXML(cell, processXML);
       }
     }
     // Load Resource
@@ -372,10 +384,14 @@ public class ProjectServicesImpl implements ProjectServices {
 
     // Load Connections
     // processXML.append("<CONNECTIONS>\n");
+    log.debug("Get connections");
     for (Iterator<Activity> iterator = activities.iterator(); iterator.hasNext(); ) {
-      Activity activity = (Activity) iterator.next();
+      Long id = (Long) iterator.next().getId();
+      Activity activity = activityRepository.findOneWithEagerRelationships(id).get();
+      if (activity == null) break;
 
       Collection<ArtifactCon> fromArtCon = activity.getFromArtifactCons();
+      log.debug("Get artifact connections: {}", activity.getFromArtifactCons());
       for (Iterator<ArtifactCon> iterator2 = fromArtCon.iterator(); iterator2.hasNext(); ) {
         ArtifactCon artifactCon = (ArtifactCon) iterator2.next();
         getArtifactConTag(artifactCon, processXML);
@@ -399,12 +415,11 @@ public class ProjectServicesImpl implements ProjectServices {
         getSimpleConTag(simpleCon, processXML);
       }
 
-      // Collection<ArtifactCon> toArtCon = activity.getToArtifactCons();
-      // for (Iterator<ArtifactCon> iterator2 = toArtCon.iterator(); iterator2.hasNext(); ) {
-      //   ArtifactCon artifactCon2 = (ArtifactCon) iterator2.next();
-      //   XMLCell node = new XMLCell(XMLCell.ARTIFACTCON, "", artifactCon2.getId(), true);
-      //   writeCellToXML(node, processXML);
-      // }
+      Collection<ArtifactCon> toArtCon = activity.getToArtifactCons();
+      for (Iterator<ArtifactCon> iterator2 = toArtCon.iterator(); iterator2.hasNext(); ) {
+        ArtifactCon artifactCon2 = (ArtifactCon) iterator2.next();
+        getArtifactConTag(artifactCon2, processXML);
+      }
 
       // Collection<BranchCon> toBranch = activity.getToBranchCons();
       // for (Iterator<BranchCon> iterator2 = toBranch.iterator(); iterator2.hasNext(); ) {
@@ -433,16 +448,20 @@ public class ProjectServicesImpl implements ProjectServices {
     // processXML.append("</CONNECTIONS>\n");
   }
 
-  private void getSimpleConTag(SimpleCon simpleCon, StringBuilder xmlBuilder) throws RepositoryQueryException {
+  private void getSimpleConTag(SimpleCon simpleCon, StringBuilder xmlBuilder)
+      throws RepositoryQueryException {
     Activity from = simpleCon.getFromActivity();
     Activity to = simpleCon.getToActivity();
     XMLCell node = new XMLCell(XMLCell.SEQUENCE, "", simpleCon.getId(), true, from, to);
     writeCellToXML(node, xmlBuilder);
   }
 
-  private void getJoinTag(JoinCon joinCon, StringBuilder xmlBuilder) throws RepositoryQueryException {
+  private void getJoinTag(JoinCon joinCon, StringBuilder xmlBuilder)
+      throws RepositoryQueryException {
     String initialId = String.valueOf(joinCon.getId()) + "to";
     XMLCell toCell = new XMLCell(XMLCell.CONNECTOR, "", null, true, joinCon, null);
+    XMLCell joinCell = new XMLCell(XMLCell.JOINCON, joinCon.getIdent(), joinCon.getId(), false);
+    writeCellToXML(joinCell, xmlBuilder);
     // TO
     Activity toActivity = joinCon.getToActivity();
     if (toActivity != null) {
@@ -482,8 +501,12 @@ public class ProjectServicesImpl implements ProjectServices {
     }
   }
 
-  private void getBranchTag(BranchANDCon branchCon, StringBuilder xmlBuilder) throws RepositoryQueryException {
+  private void getBranchTag(BranchANDCon branchCon, StringBuilder xmlBuilder)
+      throws RepositoryQueryException {
     String initialId = String.valueOf(branchCon.getId()) + "to";
+    XMLCell branchCell =
+        new XMLCell(XMLCell.BRANCHCON, branchCon.getIdent(), branchCon.getId(), false);
+    writeCellToXML(branchCell, xmlBuilder);
     XMLCell fromCell = new XMLCell(XMLCell.CONNECTOR, "", null, true, null, branchCon);
 
     // FROM
@@ -525,8 +548,13 @@ public class ProjectServicesImpl implements ProjectServices {
     }
   }
 
-  private void getArtifactConTag(ArtifactCon artifactCon, StringBuilder xmlBuilder) throws RepositoryQueryException {
+  private void getArtifactConTag(ArtifactCon artifactCon, StringBuilder xmlBuilder)
+      throws RepositoryQueryException {
     Artifact artifact = artifactCon.getTheArtifact();
+    log.debug("Artifact: {}", artifact);
+    XMLCell artifactCell =
+        new XMLCell(XMLCell.ARTIFACT, artifact.getIdent(), artifact.getId(), false);
+    writeCellToXML(artifactCell, xmlBuilder);
     // ArtifactType artType = artifactCon.getTheArtifactType();
     // if(artType!=null)
     // 	artConXML.append("<ARTIFACTTYPE>" + artType.getIdent() + "</ARTIFACTTYPE>\n");

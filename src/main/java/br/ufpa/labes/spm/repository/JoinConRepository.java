@@ -26,6 +26,6 @@ public interface JoinConRepository extends GenericRepository<JoinCon, Long> {
   List<JoinCon> findAllWithEagerRelationships();
 
   @Query(
-      "select joinCon from JoinCon joinCon left join fetch joinCon.fromMultipleCons where joinCon.id =:id")
+      "select joinCon from JoinCon joinCon left join fetch joinCon.fromMultipleCons left join fetch joinCon.fromActivities where joinCon.id =:id")
   Optional<JoinCon> findOneWithEagerRelationships(@Param("id") Long id);
 }
