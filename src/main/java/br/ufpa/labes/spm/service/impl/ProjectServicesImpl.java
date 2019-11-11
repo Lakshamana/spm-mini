@@ -410,6 +410,7 @@ public class ProjectServicesImpl implements ProjectServices {
       }
 
       Collection<SimpleCon> fromSimpleCon = activity.getFromSimpleCons();
+      log.debug("Get simple connections: {}", activity.getFromSimpleCons());
       for (Iterator<SimpleCon> iterator2 = fromSimpleCon.iterator(); iterator2.hasNext(); ) {
         SimpleCon simpleCon = (SimpleCon) iterator2.next();
         getSimpleConTag(simpleCon, processXML);

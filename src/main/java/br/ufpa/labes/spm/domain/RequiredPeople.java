@@ -25,7 +25,7 @@ public class RequiredPeople implements Serializable {
   private Long id;
 
   @ManyToOne
-  @JsonIgnoreProperties("theRequiredPeople")
+  @JsonIgnoreProperties(value = {"theRequiredPeople", "ident"})
   private Normal theNormal;
 
   // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

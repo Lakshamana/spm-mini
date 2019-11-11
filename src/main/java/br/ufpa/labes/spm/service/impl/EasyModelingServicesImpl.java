@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -306,164 +305,174 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
     return webAPSEEObjRepository.save(object);
   }
 
-  public WebAPSEEObject saveWebAPSEENodePositions(
-      String processIdent, Collection<WebAPSEENodePosition> positions) {
+  // public WebAPSEEObject saveWebAPSEENodePositions(
+  //     String processIdent, Collection<WebAPSEENodePosition> positions) {
 
-    try {
-      WebAPSEEObject webAPSEEObj = null;
-      GraphicCoordinate graphicCoord;
+  //   try {
+  //     WebAPSEEObject webAPSEEObj = null;
+  //     GraphicCoordinate graphicCoord;
 
-      Long theReferredOid = null;
-      String className = null;
-      boolean ok = false;
+  //     Long theReferredOid = null;
+  //     String className = null;
+  //     boolean ok = false;
 
-      for (Iterator<WebAPSEENodePosition> iterator = positions.iterator(); iterator.hasNext(); ) {
-        WebAPSEENodePosition webAPSEENodePosition = (WebAPSEENodePosition) iterator.next();
-        ok = false;
+  //     for (Iterator<WebAPSEENodePosition> iterator = positions.iterator(); iterator.hasNext(); )
+  // {
+  //       WebAPSEENodePosition webAPSEENodePosition = (WebAPSEENodePosition) iterator.next();
+  //       ok = false;
 
-        if (webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.ACTIVITYNODE) {
-          Activity act =
-              (Activity)
-                  activityRepository.retrieveBySecondaryKey(webAPSEENodePosition.getInstanceID());
-          if (act != null) {
-            theReferredOid = act.getId();
-            className = act.getClass().getSimpleName();
-            ok = true;
-            webAPSEEObj = webAPSEEObjRepository.retrieveWebAPSEEObject(theReferredOid, className);
-          }
+  //       if (webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.ACTIVITYNODE) {
+  //         Activity act =
+  //             (Activity)
+  //
+  // activityRepository.retrieveBySecondaryKey(webAPSEENodePosition.getInstanceID());
+  //         if (act != null) {
+  //           theReferredOid = act.getId();
+  //           className = act.getClass().getSimpleName();
+  //           ok = true;
+  //           webAPSEEObj = webAPSEEObjRepository.retrieveWebAPSEEObject(theReferredOid,
+  // className);
+  //         }
 
-        } else if (webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.ARTIFACTCONNODE
-            || webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.BRANCHNODE
-            || webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.JOINNODE
-            || webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.SEQUENCENODE) {
+  //       } else if (webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.ARTIFACTCONNODE
+  //           || webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.BRANCHNODE
+  //           || webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.JOINNODE
+  //           || webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.SEQUENCENODE) {
 
-          Connection con =
-              (Connection)
-                  conRepository.retrieveBySecondaryKey(webAPSEENodePosition.getInstanceID());
-          if (!webAPSEENodePosition.getTheReferredObjects().isEmpty()) {
+  //         Connection con =
+  //             (Connection)
+  //                 conRepository.retrieveBySecondaryKey(webAPSEENodePosition.getInstanceID());
+  //         if (!webAPSEENodePosition.getTheReferredObjects().isEmpty()) {
 
-            List<String> objs = (List<String>) webAPSEENodePosition.getTheReferredObjects();
+  //           List<String> objs = (List<String>) webAPSEENodePosition.getTheReferredObjects();
 
-            con = new Connection();
+  //           con = new Connection();
 
-            con = (Connection) conRepository.retrieveBySecondaryKey(objs.get(0));
-            System.out.print("aqui: " + con);
-          }
+  //           con = (Connection) conRepository.retrieveBySecondaryKey(objs.get(0));
+  //           System.out.print("aqui: " + con);
+  //         }
 
-          con =
-              (Connection)
-                  conRepository.retrieveBySecondaryKey(webAPSEENodePosition.getInstanceID());
-          if (con != null) {
-            System.out.print("com n�o nula: ");
-            theReferredOid = con.getId();
-            className = con.getClass().getSimpleName();
-            ok = true;
-            webAPSEEObj = webAPSEEObjRepository.retrieveWebAPSEEObject(theReferredOid, className);
-          }
+  //         con =
+  //             (Connection)
+  //                 conRepository.retrieveBySecondaryKey(webAPSEENodePosition.getInstanceID());
+  //         if (con != null) {
+  //           System.out.print("com n�o nula: ");
+  //           theReferredOid = con.getId();
+  //           className = con.getClass().getSimpleName();
+  //           ok = true;
+  //           webAPSEEObj = webAPSEEObjRepository.retrieveWebAPSEEObject(theReferredOid,
+  // className);
+  //         }
 
-          if (webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.ARTIFACTCONNODE) {
-            con =
-                (Connection)
-                    conRepository.retrieveBySecondaryKey(webAPSEENodePosition.getInstanceID());
-            ArtifactCon artifactCon = (ArtifactCon) con;
-            System.out.println("ArtifactCon: " + artifactCon);
-            ok = true;
-            theReferredOid = artifactCon.getId();
-            className = artifactCon.getClass().getSimpleName();
-            webAPSEEObj = webAPSEEObjRepository.retrieveWebAPSEEObject(theReferredOid, className);
-          }
+  //         if (webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.ARTIFACTCONNODE) {
+  //           con =
+  //               (Connection)
+  //                   conRepository.retrieveBySecondaryKey(webAPSEENodePosition.getInstanceID());
+  //           ArtifactCon artifactCon = (ArtifactCon) con;
+  //           System.out.println("ArtifactCon: " + artifactCon);
+  //           ok = true;
+  //           theReferredOid = artifactCon.getId();
+  //           className = artifactCon.getClass().getSimpleName();
+  //           webAPSEEObj = webAPSEEObjRepository.retrieveWebAPSEEObject(theReferredOid,
+  // className);
+  //         }
 
-        } else if (webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.REQAGENTNODE) {
+  //       } else if (webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.REQAGENTNODE) {
 
-          Collection<String> theReferredObjs = webAPSEENodePosition.getTheReferredObjects();
-          //					System.out.println("caiu no req: "+theReferredObjs);
-          if (theReferredObjs.size() == 1) {
-            String[] normals = new String[1];
-            theReferredObjs.toArray(normals);
-            String normal = normals[0];
+  //         Collection<String> theReferredObjs = webAPSEENodePosition.getTheReferredObjects();
+  //         //					System.out.println("caiu no req: "+theReferredObjs);
+  //         if (theReferredObjs.size() == 1) {
+  //           String[] normals = new String[1];
+  //           theReferredObjs.toArray(normals);
+  //           String normal = normals[0];
 
-            ReqAgent reqAg =
-                (ReqAgent)
-                    reqAgentRepository.findReqAgentFromProcessModel(
-                        webAPSEENodePosition.getInstanceID(),
-                        webAPSEENodePosition.getTypeID(),
-                        normal);
-            if (reqAg != null) {
-              //							System.out.println("caiu no ref id: "+reqAg.getId());
+  //           ReqAgent reqAg =
+  //               (ReqAgent)
+  //                   reqAgentRepository.findReqAgentFromProcessModel(
+  //                       webAPSEENodePosition.getInstanceID(),
+  //                       webAPSEENodePosition.getTypeID(),
+  //                       normal);
+  //           if (reqAg != null) {
+  //             //							System.out.println("caiu no ref id: "+reqAg.getId());
 
-              theReferredOid = reqAg.getId();
-              className = reqAg.getClass().getSimpleName();
-              ok = true;
-              webAPSEEObj = webAPSEEObjRepository.retrieveWebAPSEEObject(theReferredOid, className);
-            }
-          }
-        } else if (webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.REQGROUPNODE) {
-          // Collection<String> theReferredObjs = webAPSEENodePosition.getTheReferredObjects();
-          // if(theReferredObjs.size()==1){
-          // 	String[] normals = new String[1];
-          // 	theReferredObjs.toArray(normals);
-          // 	String normal = normals[0];
+  //             theReferredOid = reqAg.getId();
+  //             className = reqAg.getClass().getSimpleName();
+  //             ok = true;
+  //             webAPSEEObj = webAPSEEObjRepository.retrieveWebAPSEEObject(theReferredOid,
+  // className);
+  //           }
+  //         }
+  //       } else if (webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.REQGROUPNODE) {
+  //         // Collection<String> theReferredObjs = webAPSEENodePosition.getTheReferredObjects();
+  //         // if(theReferredObjs.size()==1){
+  //         // 	String[] normals = new String[1];
+  //         // 	theReferredObjs.toArray(normals);
+  //         // 	String normal = normals[0];
 
-          // 	ReqWorkGroup reqWorkGroup = (ReqWorkGroup)
-          // reqWorkGroupRepository.findReqWorkGroupFromProcessModel(webAPSEENodePosition.getInstanceID(), webAPSEENodePosition.getTypeID(), normal);
-          // 	if(reqWorkGroup!=null){
-          // 		theReferredOid = reqWorkGroup.getId();
-          // 		className = reqWorkGroup.getClass().getSimpleName();
-          // 		ok = true;
-          // 		webAPSEEObj = webAPSEEObjRepository.retrieveWebAPSEEObject(theReferredOid,
-          // className);
-          // }
-          // }
-        } else if (webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.REQRESOURCENODE) {
-          // Collection<String> theReferredObjs = webAPSEENodePosition.getTheReferredObjects();
-          // if(theReferredObjs.size()==1){
-          // 	String[] normals = new String[1];
-          // 	theReferredObjs.toArray(normals);
-          // 	String normal = normals[0];
+  //         // 	ReqWorkGroup reqWorkGroup = (ReqWorkGroup)
+  //         //
+  // reqWorkGroupRepository.findReqWorkGroupFromProcessModel(webAPSEENodePosition.getInstanceID(),
+  // webAPSEENodePosition.getTypeID(), normal);
+  //         // 	if(reqWorkGroup!=null){
+  //         // 		theReferredOid = reqWorkGroup.getId();
+  //         // 		className = reqWorkGroup.getClass().getSimpleName();
+  //         // 		ok = true;
+  //         // 		webAPSEEObj = webAPSEEObjRepository.retrieveWebAPSEEObject(theReferredOid,
+  //         // className);
+  //         // }
+  //         // }
+  //       } else if (webAPSEENodePosition.getNodeType() == WebAPSEENodePosition.REQRESOURCENODE) {
+  //         // Collection<String> theReferredObjs = webAPSEENodePosition.getTheReferredObjects();
+  //         // if(theReferredObjs.size()==1){
+  //         // 	String[] normals = new String[1];
+  //         // 	theReferredObjs.toArray(normals);
+  //         // 	String normal = normals[0];
 
-          // 	RequiredResource reqRes = (RequiredResource)
-          // reqResRepository.findRequiredResourceFromProcessModel(webAPSEENodePosition.getInstanceID(), webAPSEENodePosition.getTypeID(), normal);
-          // 	if(reqRes!=null){
-          // 		theReferredOid = reqRes.getId();
-          // 		className = reqRes.getClass().getSimpleName();
-          // 		ok = true;
-          // 		webAPSEEObj = webAPSEEObjRepository.retrieveWebAPSEEObject(theReferredOid,
-          // className);
-          // 	}
-          // }
-        }
-        if (ok) {
-          if (webAPSEEObj == null) {
-            graphicCoord =
-                updateGraphicCoordinate(
-                    webAPSEENodePosition, new GraphicCoordinate(), processIdent);
-            graphicCoord = (GraphicCoordinate) coordRepository.save(graphicCoord);
-            webAPSEEObj = new WebAPSEEObject(theReferredOid, className, graphicCoord);
-            System.out.println("caiu no ok" + webAPSEEObj.getTheReferredOid());
-            return webAPSEEObjRepository.save(webAPSEEObj);
+  //         // 	RequiredResource reqRes = (RequiredResource)
+  //         //
+  // reqResRepository.findRequiredResourceFromProcessModel(webAPSEENodePosition.getInstanceID(),
+  // webAPSEENodePosition.getTypeID(), normal);
+  //         // 	if(reqRes!=null){
+  //         // 		theReferredOid = reqRes.getId();
+  //         // 		className = reqRes.getClass().getSimpleName();
+  //         // 		ok = true;
+  //         // 		webAPSEEObj = webAPSEEObjRepository.retrieveWebAPSEEObject(theReferredOid,
+  //         // className);
+  //         // 	}
+  //         // }
+  //       }
+  //       if (ok) {
+  //         if (webAPSEEObj == null) {
+  //           graphicCoord =
+  //               updateGraphicCoordinate(
+  //                   webAPSEENodePosition, new GraphicCoordinate(), processIdent);
+  //           graphicCoord = (GraphicCoordinate) coordRepository.save(graphicCoord);
+  //           webAPSEEObj = new WebAPSEEObject(theReferredOid, className, graphicCoord);
+  //           System.out.println("caiu no ok" + webAPSEEObj.getTheReferredOid());
+  //           return webAPSEEObjRepository.save(webAPSEEObj);
 
-          } else {
-            System.out.print("caiu no else: ");
-            System.out.println(webAPSEEObj.getClassName().equals("RequiredResource"));
-            //	if(webAPSEEObj.getClassName().equals("RequiredResource")) {
-            System.out.println(processIdent);
-            System.out.println(webAPSEENodePosition);
-            System.out.println(webAPSEEObj.getTheGraphicCoordinate().getX());
-            System.out.println(webAPSEEObj.getTheGraphicCoordinate().getY());
-            // }
-            graphicCoord =
-                updateGraphicCoordinate(
-                    webAPSEENodePosition, webAPSEEObj.getTheGraphicCoordinate(), processIdent);
-            coordRepository.update(graphicCoord);
-          }
-        }
-      }
-      return webAPSEEObj;
-    } catch (WebapseeException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
+  //         } else {
+  //           System.out.print("caiu no else: ");
+  //           System.out.println(webAPSEEObj.getClassName().equals("RequiredResource"));
+  //           //	if(webAPSEEObj.getClassName().equals("RequiredResource")) {
+  //           System.out.println(processIdent);
+  //           System.out.println(webAPSEENodePosition);
+  //           System.out.println(webAPSEEObj.getTheGraphicCoordinate().getX());
+  //           System.out.println(webAPSEEObj.getTheGraphicCoordinate().getY());
+  //           // }
+  //           graphicCoord =
+  //               updateGraphicCoordinate(
+  //                   webAPSEENodePosition, webAPSEEObj.getTheGraphicCoordinate(), processIdent);
+  //           coordRepository.update(graphicCoord);
+  //         }
+  //       }
+  //     }
+  //     return webAPSEEObj;
+  //   } catch (WebapseeException e) {
+  //     e.printStackTrace();
+  //   }
+  //   return null;
+  // }
 
   private GraphicCoordinate updateGraphicCoordinate(
       WebAPSEENodePosition webAPSEENodePosition, GraphicCoordinate coord, String process) {
