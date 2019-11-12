@@ -2,12 +2,15 @@ package br.ufpa.labes.spm.web.rest;
 
 import br.ufpa.labes.spm.domain.ArtifactCon;
 import br.ufpa.labes.spm.repository.ArtifactConRepository;
+import br.ufpa.labes.spm.service.dto.ArtifactConDTO;
+import br.ufpa.labes.spm.service.mapper.ArtifactConMapper;
 import br.ufpa.labes.spm.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,8 @@ public class ArtifactConResource {
 
   private final ArtifactConRepository artifactConRepository;
 
+  @Autowired private ArtifactConMapper artifactConMapper;
+
   public ArtifactConResource(ArtifactConRepository artifactConRepository) {
     this.artifactConRepository = artifactConRepository;
   }
@@ -39,19 +44,20 @@ public class ArtifactConResource {
   /**
    * {@code POST /artifact-cons} : Create a new artifactCon.
    *
-   * @param artifactCon the artifactCon to create.
+   * @param artifactConDTO the artifactCon to create.
    * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new
    *     artifactCon, or with status {@code 400 (Bad Request)} if the artifactCon has already an ID.
    * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @PostMapping("/artifact-cons")
-  public ResponseEntity<ArtifactCon> createArtifactCon(@RequestBody ArtifactCon artifactCon)
+  public ResponseEntity<ArtifactCon> createArtifactCon(@RequestBody ArtifactConDTO artifactConDTO)
       throws URISyntaxException {
-    log.debug("REST request to save ArtifactCon : {}", artifactCon);
-    if (artifactCon.getId() != null) {
+    log.debug("REST request to save ArtifactCon : {}", artifactConDTO);
+    if (artifactConDTO.getId() != null) {
       throw new BadRequestAlertException(
           "A new artifactCon cannot already have an ID", ENTITY_NAME, "idexists");
     }
+    ArtifactCon artifactCon = artifactConMapper.artifactConDTOToArtifactCon(artifactConDTO);
     ArtifactCon result = artifactConRepository.save(artifactCon);
     return ResponseEntity.created(new URI("/api/artifact-cons/" + result.getId()))
         .headers(

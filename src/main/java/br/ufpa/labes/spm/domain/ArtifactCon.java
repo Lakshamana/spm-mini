@@ -1,6 +1,5 @@
 package br.ufpa.labes.spm.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -24,7 +23,9 @@ public class ArtifactCon extends Connection implements Serializable {
   private Long id;
 
   @ManyToOne
-  @JsonIgnoreProperties(value = { "theArtifactCons" }, allowSetters = true)
+  @JsonIgnoreProperties(
+      value = {"theArtifactCons"},
+      allowSetters = true)
   private Artifact theArtifact;
 
   @ManyToMany
@@ -37,12 +38,10 @@ public class ArtifactCon extends Connection implements Serializable {
 
   @ManyToMany(mappedBy = "fromArtifactCons")
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-  @JsonIgnore
   private Set<Activity> toActivities = new HashSet<>();
 
   @ManyToMany(mappedBy = "toArtifactCons")
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-  @JsonIgnore
   private Set<Activity> fromActivities = new HashSet<>();
 
   // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

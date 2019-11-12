@@ -16,6 +16,9 @@ import java.util.Optional;
 @Repository
 public interface ActivityRepository extends GenericRepository<Activity, Long> {
 
+  @Query("select distinct act from Activity act where act.theProcessModel.id = :pmid")
+  List<Activity> findByTheProcessModelId(@Param("pmid") Long pmid);
+
   @Query(
       value =
           "select distinct activity from Activity activity left join fetch activity.toJoinCons left join fetch activity.fromBranchANDCons left join fetch activity.fromArtifactCons left join fetch activity.toArtifactCons",
