@@ -24,7 +24,7 @@ public class ArtifactCon extends Connection implements Serializable {
   private Long id;
 
   @ManyToOne
-  @JsonIgnoreProperties("theArtifactCons")
+  @JsonIgnoreProperties(value = { "theArtifactCons" }, allowSetters = true)
   private Artifact theArtifact;
 
   @ManyToMany

@@ -391,7 +391,7 @@ public class ProjectServicesImpl implements ProjectServices {
       if (activity == null) break;
 
       Collection<ArtifactCon> fromArtCon = activity.getFromArtifactCons();
-      log.debug("Get artifact connections: {}", activity.getFromArtifactCons());
+      log.debug("Get from artifact connections: {}", activity.getFromArtifactCons());
       for (Iterator<ArtifactCon> iterator2 = fromArtCon.iterator(); iterator2.hasNext(); ) {
         ArtifactCon artifactCon = (ArtifactCon) iterator2.next();
         getArtifactConTag(artifactCon, processXML);
@@ -417,6 +417,7 @@ public class ProjectServicesImpl implements ProjectServices {
       }
 
       Collection<ArtifactCon> toArtCon = activity.getToArtifactCons();
+      log.debug("Get to artifact connections: {}", activity.getToArtifactCons());
       for (Iterator<ArtifactCon> iterator2 = toArtCon.iterator(); iterator2.hasNext(); ) {
         ArtifactCon artifactCon2 = (ArtifactCon) iterator2.next();
         getArtifactConTag(artifactCon2, processXML);

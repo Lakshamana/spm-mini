@@ -14,4 +14,6 @@ import org.springframework.stereotype.Repository;
 public interface WebAPSEEObjectRepository
     extends GenericRepository<WebAPSEEObject, Long>, WebAPSEEObjectRepositoryQuery {
   WebAPSEEObject findOneByTheReferredOid(@Param("theReferredOid") Long theReferredOid);
+
+  WebAPSEEObject findOneByTheReferredOidAndClassName(Long theReferredOid, String className);
 }

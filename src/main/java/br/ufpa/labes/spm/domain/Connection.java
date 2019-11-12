@@ -30,7 +30,9 @@ public class Connection implements Serializable {
   private String ident;
 
   @ManyToOne
-  @JsonIgnoreProperties(value = { "theConnections" }, allowSetters = true)
+  @JsonIgnoreProperties(
+      value = {"theConnections"},
+      allowSetters = true)
   private ProcessModel theProcessModel;
 
   // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

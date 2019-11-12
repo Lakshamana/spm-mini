@@ -292,16 +292,25 @@ public class EasyModelingServicesImpl implements EasyModelingServices {
     }
 
     WebAPSEEObject object =
-        webAPSEEObjRepository.save(
-            new WebAPSEEObject(nodeData.getReferedObjectId(), nodeData.getNodeType(), null));
-    GraphicCoordinate gc =
-        new GraphicCoordinate()
-            .x(nodeData.getX())
-            .y(nodeData.getY())
-            .theProcess(process.getIdent())
-            .theObjectReference(object);
-    GraphicCoordinate savedGc = coordRepository.save(gc);
-    object.setTheGraphicCoordinate(savedGc);
+        webAPSEEObjRepository.findOneByTheReferredOidAndClassName(
+            nodeData.getReferedObjectId(), nodeData.getNodeType());
+    if (object != null) {
+      GraphicCoordinate updatedCoords =
+          object.getTheGraphicCoordinate().x(nodeData.getX()).y(nodeData.getY());
+      coordRepository.save(updatedCoords);
+    } else {
+      object =
+          webAPSEEObjRepository.save(
+              new WebAPSEEObject(nodeData.getReferedObjectId(), nodeData.getNodeType(), null));
+      GraphicCoordinate gc =
+          new GraphicCoordinate()
+              .x(nodeData.getX())
+              .y(nodeData.getY())
+              .theProcess(process.getIdent())
+              .theObjectReference(object);
+      GraphicCoordinate savedGc = coordRepository.save(gc);
+      object.setTheGraphicCoordinate(savedGc);
+    }
     return webAPSEEObjRepository.save(object);
   }
 
