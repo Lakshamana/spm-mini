@@ -568,7 +568,7 @@ public class ProjectServicesImpl implements ProjectServices {
       for (Iterator<Activity> iterator3 = fromActivities.iterator(); iterator3.hasNext(); ) {
         Activity activity2 = (Activity) iterator3.next();
         XMLCell cell =
-            new XMLCell(XMLCell.ARTIFACTCON, "", artifactCon.getId(), true, activity2, artifact);
+            new XMLCell(XMLCell.CONNECTOR, "", artifactCon.getId(), true, activity2, artifact);
         writeCellToXML(cell, xmlBuilder);
       }
     }
