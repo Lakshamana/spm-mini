@@ -3,7 +3,7 @@ package br.ufpa.labes.spm.web.rest;
 import br.ufpa.labes.spm.domain.ArtifactCon;
 import br.ufpa.labes.spm.repository.ArtifactConRepository;
 import br.ufpa.labes.spm.service.dto.ArtifactConDTO;
-import br.ufpa.labes.spm.service.mapper.ArtifactConMapper;
+import br.ufpa.labes.spm.service.interfaces.ArtifactConServices;
 import br.ufpa.labes.spm.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -35,7 +35,7 @@ public class ArtifactConResource {
 
   private final ArtifactConRepository artifactConRepository;
 
-  @Autowired private ArtifactConMapper artifactConMapper;
+  @Autowired private ArtifactConServices artifactConServices;
 
   public ArtifactConResource(ArtifactConRepository artifactConRepository) {
     this.artifactConRepository = artifactConRepository;
@@ -50,14 +50,13 @@ public class ArtifactConResource {
    * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @PostMapping("/artifact-cons")
-  public ResponseEntity<ArtifactCon> createArtifactCon(@RequestBody ArtifactConDTO artifactConDTO)
+  public ResponseEntity<ArtifactCon> createArtifactCon(@RequestBody ArtifactCon artifactCon)
       throws URISyntaxException {
-    log.debug("REST request to save ArtifactCon : {}", artifactConDTO);
-    if (artifactConDTO.getId() != null) {
+    log.debug("REST request to save ArtifactCon : {}", artifactCon);
+    if (artifactCon.getId() != null) {
       throw new BadRequestAlertException(
           "A new artifactCon cannot already have an ID", ENTITY_NAME, "idexists");
     }
-    ArtifactCon artifactCon = artifactConMapper.artifactConDTOToArtifactCon(artifactConDTO);
     ArtifactCon result = artifactConRepository.save(artifactCon);
     return ResponseEntity.created(new URI("/api/artifact-cons/" + result.getId()))
         .headers(
@@ -76,12 +75,13 @@ public class ArtifactConResource {
    * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @PutMapping("/artifact-cons")
-  public ResponseEntity<ArtifactCon> updateArtifactCon(@RequestBody ArtifactCon artifactCon)
+  public ResponseEntity<ArtifactCon> updateArtifactCon(@RequestBody ArtifactConDTO artifactConDTO)
       throws URISyntaxException {
-    log.debug("REST request to update ArtifactCon : {}", artifactCon);
-    if (artifactCon.getId() == null) {
+    log.debug("REST request to update ArtifactCon : {}", artifactConDTO);
+    if (artifactConDTO.getId() == null) {
       throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
     }
+    ArtifactCon artifactCon = artifactConServices.updateArtifactCon(artifactConDTO);
     ArtifactCon result = artifactConRepository.save(artifactCon);
     return ResponseEntity.ok()
         .headers(

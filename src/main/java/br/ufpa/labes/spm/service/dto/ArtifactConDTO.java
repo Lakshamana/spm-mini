@@ -13,7 +13,7 @@ import br.ufpa.labes.spm.domain.ProcessModel;
 /** ArtifactConDTO */
 public class ArtifactConDTO {
 
-  @NotNull private Long id;
+  private Long id;
 
   @NotNull private String ident;
 

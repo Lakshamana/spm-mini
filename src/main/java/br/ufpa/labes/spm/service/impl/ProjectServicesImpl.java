@@ -416,12 +416,12 @@ public class ProjectServicesImpl implements ProjectServices {
         getSimpleConTag(simpleCon, processXML);
       }
 
-      Collection<ArtifactCon> toArtCon = activity.getToArtifactCons();
-      log.debug("Get to artifact connections: {}", activity.getToArtifactCons());
-      for (Iterator<ArtifactCon> iterator2 = toArtCon.iterator(); iterator2.hasNext(); ) {
-        ArtifactCon artifactCon2 = (ArtifactCon) iterator2.next();
-        getArtifactConTag(artifactCon2, processXML);
-      }
+      // Collection<ArtifactCon> toArtCon = activity.getToArtifactCons();
+      // log.debug("Get to artifact connections: {}", activity.getToArtifactCons());
+      // for (Iterator<ArtifactCon> iterator2 = toArtCon.iterator(); iterator2.hasNext(); ) {
+      //   ArtifactCon artifactCon2 = (ArtifactCon) iterator2.next();
+      //   getArtifactConTag(artifactCon2, processXML);
+      // }
 
       // Collection<BranchCon> toBranch = activity.getToBranchCons();
       // for (Iterator<BranchCon> iterator2 = toBranch.iterator(); iterator2.hasNext(); ) {
@@ -552,10 +552,11 @@ public class ProjectServicesImpl implements ProjectServices {
 
   private void getArtifactConTag(ArtifactCon artifactCon, StringBuilder xmlBuilder)
       throws RepositoryQueryException {
-    Artifact artifact = artifactCon.getTheArtifact();
-    log.debug("Artifact: {}", artifact);
+    // Artifact artifact = artifactCon.getTheArtifact();
+    // log.debug("Artifact: {}", artifact);
+    String initialId = String.valueOf(artifactCon.getId()) + "to";
     XMLCell artifactCell =
-        new XMLCell(XMLCell.ARTIFACT, artifact.getIdent(), artifact.getId(), false);
+        new XMLCell(XMLCell.ARTIFACTCON, artifactCon.getIdent(), artifactCon.getId(), false);
     writeCellToXML(artifactCell, xmlBuilder);
     // ArtifactType artType = artifactCon.getTheArtifactType();
     // if(artType!=null)
@@ -568,7 +569,8 @@ public class ProjectServicesImpl implements ProjectServices {
       for (Iterator<Activity> iterator3 = fromActivities.iterator(); iterator3.hasNext(); ) {
         Activity activity2 = (Activity) iterator3.next();
         XMLCell cell =
-            new XMLCell(XMLCell.CONNECTOR, "", artifactCon.getId(), true, activity2, artifact);
+            new XMLCell(
+                XMLCell.CONNECTOR, "", initialId + activity2.getId(), true, activity2, artifactCon);
         writeCellToXML(cell, xmlBuilder);
       }
     }
@@ -579,7 +581,8 @@ public class ProjectServicesImpl implements ProjectServices {
       for (Iterator<Activity> iterator3 = toActivities.iterator(); iterator3.hasNext(); ) {
         Activity activity2 = (Activity) iterator3.next();
         XMLCell cell =
-            new XMLCell(XMLCell.ARTIFACTCON, "", artifactCon.getId(), true, activity2, artifact);
+            new XMLCell(
+                XMLCell.CONNECTOR, "", initialId + activity2.getId(), true, artifactCon, activity2);
         writeCellToXML(cell, xmlBuilder);
       }
     }
