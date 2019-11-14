@@ -2,12 +2,15 @@ package br.ufpa.labes.spm.web.rest;
 
 import br.ufpa.labes.spm.domain.JoinCon;
 import br.ufpa.labes.spm.repository.JoinConRepository;
+import br.ufpa.labes.spm.service.dto.JoinConDTO;
+import br.ufpa.labes.spm.service.interfaces.JoinConServices;
 import br.ufpa.labes.spm.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +32,8 @@ public class JoinConResource {
 
   @Value("${jhipster.clientApp.name}")
   private String applicationName;
+
+  @Autowired private JoinConServices joinConServices;
 
   private final JoinConRepository joinConRepository;
 
@@ -70,18 +75,18 @@ public class JoinConResource {
    * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @PutMapping("/join-cons")
-  public ResponseEntity<JoinCon> updateJoinCon(@RequestBody JoinCon joinCon)
+  public ResponseEntity<JoinCon> updateJoinCon(@RequestBody JoinConDTO joinConDTO)
       throws URISyntaxException {
-    log.debug("REST request to update JoinCon : {}", joinCon);
-    if (joinCon.getId() == null) {
+    log.debug("REST request to update JoinCon : {}", joinConDTO);
+    if (joinConDTO.getId() == null) {
       throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
     }
-    JoinCon result = joinConRepository.save(joinCon);
+    JoinCon join = joinConServices.updateJoinCon(joinConDTO);
     return ResponseEntity.ok()
         .headers(
             HeaderUtil.createEntityUpdateAlert(
-                applicationName, true, ENTITY_NAME, joinCon.getId().toString()))
-        .body(result);
+                applicationName, true, ENTITY_NAME, join.getId().toString()))
+        .body(join);
   }
 
   /**

@@ -69,6 +69,7 @@ import br.ufpa.labes.spm.domain.WorkGroup;
 import br.ufpa.labes.spm.domain.Artifact;
 import br.ufpa.labes.spm.domain.ArtifactCon;
 import br.ufpa.labes.spm.domain.BranchANDCon;
+import br.ufpa.labes.spm.domain.BranchCon;
 import br.ufpa.labes.spm.domain.BranchConCond;
 import br.ufpa.labes.spm.domain.Connection;
 import br.ufpa.labes.spm.domain.Dependency;
@@ -400,26 +401,28 @@ public class ProjectServicesImpl implements ProjectServices {
       if (activity == null) break;
 
       Collection<ArtifactCon> fromArtCon = activity.getFromArtifactCons();
-      log.debug("Get from artifact connections: {}", activity.getFromArtifactCons());
+      log.debug("Get from artifact connections: {}", fromArtCon);
       for (Iterator<ArtifactCon> iterator2 = fromArtCon.iterator(); iterator2.hasNext(); ) {
         ArtifactCon artifactCon = (ArtifactCon) iterator2.next();
         getArtifactConTag(artifactCon, cells);
       }
 
       Collection<BranchANDCon> fromBranch = activity.getFromBranchANDCons();
+      log.debug("Get from branchANDs: {}", fromBranch);
       for (Iterator<BranchANDCon> iterator2 = fromBranch.iterator(); iterator2.hasNext(); ) {
         BranchANDCon branchAND = (BranchANDCon) iterator2.next();
         getBranchTag(branchAND, cells);
       }
 
       Collection<JoinCon> fromJoin = activity.getFromJoinCons();
+      log.debug("Get from joins: {}", fromJoin);
       for (Iterator<JoinCon> iterator2 = fromJoin.iterator(); iterator2.hasNext(); ) {
         JoinCon join = (JoinCon) iterator2.next();
         getJoinTag(join, cells);
       }
 
       Collection<SimpleCon> fromSimpleCon = activity.getFromSimpleCons();
-      log.debug("Get simple connections: {}", activity.getFromSimpleCons());
+      log.debug("Get simple connections: {}", fromSimpleCon);
       for (Iterator<SimpleCon> iterator2 = fromSimpleCon.iterator(); iterator2.hasNext(); ) {
         SimpleCon simpleCon = (SimpleCon) iterator2.next();
         getSimpleConTag(simpleCon, cells);
@@ -432,28 +435,23 @@ public class ProjectServicesImpl implements ProjectServices {
       //   getArtifactConTag(artifactCon2, cells);
       // }
 
-      // Collection<BranchCon> toBranch = activity.getToBranchCons();
-      // for (Iterator<BranchCon> iterator2 = toBranch.iterator(); iterator2.hasNext(); ) {
-      //   BranchCon branch = (BranchCon) iterator2.next();
-      //   XMLCell node = new XMLCell(XMLCell.BRANCHCON, "", branch.getId(), true);
-      //   cells.add(node);
-      // }
+      Collection<BranchCon> toBranch = activity.getToBranchCons();
+      for (Iterator<BranchCon> iterator2 = toBranch.iterator(); iterator2.hasNext(); ) {
+        BranchCon branch = (BranchCon) iterator2.next();
+        getBranchTag((BranchANDCon) branch, cells);
+      }
 
-      // Collection<JoinCon> toJoin = activity.getToJoinCons();
-      // for (Iterator<JoinCon> iterator2 = toJoin.iterator(); iterator2.hasNext(); ) {
-      //   JoinCon join = (JoinCon) iterator2.next();
-      //   XMLCell node = new XMLCell(XMLCell.JOINCON, "", join.getId(), true);
-      //   cells.add(node);
-      // }
+      Collection<JoinCon> toJoin = activity.getToJoinCons();
+      for (Iterator<JoinCon> iterator2 = toJoin.iterator(); iterator2.hasNext(); ) {
+        JoinCon join = (JoinCon) iterator2.next();
+        getJoinTag(join, cells);
+      }
 
       // Collection<SimpleCon> toSimpleCon = activity.getToSimpleCons();
       // for (Iterator<SimpleCon> iterator2 = toSimpleCon.iterator(); iterator2.hasNext(); ) {
       //   SimpleCon simpleCon = (SimpleCon) iterator2.next();
       //   log.debug("falled in to sequence");
-      //   Activity from = simpleCon.getFromActivity();
-      //   Activity to = simpleCon.getToActivity();
-      //   XMLCell node = new XMLCell(XMLCell.SEQUENCE, "", simpleCon.getId(), true, from, to);
-      //   cells.add(node);
+      //   getSimpleConTag(simpleCon, cells);
       // }
     }
     // processXML.append("</CONNECTIONS>\n");
@@ -470,31 +468,33 @@ public class ProjectServicesImpl implements ProjectServices {
   private void getJoinTag(JoinCon joinCon, Set<XMLCell> cells) throws RepositoryQueryException {
     String initialId = String.valueOf(joinCon.getId()) + "to";
     XMLCell toCell = new XMLCell(XMLCell.CONNECTOR, "", null, true, joinCon, null);
-    XMLCell joinCell = new XMLCell(XMLCell.JOINCON, joinCon.getIdent(), joinCon.getId(), false);
+    XMLCell joinCell =
+        new XMLCell(XMLCell.JOINCON, joinCon.getIdent(), joinCon.getId(), "join_or_end_end", false);
     cells.add(joinCell);
     // TO
     Activity toActivity = joinCon.getToActivity();
     if (toActivity != null) {
       toCell.setTargetNode(toActivity);
       toCell.setobjectId(initialId + toActivity.getId());
-      cells.add(toCell);
     } else {
       MultipleCon multCon = joinCon.getToMultipleCon();
       if (multCon != null) {
         toCell.setTargetNode(multCon);
         toCell.setobjectId(initialId + multCon.getId());
-        cells.add(toCell);
       }
     }
+    cells.add(toCell);
 
     // FROM
     Collection<Activity> fromActivities = joinCon.getFromActivities();
+    log.debug("from activities: {}", fromActivities);
     if (fromActivities != null) {
       for (Iterator<Activity> iterator3 = fromActivities.iterator(); iterator3.hasNext(); ) {
         Activity activity2 = (Activity) iterator3.next();
         XMLCell fromCell =
             new XMLCell(
                 XMLCell.CONNECTOR, "", initialId + activity2.getId(), true, activity2, joinCon);
+        log.debug("from activity cell: {}", fromCell);
         cells.add(fromCell);
       }
     }
@@ -515,7 +515,8 @@ public class ProjectServicesImpl implements ProjectServices {
       throws RepositoryQueryException {
     String initialId = String.valueOf(branchCon.getId()) + "to";
     XMLCell branchCell =
-        new XMLCell(XMLCell.BRANCHCON, branchCon.getIdent(), branchCon.getId(), false);
+        new XMLCell(
+            XMLCell.BRANCHCON, branchCon.getIdent(), branchCon.getId(), "branch_or_end_end", false);
     cells.add(branchCell);
     XMLCell fromCell = new XMLCell(XMLCell.CONNECTOR, "", null, true, null, branchCon);
 
@@ -524,15 +525,14 @@ public class ProjectServicesImpl implements ProjectServices {
     if (fromActivity != null) {
       fromCell.setTargetNode(fromActivity);
       fromCell.setobjectId(initialId + fromActivity.getId());
-      cells.add(fromCell);
     } else {
       MultipleCon multCon = branchCon.getFromMultipleConnection();
       if (multCon != null) {
         fromCell.setTargetNode(multCon);
         fromCell.setobjectId(initialId + multCon.getId());
-        cells.add(fromCell);
       }
     }
+    cells.add(fromCell);
 
     // TO
     Collection<Activity> toActivities = branchCon.getToActivities();

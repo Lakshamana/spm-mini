@@ -414,6 +414,10 @@
                         </path>
                         <!-- jhipster-needle-maven-add-annotation-processor -->
                     </annotationProcessorPaths>
+                    <compilerArgs>
+                      <arg>-Amapstruct.suppressGeneratorTimestamp=true</arg>
+                      <arg>-Amapstruct.defaultComponentModel=spring</arg>
+                  </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>

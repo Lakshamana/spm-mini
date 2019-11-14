@@ -2,12 +2,15 @@ package br.ufpa.labes.spm.web.rest;
 
 import br.ufpa.labes.spm.domain.BranchANDCon;
 import br.ufpa.labes.spm.repository.BranchANDConRepository;
+import br.ufpa.labes.spm.service.dto.BranchANDConDTO;
+import br.ufpa.labes.spm.service.interfaces.BranchANDConServices;
 import br.ufpa.labes.spm.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,8 @@ public class BranchANDConResource {
 
   private final BranchANDConRepository branchANDConRepository;
 
+  @Autowired BranchANDConServices branchANDConServices;
+
   public BranchANDConResource(BranchANDConRepository branchANDConRepository) {
     this.branchANDConRepository = branchANDConRepository;
   }
@@ -39,21 +44,21 @@ public class BranchANDConResource {
   /**
    * {@code POST /branch-and-cons} : Create a new branchANDCon.
    *
-   * @param branchANDCon the branchANDCon to create.
+   * @param branchANDConDTO the branchANDCon to create.
    * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new
    *     branchANDCon, or with status {@code 400 (Bad Request)} if the branchANDCon has already an
    *     ID.
    * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @PostMapping("/branch-and-cons")
-  public ResponseEntity<BranchANDCon> createBranchANDCon(@RequestBody BranchANDCon branchANDCon)
+  public ResponseEntity<BranchANDCon> createBranchANDCon(@RequestBody BranchANDConDTO branchANDConDTO)
       throws URISyntaxException {
-    log.debug("REST request to save BranchANDCon : {}", branchANDCon);
-    if (branchANDCon.getId() != null) {
+    log.debug("REST request to save BranchANDCon : {}", branchANDConDTO);
+    if (branchANDConDTO.getId() != null) {
       throw new BadRequestAlertException(
           "A new branchANDCon cannot already have an ID", ENTITY_NAME, "idexists");
     }
-    BranchANDCon result = branchANDConRepository.save(branchANDCon);
+    BranchANDCon result = branchANDConServices.updateBranchANDCon(branchANDConDTO);
     return ResponseEntity.created(new URI("/api/branch-and-cons/" + result.getId()))
         .headers(
             HeaderUtil.createEntityCreationAlert(

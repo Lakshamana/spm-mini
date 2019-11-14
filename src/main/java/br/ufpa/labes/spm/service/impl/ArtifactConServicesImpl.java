@@ -14,7 +14,7 @@ import br.ufpa.labes.spm.repository.ActivityRepository;
 import br.ufpa.labes.spm.repository.ArtifactConRepository;
 import br.ufpa.labes.spm.service.dto.ArtifactConDTO;
 import br.ufpa.labes.spm.service.interfaces.ArtifactConServices;
-import br.ufpa.labes.spm.service.mapper.ArtifactConMapper;
+import br.ufpa.labes.spm.util.ServicesUtil;
 
 /** ArtifactConServicesImpl */
 @Service
@@ -24,8 +24,6 @@ public class ArtifactConServicesImpl implements ArtifactConServices {
   @Autowired ActivityRepository activityRepository;
 
   @Autowired ArtifactConRepository artifactConRepository;
-
-  @Autowired ArtifactConMapper mapper;
 
   Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -41,7 +39,7 @@ public class ArtifactConServicesImpl implements ArtifactConServices {
       artifactConDTO.getFromActivities().stream()
           .forEach(
               act -> {
-                Activity from = findActivityById(activities, act.getId());
+                Activity from = ServicesUtil.findActivityById(activities, act.getId());
                 artifactCon.addFromActivity(from);
                 activityRepository.save(from);
               });
@@ -51,16 +49,12 @@ public class ArtifactConServicesImpl implements ArtifactConServices {
       artifactConDTO.getToActivities().stream()
           .forEach(
               act -> {
-                Activity to = findActivityById(activities, act.getId());
+                Activity to = ServicesUtil.findActivityById(activities, act.getId());
                 artifactCon.addToActivity(to);
                 activityRepository.save(to);
               });
     }
     log.debug("OUT ARTIFACTCON: {}", artifactCon);
-    return artifactCon;
-  }
-
-  private Activity findActivityById(List<Activity> lookupList, Long id) {
-    return lookupList.stream().filter(a -> a.getId().equals(id)).findFirst().get();
+    return artifactConRepository.save(artifactCon);
   }
 }

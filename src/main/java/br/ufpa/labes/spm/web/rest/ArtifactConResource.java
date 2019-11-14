@@ -82,12 +82,11 @@ public class ArtifactConResource {
       throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
     }
     ArtifactCon artifactCon = artifactConServices.updateArtifactCon(artifactConDTO);
-    ArtifactCon result = artifactConRepository.save(artifactCon);
     return ResponseEntity.ok()
         .headers(
             HeaderUtil.createEntityUpdateAlert(
                 applicationName, true, ENTITY_NAME, artifactCon.getId().toString()))
-        .body(result);
+        .body(artifactCon);
   }
 
   /**

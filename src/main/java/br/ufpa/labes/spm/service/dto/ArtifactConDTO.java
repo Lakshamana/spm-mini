@@ -22,7 +22,7 @@ public class ArtifactConDTO {
 
   @NotNull private ProcessModel theProcessModel;
 
-  @NotNull private Artifact theArtifact;
+  private Artifact theArtifact;
 
   public ArtifactConDTO() {}
 
