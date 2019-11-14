@@ -560,11 +560,12 @@ public class ProjectServicesImpl implements ProjectServices {
 
   private void getArtifactConTag(ArtifactCon artifactCon, Set<XMLCell> cells)
       throws RepositoryQueryException {
-    // Artifact artifact = artifactCon.getTheArtifact();
+    Artifact artifact = artifactCon.getTheArtifact();
+    String style = artifact != null ? "artifact_full" : "artifact_empty";
     // log.debug("Artifact: {}", artifact);
     String initialId = String.valueOf(artifactCon.getId()) + "to";
     XMLCell artifactCell =
-        new XMLCell(XMLCell.ARTIFACTCON, artifactCon.getIdent(), artifactCon.getId(), false);
+        new XMLCell(XMLCell.ARTIFACTCON, artifactCon.getIdent(), artifactCon.getId(), style, false);
     cells.add(artifactCell);
     // ArtifactType artType = artifactCon.getTheArtifactType();
     // if(artType!=null)
