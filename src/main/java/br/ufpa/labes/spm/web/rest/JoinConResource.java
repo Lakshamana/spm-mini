@@ -81,12 +81,12 @@ public class JoinConResource {
     if (joinConDTO.getId() == null) {
       throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
     }
-    JoinCon join = joinConServices.updateJoinCon(joinConDTO);
+    JoinCon result = joinConServices.updateJoinCon(joinConDTO);
     return ResponseEntity.ok()
         .headers(
             HeaderUtil.createEntityUpdateAlert(
-                applicationName, true, ENTITY_NAME, join.getId().toString()))
-        .body(join);
+                applicationName, true, ENTITY_NAME, result.getId().toString()))
+        .body(result);
   }
 
   /**
