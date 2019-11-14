@@ -157,29 +157,47 @@ public class XMLCell {
     return this;
   }
 
-
   @Override
   public String toString() {
-    return "{" +
-      " nodeType='" + getNodeType() + "'" +
-      ", label='" + getLabel() + "'" +
-      ", objectId='" + getobjectId() + "'" +
-      ", isEdge='" + isIsEdge() + "'" +
-      ", style='" + getStyle() + "'" +
-      ", sourceNode='" + getSourceNode() + "'" +
-      ", targetNode='" + getTargetNode() + "'" +
-      "}";
+    return "{"
+        + " nodeType='"
+        + getNodeType()
+        + "'"
+        + ", label='"
+        + getLabel()
+        + "'"
+        + ", objectId='"
+        + getobjectId()
+        + "'"
+        + ", isEdge='"
+        + isIsEdge()
+        + "'"
+        + ", style='"
+        + getStyle()
+        + "'"
+        + ", sourceNode='"
+        + getSourceNode()
+        + "'"
+        + ", targetNode='"
+        + getTargetNode()
+        + "'"
+        + "}";
   }
 
   @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof XMLCell)) {
-            return false;
-        }
-        XMLCell xMLCell = (XMLCell) o;
-        return Objects.equals(nodeType, xMLCell.nodeType) && Objects.equals(label, xMLCell.label) && Objects.equals(objectId, xMLCell.objectId) && isEdge == xMLCell.isEdge && Objects.equals(style, xMLCell.style) && Objects.equals(sourceNode, xMLCell.sourceNode) && Objects.equals(targetNode, xMLCell.targetNode);
+  public boolean equals(Object o) {
+    if (o == this) return true;
+    if (!(o instanceof XMLCell)) {
+      return false;
+    }
+    XMLCell xMLCell = (XMLCell) o;
+    return Objects.equals(nodeType, xMLCell.nodeType)
+        && Objects.equals(label, xMLCell.label)
+        && Objects.equals(objectId, xMLCell.objectId)
+        && isEdge == xMLCell.isEdge
+        && Objects.equals(style, xMLCell.style)
+        && Objects.equals(sourceNode, xMLCell.sourceNode)
+        && Objects.equals(targetNode, xMLCell.targetNode);
   }
 
   @Override
