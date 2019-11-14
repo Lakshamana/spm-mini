@@ -44,7 +44,7 @@ public class BranchANDConResource {
   /**
    * {@code POST /branch-and-cons} : Create a new branchANDCon.
    *
-   * @param branchANDConDTO the branchANDCon to create.
+   * @param branchANDCon the branchANDCon to create.
    * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new
    *     branchANDCon, or with status {@code 400 (Bad Request)} if the branchANDCon has already an
    *     ID.
@@ -52,13 +52,13 @@ public class BranchANDConResource {
    */
   @PostMapping("/branch-and-cons")
   public ResponseEntity<BranchANDCon> createBranchANDCon(
-      @RequestBody BranchANDConDTO branchANDConDTO) throws URISyntaxException {
-    log.debug("REST request to save BranchANDCon : {}", branchANDConDTO);
-    if (branchANDConDTO.getId() != null) {
+      @RequestBody BranchANDCon branchANDCon) throws URISyntaxException {
+    log.debug("REST request to save BranchANDCon : {}", branchANDCon);
+    if (branchANDCon.getId() != null) {
       throw new BadRequestAlertException(
           "A new branchANDCon cannot already have an ID", ENTITY_NAME, "idexists");
     }
-    BranchANDCon result = branchANDConServices.updateBranchANDCon(branchANDConDTO);
+    BranchANDCon result = branchANDConRepository.save(branchANDCon);
     return ResponseEntity.created(new URI("/api/branch-and-cons/" + result.getId()))
         .headers(
             HeaderUtil.createEntityCreationAlert(
@@ -69,24 +69,24 @@ public class BranchANDConResource {
   /**
    * {@code PUT /branch-and-cons} : Updates an existing branchANDCon.
    *
-   * @param branchANDCon the branchANDCon to update.
+   * @param branchANDConDTO the branchANDCon to update.
    * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated
    *     branchANDCon, or with status {@code 400 (Bad Request)} if the branchANDCon is not valid, or
    *     with status {@code 500 (Internal Server Error)} if the branchANDCon couldn't be updated.
    * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @PutMapping("/branch-and-cons")
-  public ResponseEntity<BranchANDCon> updateBranchANDCon(@RequestBody BranchANDCon branchANDCon)
+  public ResponseEntity<BranchANDCon> updateBranchANDCon(@RequestBody BranchANDConDTO branchANDConDTO)
       throws URISyntaxException {
-    log.debug("REST request to update BranchANDCon : {}", branchANDCon);
-    if (branchANDCon.getId() == null) {
+    log.debug("REST request to update BranchANDCon : {}", branchANDConDTO);
+    if (branchANDConDTO.getId() == null) {
       throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
     }
-    BranchANDCon result = branchANDConRepository.save(branchANDCon);
+    BranchANDCon result = branchANDConServices.updateBranchANDCon(branchANDConDTO);
     return ResponseEntity.ok()
         .headers(
             HeaderUtil.createEntityUpdateAlert(
-                applicationName, true, ENTITY_NAME, branchANDCon.getId().toString()))
+                applicationName, true, ENTITY_NAME, branchANDConDTO.getId().toString()))
         .body(result);
   }
 
