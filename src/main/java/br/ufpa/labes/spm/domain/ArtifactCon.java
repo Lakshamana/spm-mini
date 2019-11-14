@@ -37,10 +37,16 @@ public class ArtifactCon extends Connection implements Serializable {
   private Set<MultipleCon> toMultipleCons = new HashSet<>();
 
   @ManyToMany(mappedBy = "fromArtifactCons")
+  @JsonIgnoreProperties(
+      value = {"fromArtifactCons"},
+      allowSetters = true)
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
   private Set<Activity> toActivities = new HashSet<>();
 
   @ManyToMany(mappedBy = "toArtifactCons")
+  @JsonIgnoreProperties(
+      value = {"fromArtifactCons"},
+      allowSetters = true)
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
   private Set<Activity> fromActivities = new HashSet<>();
 

@@ -31,7 +31,15 @@ public class JoinConDTO implements Serializable {
 
   public JoinConDTO() {}
 
-  public JoinConDTO(Long id, String ident, String kindJoin, MultipleCon toMultipleCon, Activity toActivity, Set<MultipleCon> fromMultipleCons, Set<Activity> fromActivities, ProcessModel theProcessModel) {
+  public JoinConDTO(
+      Long id,
+      String ident,
+      String kindJoin,
+      MultipleCon toMultipleCon,
+      Activity toActivity,
+      Set<MultipleCon> fromMultipleCons,
+      Set<Activity> fromActivities,
+      ProcessModel theProcessModel) {
     this.id = id;
     this.ident = ident;
     this.kindJoin = kindJoin;
@@ -147,32 +155,62 @@ public class JoinConDTO implements Serializable {
   }
 
   @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof JoinConDTO)) {
-            return false;
-        }
-        JoinConDTO joinConDTO = (JoinConDTO) o;
-        return Objects.equals(id, joinConDTO.id) && Objects.equals(ident, joinConDTO.ident) && Objects.equals(kindJoin, joinConDTO.kindJoin) && Objects.equals(toMultipleCon, joinConDTO.toMultipleCon) && Objects.equals(toActivity, joinConDTO.toActivity) && Objects.equals(fromMultipleCons, joinConDTO.fromMultipleCons) && Objects.equals(fromActivities, joinConDTO.fromActivities) && Objects.equals(theProcessModel, joinConDTO.theProcessModel);
+  public boolean equals(Object o) {
+    if (o == this) return true;
+    if (!(o instanceof JoinConDTO)) {
+      return false;
+    }
+    JoinConDTO joinConDTO = (JoinConDTO) o;
+    return Objects.equals(id, joinConDTO.id)
+        && Objects.equals(ident, joinConDTO.ident)
+        && Objects.equals(kindJoin, joinConDTO.kindJoin)
+        && Objects.equals(toMultipleCon, joinConDTO.toMultipleCon)
+        && Objects.equals(toActivity, joinConDTO.toActivity)
+        && Objects.equals(fromMultipleCons, joinConDTO.fromMultipleCons)
+        && Objects.equals(fromActivities, joinConDTO.fromActivities)
+        && Objects.equals(theProcessModel, joinConDTO.theProcessModel);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, ident, kindJoin, toMultipleCon, toActivity, fromMultipleCons, fromActivities, theProcessModel);
+    return Objects.hash(
+        id,
+        ident,
+        kindJoin,
+        toMultipleCon,
+        toActivity,
+        fromMultipleCons,
+        fromActivities,
+        theProcessModel);
   }
 
   @Override
   public String toString() {
-    return "{" +
-      " id='" + getId() + "'" +
-      ", ident='" + getIdent() + "'" +
-      ", kindJoin='" + getKindJoin() + "'" +
-      ", toMultipleCon='" + getToMultipleCon() + "'" +
-      ", toActivity='" + getToActivity() + "'" +
-      ", fromMultipleCons='" + getFromMultipleCons() + "'" +
-      ", fromActivities='" + getFromActivities() + "'" +
-      ", theProcessModel='" + getTheProcessModel() + "'" +
-      "}";
+    return "{"
+        + " id='"
+        + getId()
+        + "'"
+        + ", ident='"
+        + getIdent()
+        + "'"
+        + ", kindJoin='"
+        + getKindJoin()
+        + "'"
+        + ", toMultipleCon='"
+        + getToMultipleCon()
+        + "'"
+        + ", toActivity='"
+        + getToActivity()
+        + "'"
+        + ", fromMultipleCons='"
+        + getFromMultipleCons()
+        + "'"
+        + ", fromActivities='"
+        + getFromActivities()
+        + "'"
+        + ", theProcessModel='"
+        + getTheProcessModel()
+        + "'"
+        + "}";
   }
 }

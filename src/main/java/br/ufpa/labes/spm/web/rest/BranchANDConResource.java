@@ -51,8 +51,8 @@ public class BranchANDConResource {
    * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @PostMapping("/branch-and-cons")
-  public ResponseEntity<BranchANDCon> createBranchANDCon(@RequestBody BranchANDConDTO branchANDConDTO)
-      throws URISyntaxException {
+  public ResponseEntity<BranchANDCon> createBranchANDCon(
+      @RequestBody BranchANDConDTO branchANDConDTO) throws URISyntaxException {
     log.debug("REST request to save BranchANDCon : {}", branchANDConDTO);
     if (branchANDConDTO.getId() != null) {
       throw new BadRequestAlertException(

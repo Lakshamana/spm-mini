@@ -25,11 +25,11 @@ public class BranchANDConServicesImpl implements BranchANDConServices {
 
   Logger log = LoggerFactory.getLogger(this.getClass());
 
-  @Autowired BranchANDConRepository branchandConRepository;
+  @Autowired private BranchANDConRepository branchandConRepository;
 
-  @Autowired ActivityRepository activityRepository;
+  @Autowired private ActivityRepository activityRepository;
 
-  @Autowired MultipleConRepository multipleConRepository;
+  @Autowired private MultipleConRepository multipleConRepository;
 
   @Override
   public BranchANDCon updateBranchANDCon(BranchANDConDTO branchandConDTO) {

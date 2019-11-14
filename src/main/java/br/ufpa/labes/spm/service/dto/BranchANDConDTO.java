@@ -22,7 +22,12 @@ public class BranchANDConDTO implements Serializable {
 
   public BranchANDConDTO() {}
 
-  public BranchANDConDTO(Long id, MultipleCon fromMultipleConnection, Activity fromActivity, Set<MultipleCon> toMultipleCons, Set<Activity> toActivities) {
+  public BranchANDConDTO(
+      Long id,
+      MultipleCon fromMultipleConnection,
+      Activity fromActivity,
+      Set<MultipleCon> toMultipleCons,
+      Set<Activity> toActivities) {
     this.id = id;
     this.fromMultipleConnection = fromMultipleConnection;
     this.fromActivity = fromActivity;
@@ -96,14 +101,17 @@ public class BranchANDConDTO implements Serializable {
   }
 
   @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof BranchANDConDTO)) {
-            return false;
-        }
-        BranchANDConDTO branchANDConDTO = (BranchANDConDTO) o;
-        return Objects.equals(id, branchANDConDTO.id) && Objects.equals(fromMultipleConnection, branchANDConDTO.fromMultipleConnection) && Objects.equals(fromActivity, branchANDConDTO.fromActivity) && Objects.equals(toMultipleCons, branchANDConDTO.toMultipleCons) && Objects.equals(toActivities, branchANDConDTO.toActivities);
+  public boolean equals(Object o) {
+    if (o == this) return true;
+    if (!(o instanceof BranchANDConDTO)) {
+      return false;
+    }
+    BranchANDConDTO branchANDConDTO = (BranchANDConDTO) o;
+    return Objects.equals(id, branchANDConDTO.id)
+        && Objects.equals(fromMultipleConnection, branchANDConDTO.fromMultipleConnection)
+        && Objects.equals(fromActivity, branchANDConDTO.fromActivity)
+        && Objects.equals(toMultipleCons, branchANDConDTO.toMultipleCons)
+        && Objects.equals(toActivities, branchANDConDTO.toActivities);
   }
 
   @Override
@@ -113,12 +121,22 @@ public class BranchANDConDTO implements Serializable {
 
   @Override
   public String toString() {
-    return "{" +
-      " id='" + getId() + "'" +
-      ", fromMultipleConnection='" + getFromMultipleConnection() + "'" +
-      ", fromActivity='" + getFromActivity() + "'" +
-      ", toMultipleCons='" + getToMultipleCons() + "'" +
-      ", toActivities='" + getToActivities() + "'" +
-      "}";
+    return "{"
+        + " id='"
+        + getId()
+        + "'"
+        + ", fromMultipleConnection='"
+        + getFromMultipleConnection()
+        + "'"
+        + ", fromActivity='"
+        + getFromActivity()
+        + "'"
+        + ", toMultipleCons='"
+        + getToMultipleCons()
+        + "'"
+        + ", toActivities='"
+        + getToActivities()
+        + "'"
+        + "}";
   }
 }

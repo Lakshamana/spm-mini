@@ -3,6 +3,7 @@ package br.ufpa.labes.spm.domain;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -75,6 +76,7 @@ public class Activity implements Serializable {
 
   @ManyToMany
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+  @JsonIgnore
   @JoinTable(
       name = "activity_from_artifact_con",
       joinColumns = @JoinColumn(name = "activity_id", referencedColumnName = "id"),
@@ -83,6 +85,7 @@ public class Activity implements Serializable {
 
   @ManyToMany
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+  @JsonIgnore
   @JoinTable(
       name = "activity_to_artifact_con",
       joinColumns = @JoinColumn(name = "activity_id", referencedColumnName = "id"),

@@ -221,10 +221,8 @@ public class ProjectServicesImpl implements ProjectServices {
 
     processXML.append(" </root>\n");
     processXML.append("</mxGraphModel>\n");
-
-    String xml = processXML.toString();
-    log.debug(xml);
-    return xml;
+    log.debug("cells: {}", graphCells);
+    return processXML.toString();
   }
 
   private String getVertexObjectId(Object node) throws RepositoryQueryException {

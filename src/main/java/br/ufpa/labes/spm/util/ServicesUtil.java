@@ -10,7 +10,6 @@ import org.joda.time.Minutes;
 import org.joda.time.Seconds;
 
 import br.ufpa.labes.spm.domain.Activity;
-import br.ufpa.labes.spm.domain.BranchANDCon;
 import br.ufpa.labes.spm.domain.MultipleCon;
 
 public class ServicesUtil {
