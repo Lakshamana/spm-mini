@@ -40,6 +40,9 @@ public class JoinConServicesImpl implements JoinConServices {
     List<Activity> activities = activityRepository.findByTheProcessModelId(pmid);
     List<MultipleCon> multipleCons = multipleConRepository.findByTheProcessModelId(pmid);
 
+    joinCon.setToActivity(joinConDTO.getToActivity());
+    joinCon.setToMultipleCon(joinConDTO.getToMultipleCon());
+
     // from activities
     if (joinConDTO.getFromActivities() != null) {
       joinConDTO.getFromActivities().stream()

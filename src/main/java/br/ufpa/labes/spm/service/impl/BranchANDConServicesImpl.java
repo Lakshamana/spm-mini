@@ -39,6 +39,10 @@ public class BranchANDConServicesImpl implements BranchANDConServices {
     Long pmid = branchandCon.getTheProcessModel().getId();
     List<Activity> activities = activityRepository.findByTheProcessModelId(pmid);
     List<MultipleCon> multipleCons = multipleConRepository.findByTheProcessModelId(pmid);
+    log.debug("PROCESS MULTIPLECONS: {}", multipleCons);
+
+    branchandCon.setFromActivity(branchandConDTO.getFromActivity());
+    branchandCon.setFromMultipleConnection(branchandConDTO.getFromMultipleConnection());
 
     // to activities
     if (branchandConDTO.getToActivities() != null) {
@@ -57,8 +61,10 @@ public class BranchANDConServicesImpl implements BranchANDConServices {
           .forEach(
               m -> {
                 MultipleCon to = ServicesUtil.findMultipleConById(multipleCons, m.getId());
-                branchandCon.addToMultipleCon(to);
-                multipleConRepository.save(to);
+                if (to != null) {
+                  branchandCon.addToMultipleCon(to);
+                  multipleConRepository.save(to);
+                }
               });
     }
     log.debug("OUT BRANCHANDCON: {}", branchandCon);

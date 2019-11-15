@@ -158,8 +158,6 @@ public class ProjectServicesImpl implements ProjectServices {
   @Override
   public String getProcessModelXML(String level) {
     Set<XMLCell> graphCells = new HashSet<XMLCell>();
-    log.debug("chamada ao getProcessModelXML");
-    log.debug("Level: " + level);
 
     Process process = null;
     ProcessModel pModel = null;
@@ -174,12 +172,10 @@ public class ProjectServicesImpl implements ProjectServices {
       //			}
 
       process = processRepository.retrieveBySecondaryKey(level);
-      log.debug("PM ID: " + process.getTheProcessModel().getId());
       pModel =
           processModelRepository
               .findOneWithEagerRelationshipsById(process.getTheProcessModel().getId())
               .get();
-      log.debug("PMODEL {}", pModel);
     } else {
       String hql =
           "select o from " + Decomposed.class.getName() + " o where o.ident = '" + level + "'";
@@ -221,20 +217,17 @@ public class ProjectServicesImpl implements ProjectServices {
 
     processXML.append(" </root>\n");
     processXML.append("</mxGraphModel>\n");
-    log.debug("cells: {}", graphCells);
     return processXML.toString();
   }
 
   private String getVertexObjectId(Object node) throws RepositoryQueryException {
+    if (node == null) return "";
     try {
-      log.debug("Enter getVertexObjectId with node {}", node);
-      log.debug("Get ID with type: {}", node.getClass().getSimpleName());
       Field field =
           FieldUtils.getAllFieldsList(node.getClass()).stream()
               .filter(filter -> filter.getName().equals("id"))
               .findFirst()
               .get();
-      log.debug("RESULT FROM FIELD {}", field);
       field.setAccessible(true);
       return node.getClass().getSimpleName() + "#" + field.get(node);
     } catch (IllegalAccessException e) {
@@ -264,8 +257,7 @@ public class ProjectServicesImpl implements ProjectServices {
       processXML.append("   </mxCell>\n");
       processXML.append(String.format("  </%s>\n", node.getNodeType()));
     } else {
-      // log.debug("SOURCE NODE: {}", node.getSourceNode());
-      // log.debug("TARGET NODE: {}", node.getTargetNode());
+      log.debug("CELL: {}", node);
       String sourceId = getVertexObjectId(node.getSourceNode());
       String targetId = getVertexObjectId(node.getTargetNode());
       String nodeId = sourceId + "to" + targetId;
@@ -287,15 +279,12 @@ public class ProjectServicesImpl implements ProjectServices {
   private void loadObjectsFromProcessModel(ProcessModel pModel, Set<XMLCell> cells)
       throws RepositoryQueryException {
 
-    log.debug("Enter loadObjectsFromProcessModel");
     // Load activities
     Collection<Activity> activities = pModel.getTheActivities();
     Collection<Normal> theNormal = new ArrayList<Normal>();
     for (Iterator<Activity> iterator = activities.iterator(); iterator.hasNext(); ) {
       Activity activity = (Activity) iterator.next();
-      log.debug("Activity: {}", activity);
       if (activity instanceof Normal) {
-        log.debug("falled in normal");
         Normal normal = (Normal) activity;
         theNormal.add(normal);
         XMLCell node = new XMLCell(XMLCell.NORMAL, normal.getIdent(), normal.getId(), false);
@@ -307,7 +296,6 @@ public class ProjectServicesImpl implements ProjectServices {
         // normal.getName()
         //   // + "\" TYPE=\"" + actTypeElem + "\" STATE=\"" + state + "\">\n");
       } else if (activity instanceof Decomposed) {
-        log.debug("falled in decomposed");
         XMLCell node =
             new XMLCell(XMLCell.DECOMPOSED, activity.getIdent(), activity.getId(), false);
         cells.add(node);
@@ -318,7 +306,7 @@ public class ProjectServicesImpl implements ProjectServices {
     for (Iterator<Normal> iterator = theNormal.iterator(); iterator.hasNext(); ) {
       Normal normal = (Normal) iterator.next();
       Collection<RequiredPeople> people = normal.getTheRequiredPeople();
-      log.debug("Fetching normal required people: {}", people);
+      log.debug("NORMAL REQUIRED PEOPLE: {}", people);
       for (Iterator<RequiredPeople> iterator2 = people.iterator(); iterator2.hasNext(); ) {
         RequiredPeople requiredPeople = (RequiredPeople) iterator2.next();
         if (requiredPeople instanceof ReqAgent) {
@@ -392,42 +380,36 @@ public class ProjectServicesImpl implements ProjectServices {
 
     // Load Connections
     // processXML.append("<CONNECTIONS>\n");
-    log.debug("Get connections");
     for (Iterator<Activity> iterator = activities.iterator(); iterator.hasNext(); ) {
       Long id = (Long) iterator.next().getId();
       Activity activity = activityRepository.findOneWithEagerRelationships(id).get();
       if (activity == null) break;
 
       Collection<ArtifactCon> fromArtCon = activity.getFromArtifactCons();
-      log.debug("Get from artifact connections: {}", fromArtCon);
       for (Iterator<ArtifactCon> iterator2 = fromArtCon.iterator(); iterator2.hasNext(); ) {
         ArtifactCon artifactCon = (ArtifactCon) iterator2.next();
         getArtifactConTag(artifactCon, cells);
       }
 
       Collection<BranchANDCon> fromBranch = activity.getFromBranchANDCons();
-      log.debug("Get from branchANDs: {}", fromBranch);
       for (Iterator<BranchANDCon> iterator2 = fromBranch.iterator(); iterator2.hasNext(); ) {
         BranchANDCon branchAND = (BranchANDCon) iterator2.next();
         getBranchTag(branchAND, cells);
       }
 
       Collection<JoinCon> fromJoin = activity.getFromJoinCons();
-      log.debug("Get from joins: {}", fromJoin);
       for (Iterator<JoinCon> iterator2 = fromJoin.iterator(); iterator2.hasNext(); ) {
         JoinCon join = (JoinCon) iterator2.next();
         getJoinTag(join, cells);
       }
 
       Collection<SimpleCon> fromSimpleCon = activity.getFromSimpleCons();
-      log.debug("Get simple connections: {}", fromSimpleCon);
       for (Iterator<SimpleCon> iterator2 = fromSimpleCon.iterator(); iterator2.hasNext(); ) {
         SimpleCon simpleCon = (SimpleCon) iterator2.next();
         getSimpleConTag(simpleCon, cells);
       }
 
       // Collection<ArtifactCon> toArtCon = activity.getToArtifactCons();
-      // log.debug("Get to artifact connections: {}", activity.getToArtifactCons());
       // for (Iterator<ArtifactCon> iterator2 = toArtCon.iterator(); iterator2.hasNext(); ) {
       //   ArtifactCon artifactCon2 = (ArtifactCon) iterator2.next();
       //   getArtifactConTag(artifactCon2, cells);
@@ -448,7 +430,6 @@ public class ProjectServicesImpl implements ProjectServices {
       // Collection<SimpleCon> toSimpleCon = activity.getToSimpleCons();
       // for (Iterator<SimpleCon> iterator2 = toSimpleCon.iterator(); iterator2.hasNext(); ) {
       //   SimpleCon simpleCon = (SimpleCon) iterator2.next();
-      //   log.debug("falled in to sequence");
       //   getSimpleConTag(simpleCon, cells);
       // }
     }
@@ -474,25 +455,24 @@ public class ProjectServicesImpl implements ProjectServices {
     if (toActivity != null) {
       toCell.setTargetNode(toActivity);
       toCell.setobjectId(initialId + toActivity.getId());
+      cells.add(toCell);
     } else {
       MultipleCon multCon = joinCon.getToMultipleCon();
       if (multCon != null) {
         toCell.setTargetNode(multCon);
         toCell.setobjectId(initialId + multCon.getId());
+        cells.add(toCell);
       }
     }
-    cells.add(toCell);
 
     // FROM
     Collection<Activity> fromActivities = joinCon.getFromActivities();
-    log.debug("from activities: {}", fromActivities);
     if (fromActivities != null) {
       for (Iterator<Activity> iterator3 = fromActivities.iterator(); iterator3.hasNext(); ) {
         Activity activity2 = (Activity) iterator3.next();
         XMLCell fromCell =
             new XMLCell(
                 XMLCell.CONNECTOR, "", initialId + activity2.getId(), true, activity2, joinCon);
-        log.debug("from activity cell: {}", fromCell);
         cells.add(fromCell);
       }
     }
@@ -523,14 +503,15 @@ public class ProjectServicesImpl implements ProjectServices {
     if (fromActivity != null) {
       fromCell.setTargetNode(fromActivity);
       fromCell.setobjectId(initialId + fromActivity.getId());
+      cells.add(fromCell);
     } else {
       MultipleCon multCon = branchCon.getFromMultipleConnection();
       if (multCon != null) {
         fromCell.setTargetNode(multCon);
         fromCell.setobjectId(initialId + multCon.getId());
+        cells.add(fromCell);
       }
     }
-    cells.add(fromCell);
 
     // TO
     Collection<Activity> toActivities = branchCon.getToActivities();
@@ -560,7 +541,6 @@ public class ProjectServicesImpl implements ProjectServices {
       throws RepositoryQueryException {
     Artifact artifact = artifactCon.getTheArtifact();
     String style = artifact != null ? "artifact_full" : "artifact_empty";
-    // log.debug("Artifact: {}", artifact);
     String initialId = String.valueOf(artifactCon.getId()) + "to";
     XMLCell artifactCell =
         new XMLCell(XMLCell.ARTIFACTCON, artifactCon.getIdent(), artifactCon.getId(), style, false);

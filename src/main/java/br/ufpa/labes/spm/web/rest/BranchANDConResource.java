@@ -51,8 +51,8 @@ public class BranchANDConResource {
    * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @PostMapping("/branch-and-cons")
-  public ResponseEntity<BranchANDCon> createBranchANDCon(
-      @RequestBody BranchANDCon branchANDCon) throws URISyntaxException {
+  public ResponseEntity<BranchANDCon> createBranchANDCon(@RequestBody BranchANDCon branchANDCon)
+      throws URISyntaxException {
     log.debug("REST request to save BranchANDCon : {}", branchANDCon);
     if (branchANDCon.getId() != null) {
       throw new BadRequestAlertException(
@@ -76,8 +76,8 @@ public class BranchANDConResource {
    * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @PutMapping("/branch-and-cons")
-  public ResponseEntity<BranchANDCon> updateBranchANDCon(@RequestBody BranchANDConDTO branchANDConDTO)
-      throws URISyntaxException {
+  public ResponseEntity<BranchANDCon> updateBranchANDCon(
+      @RequestBody BranchANDConDTO branchANDConDTO) throws URISyntaxException {
     log.debug("REST request to update BranchANDCon : {}", branchANDConDTO);
     if (branchANDConDTO.getId() == null) {
       throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

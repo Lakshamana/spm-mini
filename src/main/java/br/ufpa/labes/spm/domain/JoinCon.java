@@ -27,7 +27,7 @@ public class JoinCon extends MultipleCon implements Serializable {
   private String kindJoin;
 
   @ManyToOne
-  @JsonIgnoreProperties("theJoinCons")
+  @JsonIgnoreProperties({"theJoinCons", "toMultipleCons"})
   private MultipleCon toMultipleCon;
 
   @ManyToMany
