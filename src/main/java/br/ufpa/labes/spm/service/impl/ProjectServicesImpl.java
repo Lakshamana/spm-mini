@@ -204,6 +204,8 @@ public class ProjectServicesImpl implements ProjectServices {
       e.printStackTrace();
     }
 
+    graphCells.stream().forEach(cell -> log.debug("cell: {}", cell));
+
     if (graphCells.size() > 0)
       graphCells.stream()
           .forEach(
@@ -491,7 +493,7 @@ public class ProjectServicesImpl implements ProjectServices {
 
   private void getBranchTag(BranchANDCon branchCon, Set<XMLCell> cells)
       throws RepositoryQueryException {
-    String initialId = String.valueOf(branchCon.getId()) + "to";
+    String initialId = "to" + String.valueOf(branchCon.getId());
     XMLCell branchCell =
         new XMLCell(
             XMLCell.BRANCHANDCON,
@@ -506,13 +508,13 @@ public class ProjectServicesImpl implements ProjectServices {
     Activity fromActivity = branchCon.getFromActivity();
     if (fromActivity != null) {
       fromCell.setSourceNode(fromActivity);
-      fromCell.setobjectId(initialId + fromActivity.getId());
+      fromCell.setobjectId(fromActivity.getId() + initialId);
       cells.add(fromCell);
     } else {
       MultipleCon multCon = branchCon.getFromMultipleConnection();
       if (multCon != null) {
         fromCell.setSourceNode(fromActivity);
-        fromCell.setobjectId(initialId + multCon.getId());
+        fromCell.setobjectId(multCon.getId() + initialId);
         cells.add(fromCell);
       }
     }
@@ -524,7 +526,7 @@ public class ProjectServicesImpl implements ProjectServices {
         Activity activity2 = (Activity) iterator3.next();
         XMLCell toCell =
             new XMLCell(
-                XMLCell.CONNECTOR, "", initialId + activity2.getId(), true, branchCon, activity2);
+                XMLCell.CONNECTOR, "", activity2.getId() + initialId, true, branchCon, activity2);
         cells.add(toCell);
       }
     }
@@ -535,7 +537,7 @@ public class ProjectServicesImpl implements ProjectServices {
         MultipleCon multCon2 = (MultipleCon) iterator3.next();
         XMLCell toCell =
             new XMLCell(
-                XMLCell.CONNECTOR, "", initialId + multCon2.getId(), true, branchCon, multCon2);
+                XMLCell.CONNECTOR, "", multCon2.getId() + initialId, true, branchCon, multCon2);
         cells.add(toCell);
       }
     }
