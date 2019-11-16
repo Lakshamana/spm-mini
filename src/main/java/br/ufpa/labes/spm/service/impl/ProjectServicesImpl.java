@@ -494,20 +494,24 @@ public class ProjectServicesImpl implements ProjectServices {
     String initialId = String.valueOf(branchCon.getId()) + "to";
     XMLCell branchCell =
         new XMLCell(
-            XMLCell.BRANCHCON, branchCon.getIdent(), branchCon.getId(), "branch_or_end_end", false);
+            XMLCell.BRANCHANDCON,
+            branchCon.getIdent(),
+            branchCon.getId(),
+            "branch_or_end_end",
+            false);
     cells.add(branchCell);
     XMLCell fromCell = new XMLCell(XMLCell.CONNECTOR, "", null, true, null, branchCon);
 
     // FROM
     Activity fromActivity = branchCon.getFromActivity();
     if (fromActivity != null) {
-      fromCell.setTargetNode(fromActivity);
+      fromCell.setSourceNode(fromActivity);
       fromCell.setobjectId(initialId + fromActivity.getId());
       cells.add(fromCell);
     } else {
       MultipleCon multCon = branchCon.getFromMultipleConnection();
       if (multCon != null) {
-        fromCell.setTargetNode(multCon);
+        fromCell.setSourceNode(fromActivity);
         fromCell.setobjectId(initialId + multCon.getId());
         cells.add(fromCell);
       }

@@ -30,6 +30,6 @@ public interface ActivityRepository extends GenericRepository<Activity, Long> {
   List<Activity> findAllWithEagerRelationships();
 
   @Query(
-      "select activity from Activity activity left join fetch activity.toJoinCons left join fetch activity.fromBranchANDCons left join fetch activity.fromArtifactCons left join fetch activity.toArtifactCons where activity.id =:id")
+      "select activity from Activity activity left join fetch activity.toJoinCons left join fetch activity.fromBranchANDCons left join fetch activity.toBranchCons left join fetch activity.fromArtifactCons left join fetch activity.toArtifactCons where activity.id =:id")
   Optional<Activity> findOneWithEagerRelationships(@Param("id") Long id);
 }
