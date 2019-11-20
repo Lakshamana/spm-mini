@@ -53,7 +53,7 @@ public class SpmKafkaResourceIT {
 
   @BeforeEach
   public void setup() {
-    SpmKafkaResource kafkaResource = new SpmKafkaResource(producer);
+    SpmKafkaResource kafkaResource = new SpmKafkaResource(producer, consumer);
 
     this.restMockMvc = MockMvcBuilders.standaloneSetup(kafkaResource).build();
 

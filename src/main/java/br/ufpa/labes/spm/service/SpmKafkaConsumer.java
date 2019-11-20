@@ -1,6 +1,7 @@
 package br.ufpa.labes.spm.service;
 
 import br.ufpa.labes.spm.config.KafkaProperties;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -48,7 +49,6 @@ public class SpmKafkaConsumer {
                     log.info("Consumed message in {} : {}", TOPIC, record.value());
                   }
                 }
-                kafkaConsumer.commitSync();
               } catch (WakeupException e) {
                 // Ignore exception if closing
                 if (!closed.get()) throw e;
@@ -69,5 +69,9 @@ public class SpmKafkaConsumer {
     log.info("Shutdown Kafka consumer");
     closed.set(true);
     kafkaConsumer.wakeup();
+  }
+
+  public AtomicBoolean getClosed() {
+    return this.closed;
   }
 }
