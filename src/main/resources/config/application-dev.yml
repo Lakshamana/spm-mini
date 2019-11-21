@@ -41,11 +41,11 @@ spring:
       group-id: group_id
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: br.ufpa.labes.spm.util.kafka.XMLCellUpdateDTODeserializer
     producer:
       bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: br.ufpa.labes.spm.util.kafka.XMLCellUpdateDTOSerializer
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:h2:file:./target/h2db/db/spm;DB_CLOSE_DELAY=-1

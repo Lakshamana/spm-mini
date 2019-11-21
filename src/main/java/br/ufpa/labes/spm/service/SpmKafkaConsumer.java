@@ -63,7 +63,7 @@ public class SpmKafkaConsumer {
                           .forEach(
                               entry -> {
                                 try {
-                                  log.debug("Gonna send another message: {}", message);
+                                  log.debug("Gonna send message: {}", message);
                                   entry.getKey().send(message);
                                 } catch (IOException e) {
                                 }

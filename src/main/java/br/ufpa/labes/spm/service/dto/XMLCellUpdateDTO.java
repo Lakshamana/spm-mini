@@ -50,4 +50,9 @@ public class XMLCellUpdateDTO {
     } else if (!xmlCell.equals(other.xmlCell)) return false;
     return true;
   }
+
+  @Override
+  public String toString() {
+    return "XMLCellUpdateDTO [processModelId=" + processModelId + ", xmlCell=" + xmlCell + "]";
+  }
 }
