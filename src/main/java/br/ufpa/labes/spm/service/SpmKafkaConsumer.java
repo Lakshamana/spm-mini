@@ -36,7 +36,7 @@ public class SpmKafkaConsumer {
 
   private KafkaConsumer<String, String> kafkaConsumer;
 
-  private static final Map<String, SseEmitter> events = new ConcurrentHashMap<>();
+  private static final Map<SseEmitter, String> events = new ConcurrentHashMap<>();
 
   public SpmKafkaConsumer(final KafkaProperties kafkaProperties) {
     this.kafkaProperties = kafkaProperties;
@@ -63,12 +63,12 @@ public class SpmKafkaConsumer {
                     if (!events.isEmpty()) {
                       log.debug("passed");
                       events.entrySet().stream()
-                          .filter(entry -> entry.getKey().startsWith(preffix))
+                          .filter(entry -> entry.getValue().startsWith(preffix))
                           .forEach(
                               entry -> {
                                 try {
                                   log.debug("Gonna send another message: {}", message);
-                                  entry.getValue().send(message);
+                                  entry.getKey().send(message);
                                 } catch (IOException e) {
                                 }
                               });
@@ -92,7 +92,7 @@ public class SpmKafkaConsumer {
   }
 
   @Bean
-  public Map<String, SseEmitter> getEvents() {
+  public Map<SseEmitter, String> getEvents() {
     return events;
   }
 

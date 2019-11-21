@@ -6,7 +6,6 @@ import br.ufpa.labes.spm.service.SpmKafkaProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,11 +37,10 @@ public class SpmKafkaResource {
     this.kafkaProducer.send(message);
   }
 
-  @CrossOrigin(origins = "*")
-  @GetMapping(value = "/read/{topic}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  SseEmitter readNextMessages(@PathVariable String topic) {
+  @GetMapping(value = "/subscribe/{topic}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+  SseEmitter subscribe(@PathVariable String topic) {
     SseEmitter sseEmitter = new SseEmitter(TOTAL_MILLIS_A_DAY);
-    kafkaConsumer.getEvents().put(topic, sseEmitter);
+    kafkaConsumer.getEvents().put(sseEmitter, topic);
     return sseEmitter;
   }
 }
