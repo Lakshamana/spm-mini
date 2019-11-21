@@ -8,10 +8,17 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.errors.WakeupException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
@@ -25,9 +32,13 @@ public class SpmKafkaConsumer {
 
   private final KafkaProperties kafkaProperties;
 
+  @Autowired private ApplicationEventPublisher publisher;
+
   private KafkaConsumer<String, String> kafkaConsumer;
 
-  public SpmKafkaConsumer(KafkaProperties kafkaProperties) {
+  private static final Map<String, SseEmitter> events = new ConcurrentHashMap<>();
+
+  public SpmKafkaConsumer(final KafkaProperties kafkaProperties) {
     this.kafkaProperties = kafkaProperties;
   }
 
@@ -36,23 +47,38 @@ public class SpmKafkaConsumer {
     this.kafkaConsumer = new KafkaConsumer<>(kafkaProperties.getConsumerProps());
     Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
-    Thread consumerThread =
+    final Thread consumerThread =
         new Thread(
             () -> {
               try {
                 kafkaConsumer.subscribe(Collections.singletonList(TOPIC));
                 log.info("Kafka consumer started");
                 while (!closed.get()) {
-                  ConsumerRecords<String, String> records =
-                      kafkaConsumer.poll(Duration.ofSeconds(3));
-                  for (ConsumerRecord<String, String> record : records) {
-                    log.info("Consumed message in {} : {}", TOPIC, record.value());
+                  final ConsumerRecords<String, String> records =
+                      kafkaConsumer.poll(Duration.ofSeconds(1));
+                  for (final ConsumerRecord<String, String> record : records) {
+                    final String message = record.value();
+                    log.info("Consumed message in {} : {}", TOPIC, message);
+                    final String preffix = message.split("\\.")[0];
+                    if (!events.isEmpty()) {
+                      log.debug("passed");
+                      events.entrySet().stream()
+                          .filter(entry -> entry.getKey().startsWith(preffix))
+                          .forEach(
+                              entry -> {
+                                try {
+                                  log.debug("Gonna send another message: {}", message);
+                                  entry.getValue().send(message);
+                                } catch (IOException e) {
+                                }
+                              });
+                    }
                   }
                 }
-              } catch (WakeupException e) {
+              } catch (final WakeupException e) {
                 // Ignore exception if closing
                 if (!closed.get()) throw e;
-              } catch (Exception e) {
+              } catch (final Exception e) {
                 log.error(e.getMessage(), e);
               } finally {
                 kafkaConsumer.close();
@@ -63,6 +89,11 @@ public class SpmKafkaConsumer {
 
   public KafkaConsumer<String, String> getKafkaConsumer() {
     return kafkaConsumer;
+  }
+
+  @Bean
+  public Map<String, SseEmitter> getEvents() {
+    return events;
   }
 
   public void shutdown() {

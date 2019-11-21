@@ -2,9 +2,9 @@ package br.ufpa.labes.spm;
 
 import br.ufpa.labes.spm.config.ApplicationProperties;
 import br.ufpa.labes.spm.config.DefaultProfileUtil;
-
 import br.ufpa.labes.spm.service.SpmKafkaConsumer;
 import br.ufpa.labes.spm.service.SpmKafkaProducer;
+
 import org.springframework.context.ConfigurableApplicationContext;
 import io.github.jhipster.config.JHipsterConstants;
 

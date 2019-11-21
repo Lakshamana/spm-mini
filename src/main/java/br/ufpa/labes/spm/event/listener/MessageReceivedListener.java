@@ -7,9 +7,7 @@ import org.springframework.stereotype.Component;
 
 import br.ufpa.labes.spm.event.MessageReceivedEvent;
 
-/**
- * MessageReceiveListener
- */
+/** MessageReceiveListener */
 @Component
 public class MessageReceivedListener implements ApplicationListener<MessageReceivedEvent> {
 
@@ -18,6 +16,6 @@ public class MessageReceivedListener implements ApplicationListener<MessageRecei
   @Override
   public void onApplicationEvent(MessageReceivedEvent event) {
     log.debug("Received message from event: {}", event.getSource());
+    log.debug("Flux: {}", event.getFlux());
   }
-
 }
