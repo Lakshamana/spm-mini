@@ -1,6 +1,7 @@
 package br.ufpa.labes.spm.service;
 
 import br.ufpa.labes.spm.config.KafkaProperties;
+import br.ufpa.labes.spm.service.dto.XMLCellUpdateDTO;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -8,8 +9,6 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.errors.WakeupException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -32,11 +31,9 @@ public class SpmKafkaConsumer {
 
   private final KafkaProperties kafkaProperties;
 
-  @Autowired private ApplicationEventPublisher publisher;
+  private KafkaConsumer<String, XMLCellUpdateDTO> kafkaConsumer;
 
-  private KafkaConsumer<String, String> kafkaConsumer;
-
-  private static final Map<SseEmitter, String> events = new ConcurrentHashMap<>();
+  private static final Map<SseEmitter, Long> events = new ConcurrentHashMap<>();
 
   public SpmKafkaConsumer(final KafkaProperties kafkaProperties) {
     this.kafkaProperties = kafkaProperties;
@@ -54,16 +51,15 @@ public class SpmKafkaConsumer {
                 kafkaConsumer.subscribe(Collections.singletonList(TOPIC));
                 log.info("Kafka consumer started");
                 while (!closed.get()) {
-                  final ConsumerRecords<String, String> records =
+                  final ConsumerRecords<String, XMLCellUpdateDTO> records =
                       kafkaConsumer.poll(Duration.ofSeconds(1));
-                  for (final ConsumerRecord<String, String> record : records) {
-                    final String message = record.value();
+                  for (final ConsumerRecord<String, XMLCellUpdateDTO> record : records) {
+                    final XMLCellUpdateDTO message = record.value();
                     log.info("Consumed message in {} : {}", TOPIC, message);
-                    final String preffix = message.split("\\.")[0];
                     if (!events.isEmpty()) {
                       log.debug("passed");
                       events.entrySet().stream()
-                          .filter(entry -> entry.getValue().startsWith(preffix))
+                          .filter(entry -> entry.getValue().equals(message.getProcessModelId()))
                           .forEach(
                               entry -> {
                                 try {
@@ -87,12 +83,12 @@ public class SpmKafkaConsumer {
     consumerThread.start();
   }
 
-  public KafkaConsumer<String, String> getKafkaConsumer() {
+  public KafkaConsumer<String, XMLCellUpdateDTO> getKafkaConsumer() {
     return kafkaConsumer;
   }
 
   @Bean
-  public Map<SseEmitter, String> getEvents() {
+  public Map<SseEmitter, Long> getEvents() {
     return events;
   }
 

@@ -1,6 +1,8 @@
 package br.ufpa.labes.spm.service;
 
 import br.ufpa.labes.spm.config.KafkaProperties;
+import br.ufpa.labes.spm.service.dto.XMLCellUpdateDTO;
+
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
@@ -16,7 +18,7 @@ public class SpmKafkaProducer {
 
   private KafkaProperties kafkaProperties;
 
-  private KafkaProducer<String, String> kafkaProducer;
+  private KafkaProducer<String, XMLCellUpdateDTO> kafkaProducer;
 
   public SpmKafkaProducer(KafkaProperties kafkaProperties) {
     this.kafkaProperties = kafkaProperties;
@@ -29,8 +31,8 @@ public class SpmKafkaProducer {
     log.info("Kafka producer initialized");
   }
 
-  public void send(String message) {
-    ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC, message);
+  public void send(XMLCellUpdateDTO message) {
+    ProducerRecord<String, XMLCellUpdateDTO> record = new ProducerRecord<>(TOPIC, message);
     try {
       kafkaProducer.send(record);
     } catch (Exception e) {
