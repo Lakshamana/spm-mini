@@ -10,6 +10,7 @@ import org.apache.kafka.common.errors.WakeupException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -33,7 +34,7 @@ public class SpmKafkaConsumer {
 
   private KafkaConsumer<String, XMLCellUpdateDTO> kafkaConsumer;
 
-  private static final Map<SseEmitter, Long> events = new ConcurrentHashMap<>();
+  private static final Map<String, Pair<SseEmitter, Long>> events = new ConcurrentHashMap<>();
 
   public SpmKafkaConsumer(final KafkaProperties kafkaProperties) {
     this.kafkaProperties = kafkaProperties;
@@ -59,12 +60,14 @@ public class SpmKafkaConsumer {
                     if (!events.isEmpty()) {
                       log.debug("passed");
                       events.entrySet().stream()
-                          .filter(entry -> entry.getValue().equals(message.getProcessModelId()))
+                          .filter(
+                              entry ->
+                                  entry.getValue().getSecond().equals(message.getProcessModelId()))
                           .forEach(
                               entry -> {
                                 try {
                                   log.debug("Gonna send message: {}", message);
-                                  entry.getKey().send(message);
+                                  entry.getValue().getFirst().send(message);
                                 } catch (IOException e) {
                                 }
                               });
@@ -88,7 +91,7 @@ public class SpmKafkaConsumer {
   }
 
   @Bean
-  public Map<SseEmitter, Long> getEvents() {
+  public Map<String, Pair<SseEmitter, Long>> getEvents() {
     return events;
   }
 
