@@ -262,7 +262,10 @@ public class ProjectServicesImpl implements ProjectServices {
       log.debug("CELL: {}", node);
       String sourceId = getVertexObjectId(node.getSourceNode());
       String targetId = getVertexObjectId(node.getTargetNode());
-      String nodeId = sourceId + "to" + targetId;
+      String nodeId =
+          typeLow == "connector"
+              ? sourceId + "to" + targetId
+              : node.getNodeType() + "#" + String.valueOf(node.getobjectId());
       processXML.append(
           String.format(
               "  <Connector type=\"%s\" label=\"%s\" id=\"%s\">\n",
@@ -406,6 +409,7 @@ public class ProjectServicesImpl implements ProjectServices {
       }
 
       Collection<SimpleCon> fromSimpleCon = activity.getFromSimpleCons();
+      log.debug("Simple cons: {}", fromSimpleCon);
       for (Iterator<SimpleCon> iterator2 = fromSimpleCon.iterator(); iterator2.hasNext(); ) {
         SimpleCon simpleCon = (SimpleCon) iterator2.next();
         getSimpleConTag(simpleCon, cells);
