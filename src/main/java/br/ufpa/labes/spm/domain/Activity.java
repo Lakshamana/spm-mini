@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -44,14 +42,13 @@ public class Activity implements Serializable {
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
   private Set<Activity> hasVersions = new HashSet<>();
 
-  @OneToMany(mappedBy = "toActivity")
+  @OneToMany(mappedBy = "toActivity", cascade = CascadeType.REMOVE, orphanRemoval = true)
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<SimpleCon> fromSimpleCons = new HashSet<>();
 
-  @OneToMany(mappedBy = "fromActivity")
+  @OneToMany(mappedBy = "fromActivity", cascade = CascadeType.REMOVE, orphanRemoval = true)
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-  @OnDelete(action = OnDeleteAction.CASCADE)
+  // @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<SimpleCon> toSimpleCons = new HashSet<>();
 
   @OneToMany(mappedBy = "toActivity")

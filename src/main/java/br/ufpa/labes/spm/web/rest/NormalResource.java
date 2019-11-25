@@ -117,6 +117,13 @@ public class NormalResource {
   @DeleteMapping("/normals/{id}")
   public ResponseEntity<Void> deleteNormal(@PathVariable Long id) {
     log.debug("REST request to delete Normal : {}", id);
+    // Normal normal = null;
+    // try {
+    //   normal = normalRepository.findById(id).get();
+    // } catch (NoSuchElementException e) {
+    //   throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+    // }
+    // normal.getTheRequiredPeople().stream().forEach(rp -> rp.setTheNormal(null));
     normalRepository.deleteById(id);
     return ResponseEntity.noContent()
         .headers(

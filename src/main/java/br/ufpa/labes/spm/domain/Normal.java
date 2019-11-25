@@ -2,8 +2,6 @@ package br.ufpa.labes.spm.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -43,9 +41,8 @@ public class Normal extends Plain implements Serializable {
   @Column(name = "auto_allocable")
   private Boolean autoAllocable;
 
-  @OneToMany(mappedBy = "theNormal")
+  @OneToMany(mappedBy = "theNormal", cascade = CascadeType.REMOVE, orphanRemoval = true)
   @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<RequiredPeople> theRequiredPeople = new HashSet<>();
 
   @OneToMany(mappedBy = "inInvolvedArtifacts")
