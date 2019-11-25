@@ -47,19 +47,17 @@ public class SpmKafkaResource {
   @GetMapping(value = "/subscribe/{pmId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   SseEmitter subscribe(@PathVariable Long pmId, HttpServletRequest request) {
     SseEmitter sseEmitter = new SseEmitter(TOTAL_MILLIS_PER_DAY);
-    String key = request.getHeader("Authorization");
-    key = key.replace("Bearer ", "");
-    kafkaConsumer.getEvents().put(key, Pair.of(sseEmitter, pmId));
+    String username = request.getHeader("subscriber");
+    kafkaConsumer.getEvents().put(username, Pair.of(sseEmitter, pmId));
     return sseEmitter;
   }
 
   @GetMapping("/unsubscribe")
   @ResponseStatus(HttpStatus.OK)
   void unsubscribe(HttpServletRequest request) {
-    String key = request.getHeader("Authorization");
-    key = key.replace("Bearer ", "");
-    SseEmitter emitter = kafkaConsumer.getEvents().get(key).getFirst();
+    String username = request.getHeader("subscriber");
+    SseEmitter emitter = kafkaConsumer.getEvents().get(username).getFirst();
     emitter.complete();
-    kafkaConsumer.getEvents().remove(key);
+    kafkaConsumer.getEvents().remove(username);
   }
 }

@@ -58,7 +58,6 @@ public class SpmKafkaConsumer {
                     final XMLCellUpdateDTO message = record.value();
                     log.info("Consumed message in {} : {}", TOPIC, message);
                     if (!events.isEmpty()) {
-                      log.debug("passed");
                       events.entrySet().stream()
                           .filter(
                               entry ->
@@ -67,7 +66,7 @@ public class SpmKafkaConsumer {
                           .forEach(
                               entry -> {
                                 try {
-                                  log.debug("Gonna send message: {}", message);
+                                  log.debug("Sending message: {}", message);
                                   entry.getValue().getFirst().send(message);
                                 } catch (IOException e) {
                                 }
