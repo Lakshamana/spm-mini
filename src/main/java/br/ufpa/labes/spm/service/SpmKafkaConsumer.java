@@ -62,7 +62,8 @@ public class SpmKafkaConsumer {
                       events.entrySet().stream()
                           .filter(
                               entry ->
-                                  entry.getValue().getSecond().equals(message.getProcessModelId()))
+                                  entry.getValue().getSecond().equals(message.getProcessModelId()) &&
+                                  !entry.getKey().equals(message.getUsername()))
                           .forEach(
                               entry -> {
                                 try {
@@ -90,6 +91,12 @@ public class SpmKafkaConsumer {
     return kafkaConsumer;
   }
 
+  /**
+   * Returns Map<String, Pair<SseEmitter, Long>>, where
+   * key refers to username and long value in Pair
+   * refers to processModelId
+   * @return {@code} Map<String, Pair<SseEmitter, Long>>
+   */
   @Bean
   public Map<String, Pair<SseEmitter, Long>> getEvents() {
     return events;

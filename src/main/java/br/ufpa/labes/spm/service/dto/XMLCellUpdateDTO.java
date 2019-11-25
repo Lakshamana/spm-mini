@@ -1,5 +1,7 @@
 package br.ufpa.labes.spm.service.dto;
 
+import java.util.Objects;
+
 import javax.validation.constraints.NotNull;
 
 import br.ufpa.labes.spm.beans.editor.XMLCell;
@@ -7,12 +9,22 @@ import br.ufpa.labes.spm.beans.editor.XMLCell;
 /** XMLCellUpdateDTO */
 public class XMLCellUpdateDTO {
 
+  @NotNull private String username;
+
   @NotNull private Long processModelId;
 
   @NotNull private XMLCell xmlCell;
 
+  public String getUsername() {
+    return this.username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
   public Long getProcessModelId() {
-    return processModelId;
+    return this.processModelId;
   }
 
   public void setProcessModelId(Long processModelId) {
@@ -20,7 +32,7 @@ public class XMLCellUpdateDTO {
   }
 
   public XMLCell getXmlCell() {
-    return xmlCell;
+    return this.xmlCell;
   }
 
   public void setXmlCell(XMLCell xmlCell) {
@@ -28,31 +40,29 @@ public class XMLCellUpdateDTO {
   }
 
   @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((processModelId == null) ? 0 : processModelId.hashCode());
-    result = prime * result + ((xmlCell == null) ? 0 : xmlCell.hashCode());
-    return result;
+  public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (!(o instanceof XMLCellUpdateDTO)) {
+        return false;
+    }
+    XMLCellUpdateDTO xMLCellUpdateDTO = (XMLCellUpdateDTO) o;
+    return Objects.equals(username, xMLCellUpdateDTO.username) &&
+      Objects.equals(processModelId, xMLCellUpdateDTO.processModelId) &&
+      Objects.equals(xmlCell, xMLCellUpdateDTO.xmlCell);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null) return false;
-    if (getClass() != obj.getClass()) return false;
-    XMLCellUpdateDTO other = (XMLCellUpdateDTO) obj;
-    if (processModelId == null) {
-      if (other.processModelId != null) return false;
-    } else if (!processModelId.equals(other.processModelId)) return false;
-    if (xmlCell == null) {
-      if (other.xmlCell != null) return false;
-    } else if (!xmlCell.equals(other.xmlCell)) return false;
-    return true;
+  public int hashCode() {
+    return Objects.hash(username, processModelId, xmlCell);
   }
 
   @Override
   public String toString() {
-    return "XMLCellUpdateDTO [processModelId=" + processModelId + ", xmlCell=" + xmlCell + "]";
+    return "{" +
+      " username='" + getUsername() + "'" +
+      ", processModelId='" + getProcessModelId() + "'" +
+      ", xmlCell='" + getXmlCell() + "'" +
+      "}";
   }
 }
