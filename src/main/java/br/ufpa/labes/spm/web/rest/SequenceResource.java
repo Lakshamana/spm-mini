@@ -55,7 +55,7 @@ public class SequenceResource {
           "A new sequence cannot already have an ID", ENTITY_NAME, "idexists");
     }
     Sequence result = sequenceRepository.save(sequence);
-    return ResponseEntity.created(new URI("/api/sequences/" + result.getId()))
+    return ResponseEntity.created(new URI("/api/sequences/" + result.getId()))  
         .headers(
             HeaderUtil.createEntityCreationAlert(
                 applicationName, true, ENTITY_NAME, result.getId().toString()))

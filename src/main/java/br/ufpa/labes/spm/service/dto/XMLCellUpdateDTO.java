@@ -9,18 +9,18 @@ import br.ufpa.labes.spm.beans.editor.XMLCell;
 /** XMLCellUpdateDTO */
 public class XMLCellUpdateDTO {
 
-  @NotNull private String username;
+  @NotNull private String token;
 
   @NotNull private Long processModelId;
 
   @NotNull private XMLCell xmlCell;
 
-  public String getUsername() {
-    return this.username;
+  public String getToken() {
+    return this.token;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setToken(String token) {
+    this.token = token;
   }
 
   public Long getProcessModelId() {
@@ -41,28 +41,33 @@ public class XMLCellUpdateDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (o == this)
-        return true;
+    if (o == this) return true;
     if (!(o instanceof XMLCellUpdateDTO)) {
-        return false;
+      return false;
     }
     XMLCellUpdateDTO xMLCellUpdateDTO = (XMLCellUpdateDTO) o;
-    return Objects.equals(username, xMLCellUpdateDTO.username) &&
-      Objects.equals(processModelId, xMLCellUpdateDTO.processModelId) &&
-      Objects.equals(xmlCell, xMLCellUpdateDTO.xmlCell);
+    return Objects.equals(token, xMLCellUpdateDTO.token)
+        && Objects.equals(processModelId, xMLCellUpdateDTO.processModelId)
+        && Objects.equals(xmlCell, xMLCellUpdateDTO.xmlCell);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, processModelId, xmlCell);
+    return Objects.hash(token, processModelId, xmlCell);
   }
 
   @Override
   public String toString() {
-    return "{" +
-      " username='" + getUsername() + "'" +
-      ", processModelId='" + getProcessModelId() + "'" +
-      ", xmlCell='" + getXmlCell() + "'" +
-      "}";
+    return "{"
+        + " token='"
+        + getToken()
+        + "'"
+        + ", processModelId='"
+        + getProcessModelId()
+        + "'"
+        + ", xmlCell='"
+        + getXmlCell()
+        + "'"
+        + "}";
   }
 }

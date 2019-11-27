@@ -86,6 +86,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .permitAll()
         .antMatchers("/api/account/reset-password/finish")
         .permitAll()
+        .antMatchers("/api/spm-kafka/**")
+        .permitAll()
         .antMatchers("/api/**")
         .authenticated()
         .antMatchers("/management/health")

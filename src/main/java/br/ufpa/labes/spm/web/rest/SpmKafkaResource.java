@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -45,19 +46,17 @@ public class SpmKafkaResource {
 
   // pmId stands for processModelId
   @GetMapping(value = "/subscribe/{pmId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  SseEmitter subscribe(@PathVariable Long pmId, HttpServletRequest request) {
+  SseEmitter subscribe(@PathVariable Long pmId, @RequestParam String token) {
     SseEmitter sseEmitter = new SseEmitter(TOTAL_MILLIS_PER_DAY);
-    String username = request.getHeader("subscriber");
-    kafkaConsumer.getEvents().put(username, Pair.of(sseEmitter, pmId));
+    kafkaConsumer.getEvents().put(token, Pair.of(sseEmitter, pmId));
     return sseEmitter;
   }
 
   @GetMapping("/unsubscribe")
   @ResponseStatus(HttpStatus.OK)
-  void unsubscribe(HttpServletRequest request) {
-    String username = request.getHeader("subscriber");
-    SseEmitter emitter = kafkaConsumer.getEvents().get(username).getFirst();
+  void unsubscribe(@RequestParam String token) {
+    SseEmitter emitter = kafkaConsumer.getEvents().get(token).getFirst();
     emitter.complete();
-    kafkaConsumer.getEvents().remove(username);
+    kafkaConsumer.getEvents().remove(token);
   }
 }

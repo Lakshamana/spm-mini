@@ -18,15 +18,21 @@ public interface ArtifactConRepository extends GenericRepository<ArtifactCon, Lo
 
   @Query(
       value =
-          "select distinct artifactCon from ArtifactCon artifactCon left join fetch artifactCon.toMultipleCons",
+          "select distinct artifactCon from ArtifactCon artifactCon"
+              + " left join fetch artifactCon.toMultipleCons"
+              + " left join fetch artifactCon.toActivities"
+              + " left join fetch artifactCon.fromActivities",
       countQuery = "select count(distinct artifactCon) from ArtifactCon artifactCon")
   Page<ArtifactCon> findAllWithEagerRelationships(Pageable pageable);
 
   @Query(
-      "select distinct artifactCon from ArtifactCon artifactCon left join fetch artifactCon.toMultipleCons")
+      "select distinct artifactCon from ArtifactCon artifactCon left join fetch artifactCon.toMultipleCons"
+          + " left join fetch artifactCon.toActivities left join fetch artifactCon.fromActivities")
   List<ArtifactCon> findAllWithEagerRelationships();
 
   @Query(
-      "select artifactCon from ArtifactCon artifactCon left join fetch artifactCon.toMultipleCons where artifactCon.id =:id")
+      "select artifactCon from ArtifactCon artifactCon left join fetch artifactCon.toMultipleCons"
+          + " left join fetch artifactCon.toActivities left join fetch artifactCon.fromActivities"
+          + " where artifactCon.id =:id")
   Optional<ArtifactCon> findOneWithEagerRelationships(@Param("id") Long id);
 }
