@@ -10,6 +10,8 @@ public class XMLCell {
   private String style;
   private Object sourceNode;
   private Object targetNode;
+  private int x;
+  private int y;
 
   public static final String NORMAL = "Normal",
       DECOMPOSED = "Decomposed",
@@ -181,6 +183,12 @@ public class XMLCell {
         + ", targetNode='"
         + getTargetNode()
         + "'"
+        + ", x='"
+        + getX()
+        + "'"
+        + ", y='"
+        + getY()
+        + "'"
         + "}";
   }
 
@@ -203,5 +211,21 @@ public class XMLCell {
   @Override
   public int hashCode() {
     return Objects.hash(nodeType, label, objectId, isEdge, style, sourceNode, targetNode);
+  }
+
+  public int getX() {
+    return x;
+  }
+
+  public void setX(int x) {
+    this.x = x;
+  }
+
+  public int getY() {
+    return y;
+  }
+
+  public void setY(int y) {
+    this.y = y;
   }
 }
