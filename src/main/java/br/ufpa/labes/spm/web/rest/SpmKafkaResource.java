@@ -4,8 +4,6 @@ import br.ufpa.labes.spm.service.SpmKafkaConsumer;
 import br.ufpa.labes.spm.service.SpmKafkaProducer;
 import br.ufpa.labes.spm.service.dto.XMLCellUpdateDTO;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
@@ -55,6 +53,7 @@ public class SpmKafkaResource {
   @GetMapping("/unsubscribe")
   @ResponseStatus(HttpStatus.OK)
   void unsubscribe(@RequestParam String token) {
+    log.debug("token={" + token + "}");
     SseEmitter emitter = kafkaConsumer.getEvents().get(token).getFirst();
     emitter.complete();
     kafkaConsumer.getEvents().remove(token);

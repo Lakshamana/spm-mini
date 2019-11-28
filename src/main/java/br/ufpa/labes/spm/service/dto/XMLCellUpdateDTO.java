@@ -9,18 +9,18 @@ import br.ufpa.labes.spm.beans.editor.XMLCell;
 /** XMLCellUpdateDTO */
 public class XMLCellUpdateDTO {
 
-  @NotNull private String token;
+  @NotNull private String username;
 
   @NotNull private Long processModelId;
 
   @NotNull private XMLCell xmlCell;
 
-  public String getToken() {
-    return this.token;
+  public String getUsername() {
+    return this.username;
   }
 
-  public void setToken(String token) {
-    this.token = token;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public Long getProcessModelId() {
@@ -46,21 +46,21 @@ public class XMLCellUpdateDTO {
       return false;
     }
     XMLCellUpdateDTO xMLCellUpdateDTO = (XMLCellUpdateDTO) o;
-    return Objects.equals(token, xMLCellUpdateDTO.token)
+    return Objects.equals(username, xMLCellUpdateDTO.username)
         && Objects.equals(processModelId, xMLCellUpdateDTO.processModelId)
         && Objects.equals(xmlCell, xMLCellUpdateDTO.xmlCell);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(token, processModelId, xmlCell);
+    return Objects.hash(username, processModelId, xmlCell);
   }
 
   @Override
   public String toString() {
     return "{"
-        + " token='"
-        + getToken()
+        + " username='"
+        + getUsername()
         + "'"
         + ", processModelId='"
         + getProcessModelId()

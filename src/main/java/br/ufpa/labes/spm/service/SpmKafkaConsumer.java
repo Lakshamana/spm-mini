@@ -62,7 +62,7 @@ public class SpmKafkaConsumer {
                           .filter(
                               entry ->
                                   entry.getValue().getSecond().equals(message.getProcessModelId())
-                                      && !entry.getKey().equals(message.getToken()))
+                                      && !entry.getKey().equals(message.getUsername()))
                           .forEach(
                               entry -> {
                                 try {
