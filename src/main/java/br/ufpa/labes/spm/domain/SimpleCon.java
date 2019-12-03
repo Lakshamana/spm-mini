@@ -25,11 +25,11 @@ public class SimpleCon extends Connection implements Serializable {
   private Long id;
 
   @ManyToOne
-  @JsonIgnoreProperties("fromSimpleCons")
+  @JsonIgnoreProperties({"fromSimpleCons", "toSimpleCons"})
   private Activity toActivity;
 
   @ManyToOne
-  @JsonIgnoreProperties("toSimpleCons")
+  @JsonIgnoreProperties({"fromSimpleCons", "toSimpleCons"})
   private Activity fromActivity;
 
   // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
