@@ -15,6 +15,8 @@ public class XMLCellUpdateDTO {
 
   @NotNull private XMLCell xmlCell;
 
+  private String operation;
+
   public String getUsername() {
     return this.username;
   }
@@ -39,35 +41,39 @@ public class XMLCellUpdateDTO {
     this.xmlCell = xmlCell;
   }
 
+  public String getOperation() {
+    return operation;
+  }
+
+  public void setOperation(String operation) {
+    this.operation = operation;
+  }
+
+
   @Override
   public boolean equals(Object o) {
-    if (o == this) return true;
+    if (o == this)
+      return true;
     if (!(o instanceof XMLCellUpdateDTO)) {
       return false;
     }
     XMLCellUpdateDTO xMLCellUpdateDTO = (XMLCellUpdateDTO) o;
-    return Objects.equals(username, xMLCellUpdateDTO.username)
-        && Objects.equals(processModelId, xMLCellUpdateDTO.processModelId)
-        && Objects.equals(xmlCell, xMLCellUpdateDTO.xmlCell);
+    return Objects.equals(username, xMLCellUpdateDTO.username) && Objects.equals(processModelId, xMLCellUpdateDTO.processModelId) && Objects.equals(xmlCell, xMLCellUpdateDTO.xmlCell) && Objects.equals(operation, xMLCellUpdateDTO.operation);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, processModelId, xmlCell);
+    return Objects.hash(username, processModelId, xmlCell, operation);
   }
+
 
   @Override
   public String toString() {
-    return "{"
-        + " username='"
-        + getUsername()
-        + "'"
-        + ", processModelId='"
-        + getProcessModelId()
-        + "'"
-        + ", xmlCell='"
-        + getXmlCell()
-        + "'"
-        + "}";
+    return "{" +
+      " username='" + getUsername() + "'" +
+      ", processModelId='" + getProcessModelId() + "'" +
+      ", xmlCell='" + getXmlCell() + "'" +
+      ", operation='" + getOperation() + "'" +
+      "}";
   }
 }

@@ -415,11 +415,11 @@ public class ProjectServicesImpl implements ProjectServices {
         getSimpleConTag(simpleCon, cells);
       }
 
-      // Collection<ArtifactCon> toArtCon = activity.getToArtifactCons();
-      // for (Iterator<ArtifactCon> iterator2 = toArtCon.iterator(); iterator2.hasNext(); ) {
-      //   ArtifactCon artifactCon2 = (ArtifactCon) iterator2.next();
-      //   getArtifactConTag(artifactCon2, cells);
-      // }
+      Collection<ArtifactCon> toArtCon = activity.getToArtifactCons();
+      for (Iterator<ArtifactCon> iterator2 = toArtCon.iterator(); iterator2.hasNext(); ) {
+        ArtifactCon artifactCon2 = (ArtifactCon) iterator2.next();
+        getArtifactConTag(artifactCon2, cells);
+      }
 
       Collection<BranchCon> toBranch = activity.getToBranchCons();
       for (Iterator<BranchCon> iterator2 = toBranch.iterator(); iterator2.hasNext(); ) {
